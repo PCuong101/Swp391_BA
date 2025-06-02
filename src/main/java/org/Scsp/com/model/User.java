@@ -1,6 +1,8 @@
 package org.Scsp.com.model;
 
 import jakarta.persistence.*;
+import org.Scsp.com.Enum.Role;
+
 import java.util.Date;
 
 @Entity
@@ -11,17 +13,19 @@ public class User {
     @Column(name = "UserID")
     private Integer userId;
 
-    @Column(name = "Name", nullable = false, length = 100)
+    @Column(name = "Name", nullable = false, length = 100, unique = true)
     private String name;
 
-    @Column(name = "Email", nullable = false, length = 100)
+    @Column(name = "Email", nullable = false, length = 100,unique = true)
     private String email;
 
-    @Column(name = "Password", nullable = false, length = 255)
+    @Column(name = "Password", nullable = false, length = 50)
     private String password;
 
-    @Column(name = "Role", nullable = false, length = 50)
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Role", nullable = false, length = 10)
+    private Role role;
 
     @Column(name = "RegistrationDate")
     @Temporal(TemporalType.TIMESTAMP)
@@ -33,14 +37,16 @@ public class User {
     @Column(name = "MemberPlanID")
     private Integer memberPlanId;
 
-    public User(Integer userId, Integer memberPlanId, Date registrationDate, String name, String email, String password, String role, String profilePicture) {
+
+
+    public User(Integer userId, Integer memberPlanId, Date registrationDate, String name, String email, String password, String profilePicture) {
         this.userId = userId;
         this.memberPlanId = memberPlanId;
         this.registrationDate = registrationDate;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
+        role = Role.USER;
         this.profilePicture = profilePicture;
     }
 
@@ -80,11 +86,11 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
