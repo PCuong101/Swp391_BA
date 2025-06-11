@@ -1,9 +1,12 @@
 package org.Scsp.com.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "QuitPlans")
 public class QuitPlan {
 
@@ -40,18 +44,15 @@ public class QuitPlan {
     private LocalDateTime lastUpdated = LocalDateTime.now();
 
     @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<HealthMilestone> milestones = new ArrayList<>();
 
     @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<UserDailyLogs> userDailyLogs = new ArrayList<>();
 
     @Column(name = "is_active")
     private Boolean isActive = true;
 
-    public QuitPlan() {
-        // Default constructor
-    }
-
-    // Getters, Setters
 }
 

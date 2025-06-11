@@ -8,6 +8,6 @@ import java.util.List;
 public interface QuitPlanService {
     List<QuitPlan> findAll();
     QuitPlan findById(Long id);
-    QuitPlan createPlane(Long userId,QuitPlanDto quitPlanDto);
+    QuitPlan createPlane(QuitPlanDto quitPlanDto);
     void deleteById(Long id);
 }

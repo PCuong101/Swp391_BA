@@ -1,5 +1,6 @@
 package org.Scsp.com.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +21,10 @@ public class HealthMilestone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 100)
     private String name;
 
+    @Column(length = 100)
     private String description;
 
     private LocalDateTime expectedDate;
@@ -32,6 +35,7 @@ public class HealthMilestone {
 
     @ManyToOne
     @JoinColumn(name = "quit_plan_id")
+    @JsonBackReference
     private QuitPlan quitPlan;
 
 }

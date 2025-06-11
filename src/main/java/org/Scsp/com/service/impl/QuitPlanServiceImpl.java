@@ -1,5 +1,6 @@
 package org.Scsp.com.service.impl;
 
+import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
@@ -13,19 +14,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class QuitPlanServiceImpl implements QuitPlanService {
 
 
     private final QuitPlanRepository quitPlanRepository;
     private final UserRepository userRepository;
-    private final HealthMilestoneService milestoneService;
+    private final HealthMilestoneService healthMilestoneService;
 
-    @Autowired
-    public QuitPlanServiceImpl(QuitPlanRepository quitPlanRepository, UserRepository userRepository, HealthMilestoneService milestoneService) {
-        this.quitPlanRepository = quitPlanRepository;
-        this.userRepository = userRepository;
-        this.milestoneService = milestoneService;
-    }
 
     @Override
     public List<QuitPlan> findAll() {
@@ -38,9 +34,9 @@ public class QuitPlanServiceImpl implements QuitPlanService {
     }
 
     @Override
-    public QuitPlan createPlane(Long userId, QuitPlanDto quitPlanDto) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("User not found with id: " + userId)
+    public QuitPlan createPlane(QuitPlanDto quitPlanDto) {
+        User user = userRepository.findById(quitPlanDto.getUserId()).orElseThrow(
+                () -> new RuntimeException("User not found with id: " + quitPlanDto.getUserId())
         );
         QuitPlan quitPlan = new QuitPlan();
         quitPlan.setUser(user);
@@ -55,7 +51,7 @@ public class QuitPlanServiceImpl implements QuitPlanService {
 
 
         QuitPlan savedPlan = quitPlanRepository.save(quitPlan);
-        milestoneService.createHealthMilestones(savedPlan);
+        healthMilestoneService.createHealthMilestones(savedPlan);
 
         return savedPlan;
     }

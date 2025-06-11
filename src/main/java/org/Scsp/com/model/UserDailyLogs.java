@@ -1,6 +1,7 @@
 // src/main/java/org/Scsp/com/model/SmokingHistory.java
 package org.Scsp.com.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,5 +36,6 @@ public class UserDailyLogs {
 
     @ManyToOne
     @JoinColumn(name = "quit_plan_id")
+    @JsonBackReference
     private QuitPlan quitPlan;
 }
