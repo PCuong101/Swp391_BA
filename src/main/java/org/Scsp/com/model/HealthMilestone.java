@@ -1,4 +1,3 @@
-// src/main/java/org/Scsp/com/model/ProgressTracking.java
 package org.Scsp.com.model;
 
 import jakarta.persistence.*;
@@ -7,23 +6,32 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
-@Table(name = "ProgressTracking")
+@Table(name = "health_milestones")
 @NoArgsConstructor
-public class ProgressTracking {
+public class HealthMilestone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+    private String description;
+
+    private LocalDateTime expectedDate;
+
+    private LocalDateTime originalExpectedDate;
+
+    private boolean achieved;
+
     @ManyToOne
     @JoinColumn(name = "quit_plan_id")
     private QuitPlan quitPlan;
 
-
-
-    // other fields, getters and setters
 }
