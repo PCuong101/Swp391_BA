@@ -10,6 +10,7 @@ import java.util.Optional;
 @Service
 public interface UsersService {
     Users registerUser(UsersRegisterDto usersRegisterDto);
+    Users loginUser(String email, String password);
     Users saveUser(Users users);
     Optional<Users> getUserById(Long id);
     List<Users> getAllUsers();

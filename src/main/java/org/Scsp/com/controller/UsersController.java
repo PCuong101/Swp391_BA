@@ -1,5 +1,7 @@
 package org.Scsp.com.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.UsersRegisterDto;
 import org.Scsp.com.model.Users;
@@ -21,6 +23,19 @@ public class UsersController {
     @PostMapping
     public ResponseEntity<Users> register(@RequestBody UsersRegisterDto usersRegisterDto) {
         return ResponseEntity.ok(usersService.registerUser(usersRegisterDto));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Users> login(
+            @RequestBody String email,
+            @RequestBody String password,
+            HttpServletRequest request
+    ) {
+        Users user = usersService.loginUser(email, password);
+        if(user != null) {
+            request.getSession().setAttribute("user", user);
+        }
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}")

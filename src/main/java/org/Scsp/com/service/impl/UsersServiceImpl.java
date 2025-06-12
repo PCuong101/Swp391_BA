@@ -31,6 +31,16 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public Users loginUser(String email, String password) {
+        Users user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (user.getPassword().equals(password)) {
+            return user;
+        }
+        return null;
+    }
+
+    @Override
     public Users saveUser(Users users) {
         return userRepository.save(users);
     }
