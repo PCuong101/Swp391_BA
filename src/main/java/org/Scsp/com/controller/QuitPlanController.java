@@ -10,15 +10,23 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/quit-plan")
+@RequestMapping("/api/quit-plan")
 public class QuitPlanController {
 
     private final QuitPlanService quitPlanService;
 
-    @PostMapping("/{userId}")
+    @PostMapping
     public ResponseEntity<QuitPlan> createQuitPlan(
             @RequestBody QuitPlanDto quitPlanDto
     ) {
         return ResponseEntity.ok( quitPlanService.createPlane(quitPlanDto));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<QuitPlan> getQuitPlanById(@PathVariable Long id) {
+        QuitPlan quitPlan = quitPlanService.findById(id);
+        if (quitPlan == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(quitPlan);
     }
 }

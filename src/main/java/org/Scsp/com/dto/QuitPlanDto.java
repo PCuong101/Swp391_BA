@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,7 +27,7 @@ public class QuitPlanDto {
 
     private String smokingFrequency;
 
-    private Double averageCost;
+    private BigDecimal averageCost;
 
     private LocalDateTime startedSmokingAt;
 

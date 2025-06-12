@@ -1,12 +1,16 @@
 package org.Scsp.com.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.Scsp.com.data.MilestoneTemplateProvider;
 import org.Scsp.com.dto.MilestoneProgressDTO;
 import org.Scsp.com.model.HealthMilestone;
 import org.Scsp.com.model.MilestoneTemplate;
 import org.Scsp.com.model.QuitPlan;
+import org.Scsp.com.model.UserDailyLogs;
 import org.Scsp.com.repository.HealthMilestoneRepository;
 import org.Scsp.com.repository.QuitPlanRepository;
+import org.Scsp.com.repository.UserDailyLogsRepository;
 import org.Scsp.com.service.HealthMilestoneService;
 import org.springframework.stereotype.Service;
 
@@ -22,21 +26,12 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
     private final HealthMilestoneRepository healthMilestoneRepository;
     private final QuitPlanRepository quitPlanRepository;
-
-
-
+    private final MilestoneTemplateProvider templatesProvider;
+    private final UserDailyLogsRepository userDailyLogsRepository;
 
     @Override
     public void createHealthMilestones(QuitPlan plan) {
-        List<MilestoneTemplate> templates = List.of(
-                new MilestoneTemplate("Ổn định nhịp tim", "Nhịp tim bình thường", Duration.ofMinutes(20)),
-                new MilestoneTemplate("CO giảm", "CO trong máu giảm", Duration.ofHours(8)),
-                new MilestoneTemplate("Hô hấp cải thiện", "Phổi bắt đầu hồi phục", Duration.ofDays(2)),
-                new MilestoneTemplate("Vị giác tốt hơn", "Cảm nhận vị rõ hơn", Duration.ofDays(3)),
-                new MilestoneTemplate("Phổi sạch dần", "Ít ho, dễ thở", Duration.ofDays(14)),
-                new MilestoneTemplate("Tuần hoàn tốt hơn", "Lưu thông máu cải thiện", Duration.ofDays(30)),
-                new MilestoneTemplate("Giảm nguy cơ đột quỵ", "Nguy cơ tim mạch giảm", Duration.ofDays(365))
-        );
+        List<MilestoneTemplate> templates = templatesProvider.getTemplates();
 
         LocalDateTime startDate = plan.getStartDate();
         List<HealthMilestone> milestoneList = new ArrayList<>();
@@ -62,22 +57,90 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         QuitPlan quitPlan = quitPlanRepository.findById(planId)
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + planId));
 
-        List<HealthMilestone> milestoneProgress = healthMilestoneRepository.findByQuitPlan(quitPlan);
+        LocalDateTime now = LocalDateTime.now();
+        List<HealthMilestone> healthMilestones = healthMilestoneRepository.findByQuitPlan(quitPlan);
 
-        List<MilestoneProgressDTO> progressList = new ArrayList<>();
-        if (milestoneProgress != null && !milestoneProgress.isEmpty()) {
-            for (HealthMilestone milestone : milestoneProgress) {
-                MilestoneProgressDTO progressDTO = MilestoneProgressDTO.builder()
-                        .name(milestone.getName())
-                        .expectedDate(milestone.getExpectedDate())
-                        .progressPercent(calculateMilestoneProgress(milestone))
-                        .achieved(milestone.isAchieved())
-                        .build();
-                progressList.add(progressDTO);
+        // Lấy log ngày hôm nay nếu có
+        UserDailyLogs todayLog = userDailyLogsRepository.findByQuitPlan_PlanIdAndLogDate(planId, now);
+        boolean smokedToday = todayLog != null && Boolean.TRUE.equals(todayLog.getSmokedToday());
+
+        List<MilestoneProgressDTO> result = new ArrayList<>();
+
+        for (HealthMilestone milestone : healthMilestones) {
+            int percent = calculateMilestoneProgress(milestone);
+
+            boolean achieved = milestone.isAchieved();
+
+            String timeLeft;
+
+            if (achieved) {
+                if (smokedToday) {
+                    // Tính phần trăm bị trừ
+                    int smoked = todayLog.getCigarettesSmoked();
+                    int deduction = smoked * 1;
+                    percent = Math.max(0, percent - deduction);
+
+                    //Tính thời gian cần để phục hồi milestone:
+                    long totalMinutes = Duration.between(quitPlan.getStartDate(), milestone.getExpectedDate()).toMinutes();
+                    long lostMinutes = totalMinutes * deduction / 100;
+
+                    // Thời gian bắt đầu tính hồi phục
+                    LocalDateTime recoveryTime = todayLog.getLogDate();
+
+                    // Tính thời gian đã trôi qua kể từ khi bắt đầu hồi phục
+                    Duration elapsedRecovery = Duration.between(recoveryTime, now);
+                    long elapsedMinutes = elapsedRecovery.toMinutes();
+                    long remainingMinutes = Math.max(0, lostMinutes - elapsedMinutes);
+
+                    timeLeft = "Time remaining: " + formatDurationReadable(Duration.ofMinutes(remainingMinutes));
+                } else {
+                    timeLeft = "Done";
+                }
+            } else {
+                Duration remaining = Duration.between(now, milestone.getExpectedDate());
+                timeLeft = formatDurationReadable(remaining);
             }
+
+
+            MilestoneProgressDTO progressDTO = MilestoneProgressDTO.builder()
+                    .name(milestone.getName())
+                    .expectedDate(milestone.getExpectedDate())
+                    .progressPercent(percent)
+                    .achieved(achieved)
+                    .timeRemaining(timeLeft)
+                    .build();
+            result.add(progressDTO);
         }
 
-        return progressList;
+        return result;
+    }
+
+    private String formatDurationReadable(Duration duration) {
+        long days = duration.toDays();
+        long hours = duration.toHours() % 24;
+        long minutes = duration.toMinutes() % 60;
+
+        StringBuilder sb = new StringBuilder();
+        if (days > 0) sb.append(days).append("d ");
+        if (hours > 0) sb.append(hours).append("h ");
+        if (minutes > 0 || sb.isEmpty()) sb.append(minutes).append("m");
+
+        return sb.toString().trim();
+    }
+
+
+    @Transactional
+    @Override
+    public void autoMarkAchievedMilestones() {
+        LocalDateTime now = LocalDateTime.now();
+        // Lấy tất cả milestone chưa achieved và expectedDate <= hôm nay
+        List<HealthMilestone> dueMilestones = healthMilestoneRepository
+                .findByAchievedFalseAndExpectedDateBefore(now);
+
+        for (HealthMilestone milestone : dueMilestones) {
+            milestone.setAchieved(true);
+        }
+        healthMilestoneRepository.saveAll(dueMilestones);
     }
 
     public int calculateMilestoneProgress(HealthMilestone milestone) {
@@ -101,4 +164,6 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
         return (int) Math.min((elapsedMinutes * 100) / totalMinutes, 100);
     }
+
+
 }
