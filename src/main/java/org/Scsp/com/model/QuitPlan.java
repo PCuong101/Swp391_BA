@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class QuitPlan {
     private String smokingFrequency;
     private Double averageCost;
     private LocalDateTime startedSmokingAt;
+    private BigDecimal moneySaved = BigDecimal.ZERO;
 
     @Column(columnDefinition = "NVARCHAR(255)")
     private String personalizedNotes;

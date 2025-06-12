@@ -1,5 +1,6 @@
 package org.Scsp.com.controller;
 
+import lombok.AllArgsConstructor;
 import org.Scsp.com.model.User;
 import org.Scsp.com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {

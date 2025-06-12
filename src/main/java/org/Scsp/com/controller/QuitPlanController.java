@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/quit-plan")
+@RequestMapping("/api/quit-plan")
 public class QuitPlanController {
 
     private final QuitPlanService quitPlanService;
