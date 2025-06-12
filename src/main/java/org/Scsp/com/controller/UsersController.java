@@ -1,6 +1,7 @@
 package org.Scsp.com.controller;
 
 import lombok.AllArgsConstructor;
+import org.Scsp.com.dto.UsersRegisterDto;
 import org.Scsp.com.model.Users;
 import org.Scsp.com.service.UsersService;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ public class UsersController {
 
 
     @PostMapping
-    public ResponseEntity<Users> createUser(@RequestBody Users user) {
-        return ResponseEntity.ok(usersService.saveUser(user));
+    public ResponseEntity<Users> register(@RequestBody UsersRegisterDto usersRegisterDto) {
+        return ResponseEntity.ok(usersService.registerUser(usersRegisterDto));
     }
 
     @GetMapping("/{id}")

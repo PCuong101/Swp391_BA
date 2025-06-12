@@ -1,6 +1,8 @@
 package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.Scsp.com.Enum.Role;
+import org.Scsp.com.dto.UsersRegisterDto;
 import org.Scsp.com.model.Users;
 import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.UsersService;
@@ -14,6 +16,19 @@ public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository userRepository;
 
+
+    @Override
+    public Users registerUser(UsersRegisterDto usersRegisterDto) {
+    Users existingUser = userRepository.findByEmail(usersRegisterDto.getEmail())
+            .orElse(null);
+    if (existingUser == null) {
+        Users newUser = new Users();
+        newUser.setEmail(usersRegisterDto.getEmail());
+        newUser.setPassword(usersRegisterDto.getPassword());
+        return userRepository.save(newUser);
+    }
+        return null;
+    }
 
     @Override
     public Users saveUser(Users users) {
