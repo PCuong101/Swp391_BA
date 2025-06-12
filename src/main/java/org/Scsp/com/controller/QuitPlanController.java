@@ -21,4 +21,12 @@ public class QuitPlanController {
     ) {
         return ResponseEntity.ok( quitPlanService.createPlane(quitPlanDto));
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<QuitPlan> getQuitPlanById(@PathVariable Long id) {
+        QuitPlan quitPlan = quitPlanService.findById(id);
+        if (quitPlan == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(quitPlan);
+    }
 }

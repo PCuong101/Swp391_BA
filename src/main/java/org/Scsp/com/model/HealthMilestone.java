@@ -31,7 +31,7 @@ public class HealthMilestone {
 
     private LocalDateTime originalExpectedDate;
 
-    private boolean achieved;
+    private boolean achieved = false;
 
     @ManyToOne
     @JoinColumn(name = "quit_plan_id")

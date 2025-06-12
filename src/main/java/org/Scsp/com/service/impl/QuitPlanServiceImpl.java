@@ -30,7 +30,9 @@ public class QuitPlanServiceImpl implements QuitPlanService {
 
     @Override
     public QuitPlan findById(Long id) {
-        return null;
+        return quitPlanRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Quit plan not found with id: " + id)
+        );
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class MilestoneProgressDTO {
     String name;
     LocalDateTime expectedDate;
+    String timeRemaining;
     int progressPercent;
     boolean achieved;
 }
