@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "Achievements")
@@ -22,11 +23,11 @@ public class Achievement {
 
     @ManyToOne
     @JoinColumn(name = "UserID", nullable = false)
-    private User user;
+    private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TemplateID", nullable = false)
-    private AchievementTemplate template;
+    private AchievementTemplate achievementTemplate;
 
     @Column(name = "DateAchieved")
     private LocalDateTime dateAchieved;
@@ -35,5 +36,5 @@ public class Achievement {
     private Boolean shared = false;
 
     @Column(name = "CreatedAt")
-    private LocalDateTime createdAt;
+    private Date createdAt;
 }

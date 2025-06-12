@@ -13,18 +13,18 @@ import java.util.Date;
 @Data
 @Builder
 @AllArgsConstructor
-@Table(name = "Users")
+@Table(name = "[User]")
 @NoArgsConstructor
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserID")
     private Long userId;
 
-    @Column(name = "Name", nullable = false, columnDefinition = "NVARCHAR(100)", unique = true)
+    @Column(name = "Name", nullable = false, columnDefinition = "NVARCHAR(100)")
     private String name;
 
-    @Column(name = "Email", nullable = false, length = 100,unique = true)
+    @Column(name = "Email", nullable = false, length = 100,unique = true, columnDefinition = "NVARCHAR(100)")
     private String email;
 
     @Column(name = "Password", nullable = false, length = 50)
@@ -32,7 +32,7 @@ public class User {
 
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Role", nullable = false, length = 10)
+    @Column(name = "Role", nullable = false, length = 20)
     private Role role;
 
     @Column(name = "RegistrationDate")
@@ -42,8 +42,10 @@ public class User {
     @Column(name = "ProfilePicture", length = 255)
     private String profilePicture;
 
+    @Column(name = "AddictionLevel", columnDefinition = "NVARCHAR(50)")
+    private String addictionLevel;
+
     @Column(name = "MemberPlanID")
     private Integer memberPlanId;
-
 
 }

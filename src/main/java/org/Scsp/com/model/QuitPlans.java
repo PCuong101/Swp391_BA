@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "QuitPlans")
-public class QuitPlan {
+public class QuitPlans {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class QuitPlan {
 
     @ManyToOne
     @JoinColumn(name = "UserID", nullable = false)
-    private User user;
+    private Users user;
 
     @Column(name = "Reason", columnDefinition = "NVARCHAR(MAX)")
     private String reason;
@@ -64,11 +64,11 @@ public class QuitPlan {
     @Column(name = "LastUpdated")
     private LocalDateTime lastUpdated = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "quitPlans", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<HealthMilestone> milestones = new ArrayList<>();
 
-    @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "quitPlans", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<UserDailyLogs> userDailyLogs = new ArrayList<>();
 

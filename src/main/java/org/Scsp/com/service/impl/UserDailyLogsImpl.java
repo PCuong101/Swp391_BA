@@ -2,14 +2,12 @@ package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.UserDailyLogsDto;
-import org.Scsp.com.model.QuitPlan;
+import org.Scsp.com.model.QuitPlans;
 import org.Scsp.com.model.UserDailyLogs;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UserDailyLogsRepository;
 import org.Scsp.com.service.UserDailyLogsService;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @Service
 @AllArgsConstructor
@@ -21,13 +19,13 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
     @Override
     public UserDailyLogsDto createUserDailyLog(UserDailyLogsDto newLogDto) {
 
-        QuitPlan quitPlan = quitPlanRepository.findById(newLogDto.getQuitPlanId())
+        QuitPlans quitPlans = quitPlanRepository.findById(newLogDto.getQuitPlanId())
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + newLogDto.getQuitPlanId()));
 
         UserDailyLogs userDailyLogs = UserDailyLogs.builder()
                 .logDate(newLogDto.getLogDate())
                 .smokedToday(newLogDto.isSmokedToday())
-                .quitPlan(quitPlan)
+                .quitPlans(quitPlans)
                 .cigarettesSmoked(newLogDto.getCigarettesSmoked())
                 .notes(newLogDto.getNote())
                 .build();

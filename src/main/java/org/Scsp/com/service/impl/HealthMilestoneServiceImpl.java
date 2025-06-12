@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import org.Scsp.com.data.MilestoneTemplateProvider;
 import org.Scsp.com.dto.MilestoneProgressDTO;
 import org.Scsp.com.model.HealthMilestone;
-import org.Scsp.com.model.MilestoneTemplate;
-import org.Scsp.com.model.QuitPlan;
+import org.Scsp.com.dto.MilestoneDTO;
+import org.Scsp.com.model.QuitPlans;
 import org.Scsp.com.model.UserDailyLogs;
 import org.Scsp.com.repository.HealthMilestoneRepository;
 import org.Scsp.com.repository.QuitPlanRepository;
@@ -30,20 +30,20 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
     private final UserDailyLogsRepository userDailyLogsRepository;
 
     @Override
-    public void createHealthMilestones(QuitPlan plan) {
-        List<MilestoneTemplate> templates = templatesProvider.getTemplates();
+    public void createHealthMilestones(QuitPlans plan) {
+        List<MilestoneDTO> templates = templatesProvider.getTemplates();
 
         LocalDateTime startDate = plan.getStartDate();
         List<HealthMilestone> milestoneList = new ArrayList<>();
 
-        for (MilestoneTemplate template : templates) {
+        for (MilestoneDTO template : templates) {
             LocalDateTime expected = startDate.plus(template.getOffset());
 
             HealthMilestone milestone = new HealthMilestone();
             milestone.setName(template.getName());
             milestone.setDescription(template.getDescription());
             milestone.setExpectedDate(expected);
-            milestone.setQuitPlan(plan);
+            milestone.setQuitPlans(plan);
             milestone.setOriginalExpectedDate(expected);
             milestoneList.add(milestone);
         }
@@ -54,14 +54,14 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
     @Override
     public List<MilestoneProgressDTO> getMilestoneProgress(Long planId) {
-        QuitPlan quitPlan = quitPlanRepository.findById(planId)
+        QuitPlans quitPlans = quitPlanRepository.findById(planId)
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + planId));
 
         LocalDateTime now = LocalDateTime.now();
-        List<HealthMilestone> healthMilestones = healthMilestoneRepository.findByQuitPlan(quitPlan);
+        List<HealthMilestone> healthMilestones = healthMilestoneRepository.findByQuitPlans(quitPlans);
 
         // Lấy log ngày hôm nay nếu có
-        UserDailyLogs todayLog = userDailyLogsRepository.findByQuitPlan_PlanIdAndLogDate(planId, now);
+        UserDailyLogs todayLog = userDailyLogsRepository.findByQuitPlans_PlanIdAndLogDate(planId, now);
         boolean smokedToday = todayLog != null && Boolean.TRUE.equals(todayLog.getSmokedToday());
 
         List<MilestoneProgressDTO> result = new ArrayList<>();
@@ -81,7 +81,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
                     percent = Math.max(0, percent - deduction);
 
                     //Tính thời gian cần để phục hồi milestone:
-                    long totalMinutes = Duration.between(quitPlan.getStartDate(), milestone.getExpectedDate()).toMinutes();
+                    long totalMinutes = Duration.between(quitPlans.getStartDate(), milestone.getExpectedDate()).toMinutes();
                     long lostMinutes = totalMinutes * deduction / 100;
 
                     // Thời gian bắt đầu tính hồi phục
@@ -145,7 +145,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
     public int calculateMilestoneProgress(HealthMilestone milestone) {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime startDate = milestone.getQuitPlan().getStartDate();
+        LocalDateTime startDate = milestone.getQuitPlans().getStartDate();
         LocalDateTime expectedDate = milestone.getExpectedDate();
 
         if (now.isAfter(expectedDate) || now.isEqual(expectedDate)) {
