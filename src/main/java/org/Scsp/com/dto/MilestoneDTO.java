@@ -1,6 +1,5 @@
-package org.Scsp.com.model;
+package org.Scsp.com.dto;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +10,7 @@ import java.time.Duration;
 @Data
 @Builder
 @AllArgsConstructor
-public class MilestoneTemplate {
+public class MilestoneDTO {
     private String name;
     private String description;
     private Duration offset; // ví dụ: 20 phút, 8 giờ, 2 ngày

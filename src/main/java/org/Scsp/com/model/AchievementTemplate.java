@@ -35,7 +35,4 @@ public class AchievementTemplate {
 
     @Column(name = "Visible")
     private Boolean visible = true;
-
-    @OneToMany(mappedBy = "template")
-    private List<Achievement> achievements;
 }

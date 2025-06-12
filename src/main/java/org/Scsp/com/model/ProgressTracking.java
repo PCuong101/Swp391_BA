@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Data
@@ -21,35 +22,35 @@ public class ProgressTracking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ProgressID")
-    private Integer progressId;
+    private int progressId;
 
     @ManyToOne
     @JoinColumn(name = "PlanID", nullable = false)
-    private QuitPlan quitPlan;
+    private QuitPlans quitPlans;
 
     @Column(name = "DaysSmokeFree")
-    private Integer daysSmokeFree;
+    private int daysSmokeFree;
 
     @Column(name = "MoneySaved", precision = 10, scale = 2)
-    private BigDecimal moneySaved;
+    private float moneySaved;
 
     @Column(name = "PulseRate")
-    private Integer pulseRate;
+    private int pulseRate;
 
     @Column(name = "OxygenLevel")
-    private Integer oxygenLevel;
+    private int oxygenLevel;
 
     @Column(name = "TasteAndSmell")
-    private Integer tasteAndSmell;
+    private int tasteAndSmell;
 
     @Column(name = "NicotineFromBody")
-    private Integer nicotineFromBody;
+    private int nicotineFromBody;
 
     @Column(name = "Breathing")
-    private Integer breathing;
+    private int breathing;
 
     @Column(name = "DateUpdated")
-    private LocalDateTime dateUpdated;
+    private Date dateUpdated;
 
 
 }

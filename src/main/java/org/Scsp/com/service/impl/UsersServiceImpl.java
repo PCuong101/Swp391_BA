@@ -2,19 +2,19 @@ package org.Scsp.com.service.impl;
 
 import org.Scsp.com.model.User;
 import org.Scsp.com.repository.UserRepository;
-import org.Scsp.com.service.UserService;
+import org.Scsp.com.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UsersServiceImpl implements UsersService {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UsersServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -13,9 +13,9 @@ import java.util.Date;
 @Data
 @Builder
 @AllArgsConstructor
-@Table(name = "[User]")
+@Table(name = "[Users]")
 @NoArgsConstructor
-public class User {
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserID")

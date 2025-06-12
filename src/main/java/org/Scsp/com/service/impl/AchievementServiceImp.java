@@ -5,7 +5,7 @@ import org.Scsp.com.Enum.CustomLogicKey;
 import org.Scsp.com.dto.AchievementDTO;
 import org.Scsp.com.model.Achievement;
 import org.Scsp.com.model.AchievementTemplate;
-import org.Scsp.com.model.QuitPlan;
+import org.Scsp.com.model.QuitPlans;
 import org.Scsp.com.repository.AchievementRepository;
 import org.Scsp.com.repository.AchievementTempRepository;
 import org.Scsp.com.repository.QuitPlanRepository;
@@ -49,7 +49,7 @@ public class AchievementServiceImp implements AchievementService {
 
     @Override
     public void checkAndUpdateAchievements(Long userId) {
-        QuitPlan plan = quitPlanRepository.findLatestByUser_UserId(userId)
+        QuitPlans plan = quitPlanRepository.findLatestByUser_UserId(userId)
                 .orElseThrow(() -> new RuntimeException("No quit plan found"));
 
         List<AchievementTemplate> templates = achievementTempRepository.findAll();
@@ -77,7 +77,7 @@ public class AchievementServiceImp implements AchievementService {
         }
     }
 
-    private boolean shouldUnlock(CustomLogicKey key, QuitPlan plan) {
+    private boolean shouldUnlock(CustomLogicKey key, QuitPlans plan) {
         LocalDate now = LocalDate.now();
         long daysSinceStart = ChronoUnit.DAYS.between(plan.getStartDate().toLocalDate(), now);
 

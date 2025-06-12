@@ -36,6 +36,6 @@ public class HealthMilestone {
     @ManyToOne
     @JoinColumn(name = "quit_plan_id")
     @JsonBackReference
-    private QuitPlan quitPlan;
+    private QuitPlans quitPlans;
 
 }

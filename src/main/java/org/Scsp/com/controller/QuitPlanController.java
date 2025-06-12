@@ -3,8 +3,8 @@ package org.Scsp.com.controller;
 
 import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
-import org.Scsp.com.model.QuitPlan;
-import org.Scsp.com.service.QuitPlanService;
+import org.Scsp.com.model.QuitPlans;
+import org.Scsp.com.service.QuitPlansService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/quit-plan")
 public class QuitPlanController {
 
-    private final QuitPlanService quitPlanService;
+    private final QuitPlansService quitPlansService;
 
     @PostMapping
-    public ResponseEntity<QuitPlan> createQuitPlan(
+    public ResponseEntity<QuitPlans> createQuitPlan(
             @RequestBody QuitPlanDto quitPlanDto
     ) {
-        return ResponseEntity.ok( quitPlanService.createPlane(quitPlanDto));
+        return ResponseEntity.ok( quitPlansService.createPlane(quitPlanDto));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<QuitPlan> getQuitPlanById(@PathVariable Long id) {
-        QuitPlan quitPlan = quitPlanService.findById(id);
-        if (quitPlan == null) {
+    public ResponseEntity<QuitPlans> getQuitPlanById(@PathVariable Long id) {
+        QuitPlans quitPlans = quitPlansService.findById(id);
+        if (quitPlans == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(quitPlan);
+        return ResponseEntity.ok(quitPlans);
     }
 }

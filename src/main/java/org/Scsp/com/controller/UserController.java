@@ -1,9 +1,8 @@
 package org.Scsp.com.controller;
 
 import lombok.AllArgsConstructor;
-import org.Scsp.com.model.User;
-import org.Scsp.com.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.Scsp.com.model.Users;
+import org.Scsp.com.service.UsersService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,41 +14,41 @@ import java.util.Optional;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UsersService usersService;
 
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.saveUser(user));
+    public ResponseEntity<Users> createUser(@RequestBody User user) {
+        return ResponseEntity.ok(usersService.saveUser(user));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
+    public ResponseEntity<Users> getUserById(@PathVariable Long id) {
+        Optional<Users> user = usersService.getUserById(id);
         return user.map(ResponseEntity::ok)
                    .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public List<Users> getAllUsers() {
+        return usersService.getAllUsers();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        if (!userService.getUserById(id).isPresent()) {
+        if (!usersService.getUserById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
         user.setUserId(id);
-        return ResponseEntity.ok(userService.updateUser(user));
+        return ResponseEntity.ok(usersService.updateUser(user));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        if (!userService.getUserById(id).isPresent()) {
+        if (!usersService.getUserById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        userService.deleteUser(id);
+        usersService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }

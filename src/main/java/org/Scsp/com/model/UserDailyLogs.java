@@ -44,7 +44,7 @@ public class UserDailyLogs {
     private String notes;
 
     @ManyToOne
-    @JoinColumn(name = "quit_plan_id")
+    @JoinColumn(name = "PlanID", nullable = false)
     @JsonBackReference
-    private QuitPlan quitPlan;
+    private QuitPlans quitPlans;
 }
