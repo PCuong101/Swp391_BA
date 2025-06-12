@@ -1,7 +1,7 @@
 package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.Scsp.com.model.Users;
+import org.Scsp.com.model.User;
 import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.UsersService;
 import org.springframework.stereotype.Service;
@@ -16,23 +16,23 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    public Users saveUser(Users users) {
-        return userRepository.save(users);
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override
-    public Optional<Users> getUserById(Long id) {
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
     @Override
-    public List<Users> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public Users updateUser(Users users) {
-        return userRepository.save(users);
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 
     @Override

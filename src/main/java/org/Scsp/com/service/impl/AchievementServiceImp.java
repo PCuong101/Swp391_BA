@@ -1,12 +1,11 @@
 package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.Scsp.com.Enum.CustomLogicKey;
 import org.Scsp.com.dto.AchievementDTO;
 import org.Scsp.com.model.Achievement;
 import org.Scsp.com.model.AchievementTemplate;
-import org.Scsp.com.model.QuitPlans;
+import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.repository.AchievementRepository;
 import org.Scsp.com.repository.AchievementTempRepository;
 import org.Scsp.com.repository.QuitPlanRepository;
@@ -40,7 +39,7 @@ public class AchievementServiceImp implements AchievementService {
     @Override
     public List<AchievementDTO> getUserAchievements(Long userId) {
         checkAndUpdateAchievements(userId);
-        List<Achievement> achievements = achievementRepository.findByUser_UserId(userId);
+        List<Achievement> achievements = achievementRepository.findByUser_UserID(userId);
         return achievements.stream()
                 .map(this::toDto)
                 .toList();
@@ -48,18 +47,17 @@ public class AchievementServiceImp implements AchievementService {
 
     @Override
     public void checkAndUpdateAchievements(Long userId) {
-        QuitPlans plan = quitPlanRepository.findLatestByUser_UserId(userId)
+        QuitPlan plan = quitPlanRepository.findLatestByUser_UserID(userId)
                 .orElseThrow(() -> new RuntimeException("No quit plan found"));
 
         List<AchievementTemplate> templates = achievementTempRepository.findAll();
 
-        List<Achievement> existingAchievements  = achievementRepository.findByUser_UserId(userId);
+        List<Achievement> existingAchievements  = achievementRepository.findByUser_UserID(userId);
         List<CustomLogicKey> existingKeys  = existingAchievements .stream()
-                .map(a -> a.getAchievementTemplate().getCustomLogicKey())
-                .toList();
+                .map(a -> CustomLogicKey.valueOf(a.getAchievementTemplate().getCustomLogicKey())).toList();
         List<Achievement> newAchievements = new ArrayList<>();
         for (AchievementTemplate template : templates) {
-            CustomLogicKey customLogicKey = template.getCustomLogicKey();
+            CustomLogicKey customLogicKey = CustomLogicKey.valueOf(template.getCustomLogicKey());
             if (existingKeys.contains(customLogicKey)) {
                 continue; // Achievement already exists
             }
@@ -76,7 +74,7 @@ public class AchievementServiceImp implements AchievementService {
         }
     }
 
-    private boolean shouldUnlock(CustomLogicKey key, QuitPlans plan) {
+    private boolean shouldUnlock(CustomLogicKey key, QuitPlan plan) {
         LocalDate now = LocalDate.now();
         long daysSinceStart = ChronoUnit.DAYS.between(plan.getStartDate().toLocalDate(), now);
 

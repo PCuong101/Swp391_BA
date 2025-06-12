@@ -2,8 +2,8 @@ package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.UserDailyLogsDto;
-import org.Scsp.com.model.QuitPlans;
-import org.Scsp.com.model.UserDailyLogs;
+import org.Scsp.com.model.QuitPlan;
+import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UserDailyLogsRepository;
 import org.Scsp.com.service.UserDailyLogsService;
@@ -19,22 +19,22 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
     @Override
     public UserDailyLogsDto createUserDailyLog(UserDailyLogsDto newLogDto) {
 
-        QuitPlans quitPlans = quitPlanRepository.findById(newLogDto.getQuitPlanId())
+        QuitPlan quitPlan = quitPlanRepository.findById(newLogDto.getQuitPlanId())
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + newLogDto.getQuitPlanId()));
 
-        UserDailyLogs userDailyLogs = UserDailyLogs.builder()
+        UserDailyLog userDailyLog = UserDailyLog.builder()
                 .logDate(newLogDto.getLogDate())
                 .smokedToday(newLogDto.isSmokedToday())
-                .quitPlans(quitPlans)
+                .quitPlan(quitPlan)
                 .cigarettesSmoked(newLogDto.getCigarettesSmoked())
                 .notes(newLogDto.getNote())
                 .build();
-        userDailyLogs =userDailyLogsRepository.save(userDailyLogs);
+        userDailyLog =userDailyLogsRepository.save(userDailyLog);
         return UserDailyLogsDto.builder()
-                .smokedToday(userDailyLogs.getSmokedToday())
-                .cigarettesSmoked(userDailyLogs.getCigarettesSmoked())
-                .note(userDailyLogs.getNotes())
-                .logDate(userDailyLogs.getLogDate())
+                .smokedToday(userDailyLog.getSmokedToday())
+                .cigarettesSmoked(userDailyLog.getCigarettesSmoked())
+                .note(userDailyLog.getNotes())
+                .logDate(userDailyLog.getLogDate())
                 .build();
     }
 }

@@ -1,11 +1,12 @@
 
 package org.Scsp.com.repository;
 
-import org.Scsp.com.model.UserDailyLogs;
+import org.Scsp.com.model.UserDailyLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 
-public interface UserDailyLogsRepository extends JpaRepository<UserDailyLogs, Long> {
-    UserDailyLogs findByQuitPlans_PlanIdAndLogDate(Long quitPlanPlanId, LocalDateTime logDate);
+
+public interface UserDailyLogsRepository extends JpaRepository<UserDailyLog, Long> {
+    UserDailyLog findByQuitPlan_PlanIDAndLogDate(Long planID, LocalDateTime logDate);
 }

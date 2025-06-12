@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.Scsp.com.Enum.Role;
 import org.Scsp.com.dto.SurveyRegisterDTO;
-import org.Scsp.com.model.Users;
+import org.Scsp.com.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +43,7 @@ public class SurveyRegisterController {
         } else {
             mark += 0;
         }
-        Users user = new Users();
+        User user = new User();
         user.setEmail(surveyRegisterDTO.getEmail());
         user.setName(surveyRegisterDTO.getUsername());
         user.setPassword(surveyRegisterDTO.getPassword());
@@ -56,7 +56,7 @@ public class SurveyRegisterController {
         } else {
             user.setAddictionLevel("None");
         }
-        user.setRole(Role.valueOf("MEMBER"));
+        user.setRole(Role.valueOf("MEMBER").name());
         userController.createUser(user);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);

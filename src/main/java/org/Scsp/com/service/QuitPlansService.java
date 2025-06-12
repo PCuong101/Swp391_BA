@@ -2,14 +2,14 @@
 package org.Scsp.com.service;
 
 import org.Scsp.com.dto.QuitPlanDto;
-import org.Scsp.com.model.QuitPlans;
+import org.Scsp.com.model.QuitPlan;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public interface QuitPlansService {
-    List<QuitPlans> findAll();
-    QuitPlans findById(Long id);
-    QuitPlans createPlane(QuitPlanDto quitPlanDto);
+    List<QuitPlan> findAll();
+    QuitPlan findById(Long id);
+    QuitPlan createPlane(QuitPlanDto quitPlanDto);
     void deleteById(Long id);
 }

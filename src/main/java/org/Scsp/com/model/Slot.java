@@ -6,18 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "AchievementTemplates")
+@Table(name = "Slot")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AchievementTemplate {
+public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long templateID;
+    private Long slotID;
 
-    private String title;
-    private String description;
-    private String category;
-    private String customLogicKey;
-    private Boolean visible = true;
+    private java.time.LocalTime startTime;
+    private java.time.LocalTime endTime;
+    private String label;
 }

@@ -2,8 +2,8 @@ package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
-import org.Scsp.com.model.QuitPlans;
-import org.Scsp.com.model.Users;
+import org.Scsp.com.model.QuitPlan;
+import org.Scsp.com.model.User;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.HealthMilestoneService;
@@ -23,35 +23,35 @@ public class QuitPlansServiceImpl implements QuitPlansService {
 
 
     @Override
-    public List<QuitPlans> findAll() {
+    public List<QuitPlan> findAll() {
         return List.of();
     }
 
     @Override
-    public QuitPlans findById(Long id) {
+    public QuitPlan findById(Long id) {
         return quitPlanRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Quit plan not found with id: " + id)
         );
     }
 
     @Override
-    public QuitPlans createPlane(QuitPlanDto quitPlanDto) {
-        Users user = usersRepository.findById(quitPlanDto.getUserId()).orElseThrow(
+    public QuitPlan createPlane(QuitPlanDto quitPlanDto) {
+        User user = usersRepository.findById(quitPlanDto.getUserId()).orElseThrow(
                 () -> new RuntimeException("User not found with id: " + quitPlanDto.getUserId())
         );
-        QuitPlans quitPlans = new QuitPlans();
-        quitPlans.setUser(user);
-        quitPlans.setReason(quitPlanDto.getReason());
-        quitPlans.setStartDate(quitPlanDto.getStartDate());
-        quitPlans.setExpectedQuitDate(quitPlanDto.getExpectedQuitDate());
-        quitPlans.setPersonalizedNotes(quitPlanDto.getPersonalizedNotes());
-        quitPlans.setCigarettesPerDay(quitPlanDto.getCigarettesPerDay());
-        quitPlans.setSmokingFrequency(quitPlanDto.getSmokingFrequency());
-        quitPlans.setAverageCost(quitPlanDto.getAverageCost());
-        quitPlans.setStartedSmokingAt(quitPlanDto.getStartedSmokingAt());
+        QuitPlan quitPlan = new QuitPlan();
+        quitPlan.setUser(user);
+        quitPlan.setReason(quitPlanDto.getReason());
+        quitPlan.setStartDate(quitPlanDto.getStartDate());
+        quitPlan.setExpectedQuitDate(quitPlanDto.getExpectedQuitDate());
+        quitPlan.setPersonalizedNotes(quitPlanDto.getPersonalizedNotes());
+        quitPlan.setCigarettesPerDay(quitPlanDto.getCigarettesPerDay());
+        quitPlan.setSmokingFrequency(quitPlanDto.getSmokingFrequency());
+        quitPlan.setAverageCost(quitPlanDto.getAverageCost());
+        quitPlan.setStartedSmokingAt(quitPlanDto.getStartedSmokingAt());
 
 
-        QuitPlans savedPlan = quitPlanRepository.save(quitPlans);
+        QuitPlan savedPlan = quitPlanRepository.save(quitPlan);
         healthMilestoneService.createHealthMilestones(savedPlan);
 
         return savedPlan;

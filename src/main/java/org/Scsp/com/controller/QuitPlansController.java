@@ -2,7 +2,7 @@ package org.Scsp.com.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
-import org.Scsp.com.model.QuitPlans;
+import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.service.QuitPlansService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +15,17 @@ public class QuitPlansController {
     private final QuitPlansService quitPlansService;
 
     @PostMapping
-    public ResponseEntity<QuitPlans> createQuitPlan(
+    public ResponseEntity<QuitPlan> createQuitPlan(
             @RequestBody QuitPlanDto quitPlanDto
     ) {
         return ResponseEntity.ok( quitPlansService.createPlane(quitPlanDto));
     }
     @GetMapping("/{id}")
-    public ResponseEntity<QuitPlans> getQuitPlanById(@PathVariable Long id) {
-        QuitPlans quitPlans = quitPlansService.findById(id);
-        if (quitPlans == null) {
+    public ResponseEntity<QuitPlan> getQuitPlanById(@PathVariable Long id) {
+        QuitPlan quitPlan = quitPlansService.findById(id);
+        if (quitPlan == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(quitPlans);
+        return ResponseEntity.ok(quitPlan);
     }
 }

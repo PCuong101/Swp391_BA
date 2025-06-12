@@ -6,18 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "AchievementTemplates")
+@Table(name = "TaskTemplates")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AchievementTemplate {
+public class TaskTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateID;
 
     private String title;
     private String description;
-    private String category;
-    private String customLogicKey;
-    private Boolean visible = true;
+    private Integer suggestedDay;
+    private String addictionLevel;
 }

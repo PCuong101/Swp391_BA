@@ -2,9 +2,7 @@ package org.Scsp.com.model;
 
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -14,27 +12,23 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Achievement {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AchievementID")
-    private Long achievementId;
+    private Long achievementID;
 
     @ManyToOne
-    @JoinColumn(name = "UserID", nullable = false)
-    private Users user;
+    @JoinColumn(name = "userID")
+    private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TemplateID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "templateID")
     private AchievementTemplate achievementTemplate;
 
-    @Column(name = "DateAchieved")
-    private LocalDateTime dateAchieved;
-
-    @Column(name = "Shared")
+    private LocalDateTime dateAchieved = LocalDateTime.now();
     private Boolean shared = false;
-
-    @Column(name = "CreatedAt")
-    private Date createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
+

@@ -12,45 +12,28 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Data
-@Builder
-@AllArgsConstructor
 @Table(name = "ProgressTracking")
-@NoArgsConstructor
 public class ProgressTracking {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ProgressID")
-    private int progressId;
+    private Long progressID;
 
     @ManyToOne
-    @JoinColumn(name = "PlanID", nullable = false)
-    private QuitPlans quitPlans;
+    @JoinColumn(name = "planID", nullable = false)
+    private QuitPlan plan;
 
-    @Column(name = "DaysSmokeFree")
-    private int daysSmokeFree;
+    private Integer daysSmokeFree;
 
-    @Column(name = "MoneySaved", precision = 10, scale = 2)
+    @Column(precision = 10, scale = 2)
     private BigDecimal moneySaved;
 
-    @Column(name = "PulseRate")
-    private int pulseRate;
+    private Integer pulseRate;
+    private Integer oxygenLevel;
+    private Integer tasteAndSmell;
+    private Integer nicotineFromBody;
+    private Integer breathing;
 
-    @Column(name = "OxygenLevel")
-    private int oxygenLevel;
+    private LocalDateTime dateUpdated = LocalDateTime.now();
 
-    @Column(name = "TasteAndSmell")
-    private int tasteAndSmell;
-
-    @Column(name = "NicotineFromBody")
-    private int nicotineFromBody;
-
-    @Column(name = "Breathing")
-    private int breathing;
-
-    @Column(name = "DateUpdated")
-    private Date dateUpdated;
-
-
+    // getters/setters
 }
