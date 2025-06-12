@@ -52,7 +52,6 @@ public class QuitPlan {
     private LocalDateTime startedSmokingAt;
 
 
-    private BigDecimal moneySaved = BigDecimal.ZERO;
 
     @Column(name = "PersonalizedNotes", columnDefinition = "NVARCHAR(MAX)")
     private String personalizedNotes;
@@ -72,10 +71,6 @@ public class QuitPlan {
     @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<UserDailyLogs> userDailyLogs = new ArrayList<>();
-
-    @Column(name = "is_active")
-    private Boolean isActive = true;
-
 
 
 }

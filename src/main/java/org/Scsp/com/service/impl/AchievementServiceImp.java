@@ -85,10 +85,10 @@ public class AchievementServiceImp implements AchievementService {
             case FIRST_DAY -> daysSinceStart >= 1;
             case DAYS_QUIT_SMOKING_14 -> daysSinceStart >= 14;
             case DAYS_QUIT_SMOKING_30 -> daysSinceStart >= 30;
-            case MONEY_SAVED_100K -> plan.getMoneySaved().compareTo(new BigDecimal("100000")) >= 0;
-            case MONEY_SAVED_500K -> plan.getMoneySaved().compareTo(new BigDecimal("500000")) >= 0;
-            case MONEY_SAVED_1M -> plan.getMoneySaved().compareTo(new BigDecimal("1000000")) >= 0;
-            case MONEY_SAVED_5M -> plan.getMoneySaved().compareTo(new BigDecimal("5000000")) >= 0;
+//            case MONEY_SAVED_100K -> plan.getMoneySaved().compareTo(new BigDecimal("100000")) >= 0;
+//            case MONEY_SAVED_500K -> plan.getMoneySaved().compareTo(new BigDecimal("500000")) >= 0;
+//            case MONEY_SAVED_1M -> plan.getMoneySaved().compareTo(new BigDecimal("1000000")) >= 0;
+//            case MONEY_SAVED_5M -> plan.getMoneySaved().compareTo(new BigDecimal("5000000")) >= 0;
 
 //            case STREAK_NO_SMOKE_1:
 //                return checkStreakNoSmoke(plan.getPlanId(), 1);
