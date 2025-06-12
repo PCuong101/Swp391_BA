@@ -2,6 +2,7 @@ package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.Scsp.com.Enum.Role;
+import org.Scsp.com.dto.LoginRequest;
 import org.Scsp.com.dto.UsersRegisterDto;
 import org.Scsp.com.model.Users;
 import org.Scsp.com.repository.UsersRepository;
@@ -31,10 +32,10 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Users loginUser(String email, String password) {
-        Users user = userRepository.findByEmail(email)
+    public Users loginUser(LoginRequest loginRequest) {
+        Users user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if (user.getPassword().equals(password)) {
+        if (user.getPassword().equals(loginRequest.getPassword())) {
             return user;
         }
         return null;

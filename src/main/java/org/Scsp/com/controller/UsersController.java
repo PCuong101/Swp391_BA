@@ -3,6 +3,7 @@ package org.Scsp.com.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.Scsp.com.dto.LoginRequest;
 import org.Scsp.com.dto.UsersRegisterDto;
 import org.Scsp.com.model.Users;
 import org.Scsp.com.service.UsersService;
@@ -27,11 +28,10 @@ public class UsersController {
 
     @PostMapping("/login")
     public ResponseEntity<Users> login(
-            @RequestBody String email,
-            @RequestBody String password,
+            @RequestBody LoginRequest loginRequest,
             HttpServletRequest request
     ) {
-        Users user = usersService.loginUser(email, password);
+        Users user = usersService.loginUser(loginRequest);
         if(user != null) {
             request.getSession().setAttribute("user", user);
         }
