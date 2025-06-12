@@ -6,7 +6,6 @@ import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.UserDailyLogs;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UserDailyLogsRepository;
-import org.Scsp.com.service.HealthMilestoneService;
 import org.Scsp.com.service.UserDailyLogsService;
 import org.springframework.stereotype.Service;
 

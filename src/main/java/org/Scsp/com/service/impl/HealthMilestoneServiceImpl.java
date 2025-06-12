@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.Scsp.com.data.MilestoneTemplateProvider;
 import org.Scsp.com.dto.MilestoneProgressDTO;
-import org.Scsp.com.dto.UserDailyLogsDto;
 import org.Scsp.com.model.HealthMilestone;
 import org.Scsp.com.model.MilestoneTemplate;
 import org.Scsp.com.model.QuitPlan;
@@ -16,7 +15,6 @@ import org.Scsp.com.service.HealthMilestoneService;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,16 +58,16 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + planId));
 
         LocalDateTime now = LocalDateTime.now();
-        List<HealthMilestone> healthMilestones= healthMilestoneRepository.findByQuitPlan(quitPlan);
+        List<HealthMilestone> healthMilestones = healthMilestoneRepository.findByQuitPlan(quitPlan);
 
         // Lấy log ngày hôm nay nếu có
         UserDailyLogs todayLog = userDailyLogsRepository.findByQuitPlan_PlanIdAndLogDate(planId, now);
         boolean smokedToday = todayLog != null && Boolean.TRUE.equals(todayLog.getSmokedToday());
 
-        List<MilestoneProgressDTO> result  = new ArrayList<>();
+        List<MilestoneProgressDTO> result = new ArrayList<>();
 
         for (HealthMilestone milestone : healthMilestones) {
-            int percent  = calculateMilestoneProgress(milestone);
+            int percent = calculateMilestoneProgress(milestone);
 
             boolean achieved = milestone.isAchieved();
 
@@ -84,10 +82,10 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
                     //Tính thời gian cần để phục hồi milestone:
                     long totalMinutes = Duration.between(quitPlan.getStartDate(), milestone.getExpectedDate()).toMinutes();
-                    long lostMinutes = totalMinutes *deduction / 100;
+                    long lostMinutes = totalMinutes * deduction / 100;
 
                     // Thời gian bắt đầu tính hồi phục
-                    LocalDateTime recoveryTime  = todayLog.getLogDate();
+                    LocalDateTime recoveryTime = todayLog.getLogDate();
 
                     // Tính thời gian đã trôi qua kể từ khi bắt đầu hồi phục
                     Duration elapsedRecovery = Duration.between(recoveryTime, now);
@@ -96,7 +94,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
                     timeLeft = "Time remaining: " + formatDurationReadable(Duration.ofMinutes(remainingMinutes));
                 } else {
-                    timeLeft = "";
+                    timeLeft = "Done";
                 }
             } else {
                 Duration remaining = Duration.between(now, milestone.getExpectedDate());
@@ -166,7 +164,6 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
         return (int) Math.min((elapsedMinutes * 100) / totalMinutes, 100);
     }
-    public void updateHealthMilestone(HealthMilestone milestone) {
 
-    }
+
 }

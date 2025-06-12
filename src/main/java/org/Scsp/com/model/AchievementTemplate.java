@@ -17,19 +17,24 @@ public class AchievementTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long templateId;
+    @Column(name = "TemplateID")
+    private Integer templateId;
 
-    @Column(columnDefinition = "NVARCHAR(100)")
+    @Column(name = "Title", nullable = false, columnDefinition = "NVARCHAR(255)")
     private String title;
 
-    @Column(columnDefinition = "NVARCHAR(255)")
+    @Column(name = "Description", columnDefinition = "NVARCHAR(MAX)")
     private String description;
+
+    @Column(name = "Category", columnDefinition = "NVARCHAR(100)")
     private String category;
 
+    @Column(name = "CustomLogicKey", columnDefinition = "NVARCHAR(100)")
     @Enumerated(EnumType.STRING)
     private CustomLogicKey customLogicKey;
 
-    private boolean visible = true;
+    @Column(name = "Visible")
+    private Boolean visible = true;
 
     @OneToMany(mappedBy = "template")
     private List<Achievement> achievements;

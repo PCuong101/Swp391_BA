@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @Builder
@@ -17,13 +20,36 @@ public class ProgressTracking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "ProgressID")
+    private Integer progressId;
 
     @ManyToOne
-    @JoinColumn(name = "quit_plan_id")
+    @JoinColumn(name = "PlanID", nullable = false)
     private QuitPlan quitPlan;
 
+    @Column(name = "DaysSmokeFree")
+    private Integer daysSmokeFree;
+
+    @Column(name = "MoneySaved", precision = 10, scale = 2)
+    private BigDecimal moneySaved;
+
+    @Column(name = "PulseRate")
+    private Integer pulseRate;
+
+    @Column(name = "OxygenLevel")
+    private Integer oxygenLevel;
+
+    @Column(name = "TasteAndSmell")
+    private Integer tasteAndSmell;
+
+    @Column(name = "NicotineFromBody")
+    private Integer nicotineFromBody;
+
+    @Column(name = "Breathing")
+    private Integer breathing;
+
+    @Column(name = "DateUpdated")
+    private LocalDateTime dateUpdated;
 
 
-    // other fields, getters and setters
 }

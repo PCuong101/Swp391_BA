@@ -19,22 +19,28 @@ public class UserDailyLogs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "LogID")
+    private Long logId;
 
+    @Column(name = "LogDate")
     private LocalDateTime logDate;
 
+    @Column(name = "SmokedToday", nullable = false)
     private Boolean smokedToday;
 
+    @Column(name = "CigarettesSmoked")
     private Integer cigarettesSmoked;
 
+    @Column(name = "CravingLevel")
     private Integer cravingLevel;
 
+    @Column(name = "StressLevel")
     private Integer stressLevel;
 
-    @Column(columnDefinition = "NVARCHAR(255)")
+    @Column(name = "Mood", columnDefinition = "NVARCHAR(50)")
     private String mood;
 
-    @Column(columnDefinition = "NVARCHAR(255)")
+    @Column(name = "Notes", columnDefinition = "NVARCHAR(MAX)")
     private String notes;
 
     @ManyToOne

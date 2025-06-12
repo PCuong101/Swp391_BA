@@ -1,13 +1,6 @@
 package org.Scsp.com.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,18 +17,24 @@ public class Achievement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "AchievementID")
     private Long achievementId;
 
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "UserID", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "templateId")
+    @JoinColumn(name = "TemplateID", nullable = false)
     private AchievementTemplate template;
 
+    @Column(name = "DateAchieved")
     private LocalDateTime dateAchieved;
-    private boolean shared;
+
+    @Column(name = "Shared")
+    private Boolean shared = false;
+
+    @Column(name = "CreatedAt")
     private LocalDateTime createdAt;
 }
