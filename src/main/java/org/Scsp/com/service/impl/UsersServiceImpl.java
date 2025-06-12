@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.Scsp.com.Enum.Role;
 import org.Scsp.com.dto.LoginRequest;
 import org.Scsp.com.dto.UsersRegisterDto;
-import org.Scsp.com.model.Users;
+import org.Scsp.com.model.User;
 import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.UsersService;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,11 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    public Users registerUser(UsersRegisterDto usersRegisterDto) {
-    Users existingUser = userRepository.findByEmail(usersRegisterDto.getEmail())
+    public User registerUser(UsersRegisterDto usersRegisterDto) {
+    User existingUser = userRepository.findByEmail(usersRegisterDto.getEmail())
             .orElse(null);
     if (existingUser == null) {
-        Users newUser = new Users();
+        User newUser = new User();
         newUser.setEmail(usersRegisterDto.getEmail());
         newUser.setPassword(usersRegisterDto.getPassword());
         return userRepository.save(newUser);
@@ -32,8 +32,8 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Users loginUser(LoginRequest loginRequest) {
-        Users user = userRepository.findByEmail(loginRequest.getEmail())
+    public User loginUser(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if (user.getPassword().equals(loginRequest.getPassword())) {
             return user;
@@ -42,7 +42,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Users saveUser(Users users) {
+    public User saveUser(User users) {
         return userRepository.save(users);
     }
 
