@@ -21,10 +21,10 @@ public class HealthMilestone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100)
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String name;
 
-    @Column(length = 100)
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String description;
 
     private LocalDateTime expectedDate;

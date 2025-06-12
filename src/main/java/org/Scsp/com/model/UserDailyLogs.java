@@ -31,8 +31,10 @@ public class UserDailyLogs {
 
     private Integer stressLevel;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String mood;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String notes;
 
     @ManyToOne

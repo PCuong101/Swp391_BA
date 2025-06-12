@@ -15,7 +15,7 @@ public class QuitPlanController {
 
     private final QuitPlanService quitPlanService;
 
-    @PostMapping("/{userId}")
+    @PostMapping
     public ResponseEntity<QuitPlan> createQuitPlan(
             @RequestBody QuitPlanDto quitPlanDto
     ) {

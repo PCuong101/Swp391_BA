@@ -27,6 +27,7 @@ public class QuitPlan {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String reason;
 
     private LocalDateTime startDate;
@@ -37,6 +38,7 @@ public class QuitPlan {
     private Double averageCost;
     private LocalDateTime startedSmokingAt;
 
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String personalizedNotes;
 
     private LocalDateTime createdAt = LocalDateTime.now();
