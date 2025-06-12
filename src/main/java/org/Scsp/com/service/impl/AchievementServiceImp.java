@@ -34,7 +34,7 @@ public class AchievementServiceImp implements AchievementService {
                 .name(a.getTemplate().getTitle())
                 .description(a.getTemplate().getDescription())
                 .achievedAt(a.getDateAchieved())
-                .shared(a.isShared())
+                .shared(a.getShared())
                 .build();
     }
 

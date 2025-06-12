@@ -46,6 +46,8 @@ public class QuitPlan {
 
     @Column(name = "AverageCost", precision = 10, scale = 2)
     private BigDecimal averageCost;
+
+
     @Column(name = "StartedSmokingAt")
     private LocalDateTime startedSmokingAt;
 
