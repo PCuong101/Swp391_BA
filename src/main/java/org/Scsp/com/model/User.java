@@ -29,11 +29,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-<<<<<<< HEAD
-    @Column(nullable = false)
-=======
     @Column(nullable = false, length = 50)
->>>>>>> d957ce4eeb8b53320dcaf329a9b0ddbb027ae784
     private Role role;
 
     private LocalDateTime registrationDate = LocalDateTime.now();
