@@ -2,7 +2,9 @@ package org.Scsp.com.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.Scsp.com.dto.LoginRequest;
 import org.Scsp.com.model.User;
 import org.Scsp.com.service.UsersService;
 import org.springframework.http.ResponseEntity;
