@@ -4,14 +4,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.Scsp.com.Enum.Role;
 import org.Scsp.com.dto.SurveyRegisterDTO;
-import org.Scsp.com.model.User;
+import org.Scsp.com.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/survey-register")
 @RestController
-@CrossOrigin(origins = "*")
 public class SurveyRegisterController {
 
     @Autowired
@@ -44,7 +43,7 @@ public class SurveyRegisterController {
         } else {
             mark += 0;
         }
-        User user = new User();
+        Users user = new Users();
         user.setEmail(surveyRegisterDTO.getEmail());
         user.setName(surveyRegisterDTO.getUsername());
         user.setPassword(surveyRegisterDTO.getPassword());
@@ -57,7 +56,7 @@ public class SurveyRegisterController {
         } else {
             user.setAddictionLevel("None");
         }
-        user.setRole(Role.valueOf("MEMBER").name());
+        user.setRole(Role.valueOf("MEMBER"));
         userController.createUser(user);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
