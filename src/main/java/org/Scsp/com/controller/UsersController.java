@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.LoginRequest;
 import org.Scsp.com.model.User;
 import org.Scsp.com.service.UsersService;
+import org.springframework.data.repository.Repository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,4 +56,5 @@ public class UsersController {
         usersService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
 }

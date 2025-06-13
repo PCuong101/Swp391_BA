@@ -24,8 +24,11 @@ public class UsersServiceImpl implements UsersService {
             .orElse(null);
     if (existingUser == null) {
         User newUser = new User();
+        newUser.setName(usersRegisterDto.getName());
         newUser.setEmail(usersRegisterDto.getEmail());
         newUser.setPassword(usersRegisterDto.getPassword());
+        newUser.setRole(Role.MEMBER);
+        newUser.setAddictionLevel(usersRegisterDto.getAddictionLevel());
         return userRepository.save(newUser);
     }
         return null;

@@ -2,9 +2,7 @@ package org.Scsp.com.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,7 +13,8 @@ import java.util.List;
 @Table(name = "QuitPlans")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class QuitPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,12 +37,13 @@ public class QuitPlan {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     private Integer cigarettesPerDay;
-    private String smokingFrequency;
+    private Integer smokingFrequency;
+    private Integer yearsSmoking;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal averageCost;
 
-    private LocalDateTime startedSmokingAt;
+    private String startedSmokingAt;
     private LocalDateTime lastUpdated = LocalDateTime.now();
 
     @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)

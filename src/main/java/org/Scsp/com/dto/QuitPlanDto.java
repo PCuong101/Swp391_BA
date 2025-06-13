@@ -26,11 +26,13 @@ public class QuitPlanDto {
 
     private Integer cigarettesPerDay;
 
-    private String smokingFrequency;
+    private Integer smokingFrequency;
 
     private BigDecimal averageCost;
 
-    private LocalDateTime startedSmokingAt;
+    private Integer yearsSmoking;
+
+    private String startedSmokingAt;
 
 
 }

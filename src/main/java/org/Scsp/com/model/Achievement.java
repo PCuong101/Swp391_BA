@@ -9,11 +9,10 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Achievements")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Achievement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
