@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/survey-register")
 @RestController
-@CrossOrigin(origins = "*")
 public class SurveyRegisterController {
 
     @Autowired
@@ -61,6 +60,6 @@ public class SurveyRegisterController {
         userController.createUser(user);
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
-        return ResponseEntity.ok("Survey Register Data");
+        return ResponseEntity.ok(user);
     }
 }

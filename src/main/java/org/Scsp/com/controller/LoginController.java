@@ -3,6 +3,7 @@ package org.Scsp.com.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
+import org.Scsp.com.dto.LoginRequest;
 import org.Scsp.com.model.User;
 import org.Scsp.com.service.UsersService;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> checkLogin(@RequestBody User user, HttpServletRequest request) {
+    public ResponseEntity<User> checkLogin(@RequestBody LoginRequest user, HttpServletRequest request) {
         if(user.getEmail() == null || user.getPassword() == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -38,7 +39,7 @@ public class LoginController {
         System.out.println(loggedInUser);
         if (loggedInUser != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+            session.setAttribute("user", loggedInUser);
             return ResponseEntity.ok(loggedInUser);
         } else {
             return ResponseEntity.status(401).build();
