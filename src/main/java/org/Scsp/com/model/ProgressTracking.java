@@ -13,6 +13,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ProgressTracking")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProgressTracking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +38,5 @@ public class ProgressTracking {
 
     private LocalDateTime dateUpdated = LocalDateTime.now();
 
-    // getters/setters
+
 }

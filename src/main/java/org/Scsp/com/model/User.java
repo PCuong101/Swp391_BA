@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.Scsp.com.Enum.Role;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,7 +29,7 @@ public class User {
     private String password;
 
     @Column(nullable = false, length = 50)
-    private String role;
+    private Role role;
 
     private LocalDateTime registrationDate = LocalDateTime.now();
 
@@ -40,5 +41,4 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<QuitPlan> quitPlans;
 
-    // getters/setters
 }
