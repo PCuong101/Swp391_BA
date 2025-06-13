@@ -19,6 +19,9 @@ public class AchievementTemplate {
     private String title;
     private String description;
     private String category;
+
+    @Enumerated(EnumType.STRING)
     private CustomLogicKey customLogicKey;
+
     private Boolean visible = true;
 }

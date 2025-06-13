@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+
 @Entity
 @Table(name = "Slot")
 @Data
@@ -15,7 +17,7 @@ public class Slot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long slotID;
 
-    private java.time.LocalTime startTime;
-    private java.time.LocalTime endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String label;
 }
