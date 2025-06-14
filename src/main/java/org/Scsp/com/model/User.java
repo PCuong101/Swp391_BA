@@ -39,8 +39,8 @@ public class User {
     private String addictionLevel = "Medium";
 
     // Relationships
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<QuitPlan> quitPlans;
+    private QuitPlan quitPlans;
 
 }

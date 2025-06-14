@@ -15,9 +15,8 @@ import java.time.LocalDateTime;
 public class UserDailyLogsDto {
     private Long userId;
 
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate logDate = LocalDate.now();
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime logDate = LocalDateTime.now();
 
 
     private String smokedToday;

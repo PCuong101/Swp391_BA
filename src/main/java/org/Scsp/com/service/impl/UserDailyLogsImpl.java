@@ -27,7 +27,7 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with userId: " + newLogDto.getUserId()));
 
         UserDailyLog userDailyLog = UserDailyLog.builder()
-                .logDate(newLogDto.getLogDate().atStartOfDay())
+                .logDate(newLogDto.getLogDate())
                 .mood(newLogDto.getMood())
                 .cravingLevel(newLogDto.getCravingLevel())
                 .smokedToday(Boolean.parseBoolean(newLogDto.getSmokedToday()))
@@ -42,7 +42,7 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
                 .smokedToday(String.valueOf(userDailyLog.getSmokedToday()))
                 .cigarettesSmoked(userDailyLog.getCigarettesSmoked())
                 .notes(userDailyLog.getNotes())
-                .logDate(userDailyLog.getLogDate().toLocalDate())
+                .logDate(userDailyLog.getLogDate())
                 .build();
     }
 

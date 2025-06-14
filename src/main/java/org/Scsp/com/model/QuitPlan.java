@@ -20,7 +20,7 @@ public class QuitPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long planID;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "userID", nullable = false)
     private User user;
 
