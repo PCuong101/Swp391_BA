@@ -7,6 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    boolean existsByCoachUserIDAndSlotSlotIDAndDate(Long coachId, Long slotId, LocalDate date);
-    List<Schedule> findByCoachUserIDAndDateAndIsAvailableTrue(Long coachId, LocalDate date);
+    boolean existsByCoachUserIdAndSlotSlotIDAndDate(Long coachId, Long slotId, LocalDate date);
+    List<Schedule> findByCoachUserIdAndDateAndIsAvailableTrue(Long coachId, LocalDate date);
 }

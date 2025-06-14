@@ -32,8 +32,8 @@ public class DailyScheduleGenerator {
             LocalDate targetDate = today.plusDays(i);
             for (User coach : coaches) {
                 for (Slot slot : slots) {
-                    boolean exists = scheduleRepo.existsByCoachUserIDAndSlotSlotIDAndDate(
-                            coach.getUserID(), slot.getSlotID(), targetDate);
+                    boolean exists = scheduleRepo.existsByCoachUserIdAndSlotSlotIDAndDate(
+                            coach.getUserId(), slot.getSlotID(), targetDate);
 
                     if (!exists) {
                         Schedule schedule = new Schedule();
