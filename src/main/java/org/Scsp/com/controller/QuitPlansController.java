@@ -7,6 +7,8 @@ import org.Scsp.com.service.QuitPlansService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequiredArgsConstructor // Use @RequiredArgsConstructor for final fields
 @RequestMapping("/api/quit-plan")
@@ -27,5 +29,13 @@ public class QuitPlansController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(quitPlan);
+    }
+    @GetMapping("{userId}/savings")
+    public ResponseEntity<BigDecimal> getSavingsByUserId(@PathVariable Long userId) {
+        BigDecimal savings = quitPlansService.getSavingsByUserId(userId);
+        if (savings == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(savings);
     }
 }

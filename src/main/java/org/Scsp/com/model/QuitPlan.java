@@ -50,6 +50,9 @@ public class QuitPlan {
     @JsonManagedReference
     private List<HealthMilestone> milestones = new ArrayList<>();
     // getters/setters
+
+    @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserDailyLog> userDailyLogs = new ArrayList<>();
 }
 
 
