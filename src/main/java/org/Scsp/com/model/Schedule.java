@@ -1,6 +1,5 @@
 package org.Scsp.com.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +21,7 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(name = "CoachID", nullable = false)
-    @JsonIgnoreProperties({"schedules", "bookings", "quitPlans", "password", "email"}) // Ẩn các trường không cần thiết
+    @JsonIgnoreProperties({"schedules", "bookings", "quitPlans", "password", "email"})
     private User coach;
 
     @ManyToOne
@@ -30,7 +29,7 @@ public class Schedule {
     private Slot slot;
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL)
-    @JsonIgnore // Tránh lặp lại Booking → Schedule → Booking...
+    @JsonIgnoreProperties("schedule") // tránh booking → schedule → booking...
     private List<Booking> bookings;
 
     private LocalDate date;
