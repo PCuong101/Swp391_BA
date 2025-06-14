@@ -83,7 +83,7 @@ public class SurveyRegisterController {
                 quitPlan.setSmokingFrequency(surveyRegisterDTO.getCigarettesPerDay());
                 quitPlan.setStartDate(surveyRegisterDTO.getDateStart().atStartOfDay());
                 quitPlan.setStartedSmokingAt(surveyRegisterDTO.getFirstSmokeTime());
-                quitPlan.setUserId(registeredUser.getUserID());
+                quitPlan.setUserId(registeredUser.getUserId());
                 quitPlansController.createQuitPlan(quitPlan);
                 User userLoggedIn = usersRepository.findByEmail(user.getEmail()).orElse(null);
                 HttpSession session = request.getSession();

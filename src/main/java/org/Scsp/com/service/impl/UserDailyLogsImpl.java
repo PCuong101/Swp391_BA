@@ -23,31 +23,32 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
     @Override
     public UserDailyLogsDto createUserDailyLog(@RequestBody UserDailyLogsDto newLogDto) {
 
-        QuitPlan quitPlan = quitPlanRepository.findByUser_UserID(newLogDto.getUserId())
+        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(newLogDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with userId: " + newLogDto.getUserId()));
 
         UserDailyLog userDailyLog = UserDailyLog.builder()
-                .logDate(newLogDto.getLogDate())
+                .logDate(newLogDto.getLogDate().atStartOfDay())
                 .mood(newLogDto.getMood())
                 .cravingLevel(newLogDto.getCravingLevel())
-                .smokedToday(newLogDto.getSmokedToday())
+                .smokedToday(Boolean.parseBoolean(newLogDto.getSmokedToday()))
                 .cigarettesSmoked(newLogDto.getCigarettesSmoked())
                 .spentMoneyOnCigarettes(newLogDto.getSpentMoneyOnCigarettes())
                 .notes("")
                 .stressLevel(newLogDto.getStressLevel())
+                .quitPlan(quitPlan)
                 .build();
         userDailyLog = userDailyLogsRepository.save(userDailyLog);
         return UserDailyLogsDto.builder()
-                .smokedToday(userDailyLog.getSmokedToday())
+                .smokedToday(String.valueOf(userDailyLog.getSmokedToday()))
                 .cigarettesSmoked(userDailyLog.getCigarettesSmoked())
                 .notes(userDailyLog.getNotes())
-                .logDate(userDailyLog.getLogDate())
+                .logDate(userDailyLog.getLogDate().toLocalDate())
                 .build();
     }
 
     @Override
     public Long getPlanIdByUserId(Long userId) {
-        QuitPlan quitPlan = quitPlanRepository.findByUser_UserID(userId)
+        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         return quitPlan.getPlanID();
     }

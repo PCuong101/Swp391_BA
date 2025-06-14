@@ -19,7 +19,7 @@ public class Achievement {
     private Long achievementID;
 
     @ManyToOne
-    @JoinColumn(name = "userID")
+    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne

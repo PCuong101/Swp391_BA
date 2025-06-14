@@ -40,7 +40,7 @@ public class AchievementServiceImp implements AchievementService {
     @Override
     public List<AchievementDTO> getUserAchievements(Long userId) {
         checkAndUpdateAchievements(userId);
-        List<Achievement> achievements = achievementRepository.findByUser_UserID(userId);
+        List<Achievement> achievements = achievementRepository.findByUser_UserId(userId);
         return achievements.stream()
                 .map(this::toDto)
                 .toList();
@@ -48,12 +48,12 @@ public class AchievementServiceImp implements AchievementService {
 
     @Override
     public void checkAndUpdateAchievements(Long userId) {
-        QuitPlan plan = quitPlanRepository.findLatestByUser_UserID(userId)
+        QuitPlan plan = quitPlanRepository.findLatestByUser_UserId(userId)
                 .orElseThrow(() -> new RuntimeException("No quit plan found"));
 
         List<AchievementTemplate> templates = achievementTempRepository.findAll();
 
-        List<Achievement> existingAchievements = achievementRepository.findByUser_UserID(userId);
+        List<Achievement> existingAchievements = achievementRepository.findByUser_UserId(userId);
         List<CustomLogicKey> existingKeys = existingAchievements.stream().map(
                 achievement -> achievement.getAchievementTemplate().getCustomLogicKey()
         ).toList();

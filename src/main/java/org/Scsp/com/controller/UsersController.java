@@ -44,7 +44,7 @@ public class UsersController {
         if (!usersService.getUserById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        user.setUserID(id);
+        user.setUserId(id);
         return ResponseEntity.ok(usersService.updateUser(user));
     }
 

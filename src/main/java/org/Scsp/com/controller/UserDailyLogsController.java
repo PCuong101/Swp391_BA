@@ -19,6 +19,7 @@ public class UserDailyLogsController {
     @PostMapping("/create-daily-logs")
     public ResponseEntity<UserDailyLogsDto> createUserDailyLog(@RequestBody UserDailyLogsDto userDailyLogsDto) {
         UserDailyLogsDto savedLog = userDailyLogsService.createUserDailyLog(userDailyLogsDto);
+        System.out.println("Saved User Daily Log: " + savedLog);
         return ResponseEntity.ok(savedLog);
     }
 

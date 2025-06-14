@@ -2,6 +2,7 @@
 package org.Scsp.com.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,7 @@ public class UserDailyLog {
     private Long logID;
 
     @ManyToOne
-    @JoinColumn(name = "planID")
+    @JsonIgnore
     private QuitPlan quitPlan;
 
     private LocalDateTime logDate = LocalDateTime.now();

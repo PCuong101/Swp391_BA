@@ -7,5 +7,5 @@ import java.util.List;
 
 // src/main/java/org/Scsp/com/repository/AchievementRepository.java
 public interface AchievementRepository extends JpaRepository<Achievement, Long> {
-    List<Achievement> findByUser_UserID(Long userID);
+    List<Achievement> findByUser_UserId(Long userId);
 }
