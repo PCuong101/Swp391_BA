@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Slot")
 @Data
@@ -18,4 +20,5 @@ public class Slot {
     private java.time.LocalTime startTime;
     private java.time.LocalTime endTime;
     private String label;
+    @OneToMany(mappedBy = "slot") private List<Schedule> schedules;
 }

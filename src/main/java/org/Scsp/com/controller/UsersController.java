@@ -2,9 +2,7 @@ package org.Scsp.com.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.Scsp.com.dto.LoginRequest;
 import org.Scsp.com.model.User;
 import org.Scsp.com.service.UsersService;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +28,7 @@ public class UsersController {
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> user = usersService.getUserById(id);
         return user.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                   .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping

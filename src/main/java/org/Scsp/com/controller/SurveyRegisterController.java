@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/survey-register")
 @RestController
-@CrossOrigin(origins = "*")
 public class SurveyRegisterController {
 
     @Autowired

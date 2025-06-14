@@ -40,5 +40,7 @@ public class User {
     // Relationships
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<QuitPlan> quitPlans;
-
+    @OneToMany(mappedBy = "coach") private List<Schedule> schedules;
+    @OneToMany(mappedBy = "user") private List<Booking> bookings;
+    // getters/setters
 }

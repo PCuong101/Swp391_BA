@@ -12,7 +12,6 @@ import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UserDailyLogsRepository;
 import org.Scsp.com.service.AchievementService;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -53,13 +52,12 @@ public class AchievementServiceImp implements AchievementService {
 
         List<AchievementTemplate> templates = achievementTempRepository.findAll();
 
-        List<Achievement> existingAchievements = achievementRepository.findByUser_UserID(userId);
-        List<CustomLogicKey> existingKeys = existingAchievements.stream().map(
-                achievement -> achievement.getAchievementTemplate().getCustomLogicKey()
-        ).toList();
+        List<Achievement> existingAchievements  = achievementRepository.findByUser_UserID(userId);
+        List<CustomLogicKey> existingKeys  = existingAchievements .stream()
+                .map(a -> CustomLogicKey.valueOf(a.getAchievementTemplate().getCustomLogicKey())).toList();
         List<Achievement> newAchievements = new ArrayList<>();
         for (AchievementTemplate template : templates) {
-            CustomLogicKey customLogicKey = template.getCustomLogicKey();
+            CustomLogicKey customLogicKey = CustomLogicKey.valueOf(template.getCustomLogicKey());
             if (existingKeys.contains(customLogicKey)) {
                 continue; // Achievement already exists
             }
