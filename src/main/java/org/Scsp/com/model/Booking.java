@@ -3,7 +3,6 @@ package org.Scsp.com.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.Scsp.com.Enum.BookingStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,10 +32,8 @@ public class Booking {
     @Column(name = "BookingDate")
     private LocalDate bookingDate = LocalDate.now();
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "Status")
-    private BookingStatus status = BookingStatus.EMPTY;
-
+    private String status = "Booked";
 
     @Column(name = "Notes")
     private String notes;
@@ -49,5 +46,7 @@ public class Booking {
         if (createdAt == null) createdAt = LocalDateTime.now();
     }
 
-
+    // Nếu cần tránh vòng lặp JSON, bạn có thể:
+    // @JsonIgnore
+    // private Schedule schedule;
 }
