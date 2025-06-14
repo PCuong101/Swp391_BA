@@ -1,9 +1,8 @@
 package org.Scsp.com.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.Scsp.com.Enum.Role;
 
 import java.time.LocalDateTime;
@@ -13,11 +12,12 @@ import java.util.List;
 @Table(name = "Users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userID;
+    private Long userId;
 
     @Column(nullable = false, length = 100)
     private String name;
@@ -28,6 +28,7 @@ public class User {
     @Column(nullable = false, length = 255)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
     private Role role;
 
@@ -37,10 +38,14 @@ public class User {
 
     private String addictionLevel = "Medium";
 
-    // Relationships
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<QuitPlan> quitPlans;
     @OneToMany(mappedBy = "coach") private List<Schedule> schedules;
     @OneToMany(mappedBy = "user") private List<Booking> bookings;
     // getters/setters
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private QuitPlan quitPlans;
+
 }

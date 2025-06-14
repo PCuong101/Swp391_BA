@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
+import java.time.LocalTime;
+
 
 @Entity
 @Table(name = "Slot")
@@ -17,8 +18,8 @@ public class Slot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long slotID;
 
-    private java.time.LocalTime startTime;
-    private java.time.LocalTime endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private String label;
     @OneToMany(mappedBy = "slot") private List<Schedule> schedules;
 }

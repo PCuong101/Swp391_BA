@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public interface UsersService {
     User registerUser(UsersRegisterDto usersRegisterDto);
-    User loginUser(LoginRequest loginRequest);
+    User loginUser(LoginRequest userLogin);
     User saveUser(User users);
     Optional<User> getUserById(Long id);
     List<User> getAllUsers();
