@@ -3,6 +3,7 @@ package org.Scsp.com.controller;
 import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
+import org.Scsp.com.repository.ScheduleRepository;
 import org.Scsp.com.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,6 +19,8 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private ScheduleRepository scheduleRepo;
 
     // 🔹 Lấy danh sách lịch còn trống theo coachId và ngày
     @GetMapping("/available")
@@ -27,11 +30,31 @@ public class BookingController {
         return bookingService.getAvailableSchedules(coachId, date);
     }
 
+    @PutMapping("/cancel")
+    public String cancelSchedule(
+            @RequestParam Long coachId,
+            @RequestParam Long scheduleId) {
+
+        Schedule schedule = scheduleRepo.findById(scheduleId).orElseThrow(() -> new RuntimeException("Schedule not found"));
+
+        if (!schedule.getCoach().getUserId().equals(coachId)) {
+            return "⛔ Bạn không có quyền hủy lịch này!";
+        }
+
+        schedule.setAvailable(false); // Đánh dấu không còn khả dụng
+        scheduleRepo.save(schedule);
+        return "✅ Lịch đã được hủy thành công.";
+    }
+
     // 🔹 Đặt lịch mới
     @PostMapping("/create")
     public Booking createBooking(
             @RequestParam Long userId,
             @RequestParam Long scheduleId) {
         return bookingService.createBooking(userId, scheduleId);
+    }
+    @PutMapping("/{id}/finish")
+    public Booking finishBooking(@PathVariable Long id) {
+        return bookingService.finishBooking(id);
     }
 }
