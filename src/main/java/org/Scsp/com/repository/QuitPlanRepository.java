@@ -6,7 +6,6 @@ import java.util.Optional;
 
 
 public interface QuitPlanRepository extends JpaRepository<QuitPlan, Long> {
-    Optional<QuitPlan> findLatestByUser_UserId(Long userUserID);
 
     Optional<QuitPlan> findByUser_UserId(Long userId);
 }

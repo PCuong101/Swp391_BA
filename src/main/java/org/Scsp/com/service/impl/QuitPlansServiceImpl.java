@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
+import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.HealthMilestoneService;
 import org.Scsp.com.service.QuitPlansService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -63,5 +65,30 @@ public class QuitPlansServiceImpl implements QuitPlansService {
     @Override
     public void deleteById(Long id) {
 
+    }
+
+    @Override
+    public BigDecimal getSavingsByUserId(Long userId) {
+        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new RuntimeException("No quit plan found for user with id: " + userId));
+        BigDecimal averageCostPerCigarettes = quitPlan.getAverageCost();
+        int cigarettesPerDay = quitPlan.getCigarettesPerDay();
+        BigDecimal savings = averageCostPerCigarettes.multiply(BigDecimal.valueOf(cigarettesPerDay));
+        BigDecimal totalSpent = calculateTotalSpentOnCigarettes(quitPlan);
+
+        return savings.subtract(totalSpent);
+    }
+
+    public BigDecimal calculateTotalSpentOnCigarettes(QuitPlan quitPlan) {
+        return quitPlan.getUserDailyLogs().stream()
+                .filter(dailyLog -> Boolean.TRUE.equals(dailyLog.getSmokedToday()))
+                .map(dailyLog -> {
+                    Integer price = dailyLog.getSpentMoneyOnCigarettes();
+                    Integer count = dailyLog.getCigarettesSmoked();
+                    return (price != null && count != null)
+                            ? BigDecimal.valueOf(price).multiply(BigDecimal.valueOf(count))
+                            : BigDecimal.ZERO;
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

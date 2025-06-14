@@ -22,6 +22,7 @@ public class UserDailyLog {
 
     @ManyToOne
     @JsonIgnore
+    @JoinColumn(name = "planID", nullable = false)
     private QuitPlan quitPlan;
 
     private LocalDateTime logDate = LocalDateTime.now();
