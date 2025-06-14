@@ -51,8 +51,7 @@ public class QuitPlan {
     private List<HealthMilestone> milestones = new ArrayList<>();
     // getters/setters
 
-    @OneToMany
-    @JoinColumn(name = "planID", nullable = false)
+    @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserDailyLog> userDailyLogs = new ArrayList<>();
 }
 
