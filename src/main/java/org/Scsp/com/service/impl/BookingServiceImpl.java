@@ -50,6 +50,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setSchedule(schedule);
+        booking.setMeetingLink("https://meet.google.com/abc-defg-hij");
         booking.setStatus(BookingStatus.BOOKED);
         return bookingRepo.save(booking);
     }
