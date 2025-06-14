@@ -1,5 +1,6 @@
 package org.Scsp.com.controller;
 
+import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
 import org.Scsp.com.service.BookingService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "*") // Cho phép frontend React truy cập nếu khác domain
+ // Cho phép frontend React truy cập nếu khác domain
 public class BookingController {
 
     @Autowired
@@ -20,7 +21,7 @@ public class BookingController {
 
     // 🔹 Lấy danh sách lịch còn trống theo coachId và ngày
     @GetMapping("/available")
-    public List<Schedule> getAvailableSchedules(
+    public List<ScheduleDTO> getAvailableSchedules(
             @RequestParam Long coachId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return bookingService.getAvailableSchedules(coachId, date);

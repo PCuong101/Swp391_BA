@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -38,14 +39,16 @@ public class User {
 
     private String addictionLevel = "Medium";
 
+    // Tránh đệ quy khi serialize JSON
+    @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Schedule> schedules;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<QuitPlan> quitPlans;
-    @OneToMany(mappedBy = "coach") private List<Schedule> schedules;
-    @OneToMany(mappedBy = "user") private List<Booking> bookings;
-    // getters/setters
+    @JsonIgnore
+    private List<Booking> bookings;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private QuitPlan quitPlans;
-
 }

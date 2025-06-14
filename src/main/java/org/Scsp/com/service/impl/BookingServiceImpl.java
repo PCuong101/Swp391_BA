@@ -1,5 +1,6 @@
 package org.Scsp.com.service.impl;
 
+import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
 import org.Scsp.com.model.User;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -21,9 +23,17 @@ public class BookingServiceImpl implements BookingService {
     @Autowired private UsersRepository userRepo;
 
     @Override
-    public List<Schedule> getAvailableSchedules(Long coachId, LocalDate date) {
-        return scheduleRepo.findByCoachUserIDAndDateAndIsAvailableTrue(coachId, date);
+    public List<ScheduleDTO> getAvailableSchedules(Long coachId, LocalDate date) {
+        List<Schedule> schedules = scheduleRepo.findByCoachUserIdAndDateAndIsAvailableTrue(coachId, date);
+        return schedules.stream().map(s -> new ScheduleDTO(
+                s.getSchedulesID(),
+                s.getCoach().getName(),
+                s.getSlot().getLabel(),
+                s.getDate(),
+                s.isAvailable()
+        )).collect(Collectors.toList());
     }
+
 
     @Override
     public Booking createBooking(Long userId, Long scheduleId) {

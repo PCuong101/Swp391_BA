@@ -58,7 +58,7 @@ public class AchievementServiceImp implements AchievementService {
         ).toList();
         List<Achievement> newAchievements = new ArrayList<>();
         for (AchievementTemplate template : templates) {
-            CustomLogicKey customLogicKey = CustomLogicKey.valueOf(template.getCustomLogicKey());
+            CustomLogicKey customLogicKey = template.getCustomLogicKey();
             if (existingKeys.contains(customLogicKey)) {
                 continue; // Achievement already exists
             }
