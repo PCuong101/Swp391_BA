@@ -104,7 +104,6 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
             MilestoneProgressDTO progressDTO = MilestoneProgressDTO.builder()
                     .name(milestone.getName())
-                    .expectedDate(milestone.getExpectedDate())
                     .progressPercent(percent)
                     .achieved(achieved)
                     .timeRemaining(timeLeft)

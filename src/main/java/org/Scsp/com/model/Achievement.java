@@ -9,18 +9,17 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Achievements")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Achievement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long achievementID;
 
     @ManyToOne
-    @JoinColumn(name = "userID")
+    @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne

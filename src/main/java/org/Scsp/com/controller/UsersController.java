@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.Scsp.com.model.User;
 import org.Scsp.com.service.UsersService;
+import org.springframework.data.repository.Repository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class UsersController {
         if (!usersService.getUserById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        user.setUserID(id);
+        user.setUserId(id);
         return ResponseEntity.ok(usersService.updateUser(user));
     }
 
@@ -53,4 +54,5 @@ public class UsersController {
         usersService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
 }

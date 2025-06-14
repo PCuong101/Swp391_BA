@@ -24,16 +24,19 @@ public class UsersServiceImpl implements UsersService {
             .orElse(null);
     if (existingUser == null) {
         User newUser = new User();
+        newUser.setName(usersRegisterDto.getName());
         newUser.setEmail(usersRegisterDto.getEmail());
         newUser.setPassword(usersRegisterDto.getPassword());
+        newUser.setRole(Role.MEMBER);
+        newUser.setAddictionLevel(usersRegisterDto.getAddictionLevel());
         return userRepository.save(newUser);
     }
         return null;
     }
 
     @Override
-    public User loginUser(LoginRequest loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getEmail())
+    public User loginUser(LoginRequest userLogin) {
+        User user = userRepository.findByEmail(userLogin.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if (user.getPassword().equals(loginRequest.getPassword())) {
             return user;

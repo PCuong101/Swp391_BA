@@ -35,7 +35,7 @@ public class QuitPlansServiceImpl implements QuitPlansService {
     }
 
     @Override
-    public QuitPlan createPlane(QuitPlanDto quitPlanDto) {
+    public QuitPlan createPlan(QuitPlanDto quitPlanDto) {
         User user = usersRepository.findById(quitPlanDto.getUserId()).orElseThrow(
                 () -> new RuntimeException("User not found with id: " + quitPlanDto.getUserId())
         );
@@ -48,7 +48,7 @@ public class QuitPlansServiceImpl implements QuitPlansService {
         quitPlan.setCigarettesPerDay(quitPlanDto.getCigarettesPerDay());
         quitPlan.setSmokingFrequency(quitPlanDto.getSmokingFrequency());
         quitPlan.setAverageCost(quitPlanDto.getAverageCost());
-        quitPlan.setStartedSmokingAt(quitPlanDto.getStartedSmokingAt());
+        quitPlan.setYearsSmoking(quitPlan.getYearsSmoking());
 
 
         QuitPlan savedPlan = quitPlanRepository.save(quitPlan);

@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MilestoneProgressDTO {
     String name;
-    LocalDateTime expectedDate;
     String timeRemaining;
     int progressPercent;
     boolean achieved;

@@ -2,16 +2,16 @@
 package org.Scsp.com.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "UserDailyLogs")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -21,7 +21,7 @@ public class UserDailyLog {
     private Long logID;
 
     @ManyToOne
-    @JoinColumn(name = "planID")
+    @JsonIgnore
     private QuitPlan quitPlan;
 
     private LocalDateTime logDate = LocalDateTime.now();
@@ -31,4 +31,5 @@ public class UserDailyLog {
     private String mood;
     private Integer stressLevel;
     private String notes;
+    private Integer spentMoneyOnCigarettes;
 }

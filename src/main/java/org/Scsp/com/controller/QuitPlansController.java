@@ -18,7 +18,7 @@ public class QuitPlansController {
     public ResponseEntity<QuitPlan> createQuitPlan(
             @RequestBody QuitPlanDto quitPlanDto
     ) {
-        return ResponseEntity.ok( quitPlansService.createPlane(quitPlanDto));
+        return ResponseEntity.ok( quitPlansService.createPlan(quitPlanDto));
     }
     @GetMapping("/{id}")
     public ResponseEntity<QuitPlan> getQuitPlanById(@PathVariable Long id) {
