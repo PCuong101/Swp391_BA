@@ -36,5 +36,5 @@ public class ProgressTracking {
 
     private LocalDateTime dateUpdated = LocalDateTime.now();
 
-
+    // getters/setters
 }

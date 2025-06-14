@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.util.List;
 import java.time.LocalTime;
+
 
 @Entity
 @Table(name = "Slot")
@@ -20,4 +21,5 @@ public class Slot {
     private LocalTime startTime;
     private LocalTime endTime;
     private String label;
+    @OneToMany(mappedBy = "slot") private List<Schedule> schedules;
 }
