@@ -50,6 +50,10 @@ public class QuitPlan {
     @JsonManagedReference
     private List<HealthMilestone> milestones = new ArrayList<>();
     // getters/setters
+
+    @OneToMany
+    @JoinColumn(name = "planID", nullable = false)
+    private List<UserDailyLog> userDailyLogs = new ArrayList<>();
 }
 
 

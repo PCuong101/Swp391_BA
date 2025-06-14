@@ -18,7 +18,6 @@ public class UserDailyLogsDto {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime logDate = LocalDateTime.now();
 
-
     private String smokedToday;
     private Integer cigarettesSmoked;
     private Integer cravingLevel;

@@ -48,7 +48,7 @@ public class AchievementServiceImp implements AchievementService {
 
     @Override
     public void checkAndUpdateAchievements(Long userId) {
-        QuitPlan plan = quitPlanRepository.findLatestByUser_UserId(userId)
+        QuitPlan plan = quitPlanRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new RuntimeException("No quit plan found"));
 
         List<AchievementTemplate> templates = achievementTempRepository.findAll();
