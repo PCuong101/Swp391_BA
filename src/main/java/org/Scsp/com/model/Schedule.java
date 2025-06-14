@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "Schedules")
@@ -16,14 +17,14 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long schedulesID;
 
-    @ManyToOne
-    @JoinColumn(name = "coachID")
+    @ManyToOne @JoinColumn(name = "CoachID", nullable = false)
     private User coach;
 
-    @ManyToOne
-    @JoinColumn(name = "slotID")
+    @ManyToOne @JoinColumn(name = "SlotID", nullable = false)
     private Slot slot;
 
+    @OneToMany(mappedBy = "schedule") private List<Booking> bookings;
+
     private LocalDate date;
-    private Integer isAvailable;
+    private boolean isAvailable;
 }

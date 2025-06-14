@@ -38,7 +38,12 @@ public class User {
 
     private String addictionLevel = "Medium";
 
-    // Relationships
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<QuitPlan> quitPlans;
+    @OneToMany(mappedBy = "coach") private List<Schedule> schedules;
+    @OneToMany(mappedBy = "user") private List<Booking> bookings;
+    // getters/setters
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private QuitPlan quitPlans;
