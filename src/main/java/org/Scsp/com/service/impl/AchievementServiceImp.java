@@ -11,7 +11,9 @@ import org.Scsp.com.repository.AchievementTempRepository;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UserDailyLogsRepository;
 import org.Scsp.com.service.AchievementService;
+import org.Scsp.com.service.QuitPlansService;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -23,12 +25,14 @@ import java.util.List;
 public class AchievementServiceImp implements AchievementService {
 
     private final AchievementRepository achievementRepository;
-    private final UserDailyLogsRepository userDailyLogsRepository;
     private final QuitPlanRepository quitPlanRepository;
+    private final QuitPlansService quitPlansService;
     private final AchievementTempRepository achievementTempRepository;
+    private final UserDailyLogsRepository userDailyLogsRepository;
 
     private AchievementDTO toDto(Achievement a) {
         return AchievementDTO.builder()
+                .id(a.getAchievementID())
                 .name(a.getAchievementTemplate().getTitle())
                 .description(a.getAchievementTemplate().getDescription())
                 .achievedAt(a.getDateAchieved())
@@ -79,49 +83,31 @@ public class AchievementServiceImp implements AchievementService {
         LocalDate now = LocalDate.now();
         long daysSinceStart = ChronoUnit.DAYS.between(plan.getStartDate().toLocalDate(), now);
 
+        BigDecimal moneySaved = quitPlansService.getSavingsByUserId(plan.getUser().getUserId());
+
         return switch (key) {
             case FIRST_DAY -> daysSinceStart >= 1;
             case DAYS_QUIT_SMOKING_14 -> daysSinceStart >= 14;
             case DAYS_QUIT_SMOKING_30 -> daysSinceStart >= 30;
-//            case MONEY_SAVED_100K -> plan.getMoneySaved().compareTo(new BigDecimal("100000")) >= 0;
-//            case MONEY_SAVED_500K -> plan.getMoneySaved().compareTo(new BigDecimal("500000")) >= 0;
-//            case MONEY_SAVED_1M -> plan.getMoneySaved().compareTo(new BigDecimal("1000000")) >= 0;
-//            case MONEY_SAVED_5M -> plan.getMoneySaved().compareTo(new BigDecimal("5000000")) >= 0;
-
-//            case STREAK_NO_SMOKE_1:
-//                return checkStreakNoSmoke(plan.getPlanId(), 1);
-//
-//            case STREAK_NO_SMOKE_7:
-//                return checkStreakNoSmoke(plan.getPlanId(), 7);
-//
-//            case STREAK_NO_SMOKE_30:
-//                return checkStreakNoSmoke(plan.getPlanId(), 30);
-//
-//            case NO_RELAPSE_14_DAYS:
-//                return checkNoRelapseDays(plan.getPlanId(), 14);
-
+            case MONEY_SAVED_100K -> moneySaved.compareTo(new BigDecimal("100000")) >= 0;
+            case MONEY_SAVED_500K -> moneySaved.compareTo(new BigDecimal("500000")) >= 0;
+            case MONEY_SAVED_1M -> moneySaved.compareTo(new BigDecimal("1000000")) >= 0;
+            case MONEY_SAVED_5M ->moneySaved.compareTo(new BigDecimal("5000000")) >= 0;
+            case STREAK_NO_SMOKE_1 -> checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(1), LocalDateTime.now());
+            case STREAK_NO_SMOKE_7 -> checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(7), LocalDateTime.now());
+            case STREAK_NO_SMOKE_30 -> checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(30), LocalDateTime.now());
             default -> false;
         };
     }
-//    private boolean checkStreakNoSmoke(Long planId, int days) {
-//        List<Boolean> recent = dailyLogsRepository
-//                .findRecentLogs(planId, days)
-//                .stream()
-//                .map(log -> Boolean.FALSE.equals(log.getSmokedToday()))
-//                .collect(Collectors.toList());
-//
-//        return recent.size() == days && recent.stream().allMatch(Boolean::booleanValue);
-//    }
-//
-//    private boolean checkNoRelapseDays(Long planId, int days) {
-//        List<Boolean> recent = dailyLogsRepository
-//                .findRecentLogs(planId, days)
-//                .stream()
-//                .map(log -> Boolean.FALSE.equals(log.getSmokedToday()))
-//                .collect(Collectors.toList());
-//
-//        return recent.size() == days && recent.stream().noneMatch(smoked -> smoked == false);
-//    }
+
+    private boolean checkStreakNoSmoke(Long planId, LocalDateTime startDays, LocalDateTime endDays) {
+        List<Boolean> recent = userDailyLogsRepository
+                .findRecentLogs(planId, startDays,endDays)
+                .stream()
+                .map(log -> Boolean.FALSE.equals(log.getSmokedToday()))
+                .toList();
+        return recent.stream().allMatch(Boolean::booleanValue);
+    }
 
 
 }

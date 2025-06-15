@@ -9,8 +9,7 @@ import java.util.List;
 @Service
 public interface UserDailyLogsService {
     UserDailyLogsDto createUserDailyLog(UserDailyLogsDto newLogDto);
-
     Long getPlanIdByUserId(Long userId);
-
     List<UserDailyLog> getUserDailyLogs(Long planId);
+    void deleteUserDailyLog(Long logId);
 }

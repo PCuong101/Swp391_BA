@@ -15,7 +15,6 @@ public class AchievementTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateID;
-
     private String title;
     private String description;
     private String category;

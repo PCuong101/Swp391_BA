@@ -12,5 +12,4 @@ public enum CustomLogicKey {
     STREAK_NO_SMOKE_7,     // Không hút liên tục 7 ngày
     STREAK_NO_SMOKE_30,    // Không hút liên tục 30 ngày
     FIRST_DAY,             // Thành tựu ngày đầu tiên
-    NO_RELAPSE_14_DAYS     // Không tái nghiện 14 ngày
 }
