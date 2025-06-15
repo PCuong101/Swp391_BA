@@ -35,7 +35,7 @@ public class Booking {
     @Column(name = "Status")
     private String status = "Booked";
 
-    @Column(name = "Notes")
+    @Column(name = "Notes",columnDefinition = "NVARCHAR(200)")
     private String notes;
 
     @Column(name = "CreatedAt")

@@ -24,7 +24,7 @@ public class MemberPlanSubscription {
 
     private String status = "Pending";
 
-    @Lob
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String notes;
 
     private LocalDateTime createdAt = LocalDateTime.now();

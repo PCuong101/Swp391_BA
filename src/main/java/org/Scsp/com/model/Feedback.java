@@ -21,6 +21,7 @@ public class Feedback {
     private User user;
 
     private Integer rating;
+    @Column(columnDefinition = "NVARCHAR(200)")
     private String comments;
     private LocalDateTime createdAt = LocalDateTime.now();
 }
