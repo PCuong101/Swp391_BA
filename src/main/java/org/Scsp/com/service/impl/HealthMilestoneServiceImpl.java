@@ -57,20 +57,28 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         QuitPlan quitPlan = quitPlanRepository.findById(planId)
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + planId));
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
         List<HealthMilestone> healthMilestones = healthMilestoneRepository.findByQuitPlan(quitPlan);
 
+        LocalDateTime now = LocalDateTime.now();
+
         // Lấy log ngày hôm nay nếu có
-        UserDailyLog todayLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDate(planId, now);
+        UserDailyLog todayLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDateBetween(planId, startOfDay, endOfDay);
         boolean smokedToday = todayLog != null && Boolean.TRUE.equals(todayLog.getSmokedToday());
 
         List<MilestoneProgressDTO> result = new ArrayList<>();
 
         for (HealthMilestone milestone : healthMilestones) {
-            int percent = calculateMilestoneProgress(milestone);
-
             boolean achieved = milestone.isAchieved();
+            LocalDateTime expectedDate = milestone.getExpectedDate();
 
+            if (!achieved && (expectedDate.isBefore(now) || expectedDate.isEqual(now))) {
+                milestone.setAchieved(true);
+                achieved = true;
+            }
+
+            int percent = calculateMilestoneProgress(milestone);
             String timeLeft;
 
             if (achieved) {
@@ -110,6 +118,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
                     .build();
             result.add(progressDTO);
         }
+        healthMilestoneRepository.saveAll(healthMilestones); // Cập nhật trạng thái đã đạ
 
         return result;
     }
