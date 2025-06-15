@@ -17,13 +17,13 @@ public class MemberPlan {
     @Column(nullable = false, length = 100)
     private String planName;
 
-    @Lob
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String description;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Lob
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String features;
 
     private LocalDateTime createdAt = LocalDateTime.now();

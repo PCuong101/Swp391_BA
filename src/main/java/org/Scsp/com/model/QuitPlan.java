@@ -24,13 +24,13 @@ public class QuitPlan {
     @JoinColumn(name = "userID", nullable = false)
     private User user;
 
-    @Lob
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String reason;
 
     private LocalDateTime startDate;
     private LocalDateTime expectedQuitDate;
 
-    @Lob
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String personalizedNotes;
 
     private LocalDateTime createdAt = LocalDateTime.now();
