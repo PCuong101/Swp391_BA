@@ -82,22 +82,49 @@ public class AchievementServiceImp implements AchievementService {
     private boolean shouldUnlock(CustomLogicKey key, QuitPlan plan) {
         LocalDate now = LocalDate.now();
         long daysSinceStart = ChronoUnit.DAYS.between(plan.getStartDate().toLocalDate(), now);
-
         BigDecimal moneySaved = quitPlansService.getSavingsByUserId(plan.getUser().getUserId());
+        if (key == CustomLogicKey.FIRST_DAY) {
+            return daysSinceStart >= 1;
 
-        return switch (key) {
-            case FIRST_DAY -> daysSinceStart >= 1;
-            case DAYS_QUIT_SMOKING_14 -> daysSinceStart >= 14;
-            case DAYS_QUIT_SMOKING_30 -> daysSinceStart >= 30;
-            case MONEY_SAVED_100K -> moneySaved.compareTo(new BigDecimal("100000")) >= 0;
-            case MONEY_SAVED_500K -> moneySaved.compareTo(new BigDecimal("500000")) >= 0;
-            case MONEY_SAVED_1M -> moneySaved.compareTo(new BigDecimal("1000000")) >= 0;
-            case MONEY_SAVED_5M ->moneySaved.compareTo(new BigDecimal("5000000")) >= 0;
-            case STREAK_NO_SMOKE_1 -> checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(1), LocalDateTime.now());
-            case STREAK_NO_SMOKE_7 -> checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(7), LocalDateTime.now());
-            case STREAK_NO_SMOKE_30 -> checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(30), LocalDateTime.now());
-            default -> false;
-        };
+        } else if (key == CustomLogicKey.DAYS_QUIT_SMOKING_14) {
+            return daysSinceStart >= 14;
+
+        } else if (key == CustomLogicKey.DAYS_QUIT_SMOKING_30) {
+            return daysSinceStart >= 30;
+
+        } else if (key == CustomLogicKey.MONEY_SAVED_100K) {
+            return moneySaved.compareTo(new BigDecimal("100000")) >= 0;
+
+        } else if (key == CustomLogicKey.MONEY_SAVED_500K) {
+            return moneySaved.compareTo(new BigDecimal("500000")) >= 0;
+
+        } else if (key == CustomLogicKey.MONEY_SAVED_1M) {
+            return moneySaved.compareTo(new BigDecimal("1000000")) >= 0;
+
+        } else if (key == CustomLogicKey.MONEY_SAVED_5M) {
+            return moneySaved.compareTo(new BigDecimal("5000000")) >= 0;
+
+        } else if (key == CustomLogicKey.STREAK_NO_SMOKE_1) {
+            if (daysSinceStart >= 1) {
+                return checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(1), LocalDateTime.now());
+            }
+            return false;
+
+        } else if (key == CustomLogicKey.STREAK_NO_SMOKE_7) {
+            if (daysSinceStart >= 7) {
+                return checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(7), LocalDateTime.now());
+            }
+            return false;
+
+        } else if (key == CustomLogicKey.STREAK_NO_SMOKE_30) {
+            if (daysSinceStart >= 30) {
+                return checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(30), LocalDateTime.now());
+            }
+            return false;
+
+        } else {
+            return false;
+        }
     }
 
     private boolean checkStreakNoSmoke(Long planId, LocalDateTime startDays, LocalDateTime endDays) {
@@ -106,7 +133,7 @@ public class AchievementServiceImp implements AchievementService {
                 .stream()
                 .map(log -> Boolean.FALSE.equals(log.getSmokedToday()))
                 .toList();
-        return recent.stream().allMatch(Boolean::booleanValue);
+        return !recent.isEmpty() && recent.stream().allMatch(Boolean::booleanValue);
     }
 
 
