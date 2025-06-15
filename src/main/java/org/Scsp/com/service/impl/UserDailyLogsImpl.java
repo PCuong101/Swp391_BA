@@ -20,6 +20,15 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
     private final UserDailyLogsRepository userDailyLogsRepository;
     private final QuitPlanRepository quitPlanRepository;
 
+    public static UserDailyLogsDto toDto(UserDailyLog userDailyLog) {
+        return UserDailyLogsDto.builder()
+                .smokedToday(String.valueOf(userDailyLog.getSmokedToday()))
+                .cigarettesSmoked(userDailyLog.getCigarettesSmoked())
+                .notes(userDailyLog.getNotes())
+                .logDate(userDailyLog.getLogDate())
+                .build();
+    }
+
     @Override
     public UserDailyLogsDto createUserDailyLog(@RequestBody UserDailyLogsDto newLogDto) {
         QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(newLogDto.getUserId())
@@ -45,12 +54,7 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
                 .quitPlan(quitPlan)
                 .build();
         userDailyLog = userDailyLogsRepository.save(userDailyLog);
-        return UserDailyLogsDto.builder()
-                .smokedToday(String.valueOf(userDailyLog.getSmokedToday()))
-                .cigarettesSmoked(userDailyLog.getCigarettesSmoked())
-                .notes(userDailyLog.getNotes())
-                .logDate(userDailyLog.getLogDate())
-                .build();
+        return toDto(userDailyLog);
     }
 
     @Override
@@ -69,6 +73,21 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
     @Override
     public void deleteUserDailyLog(Long logId) {
         userDailyLogsRepository.deleteById(logId);
+    }
+
+    @Override
+    public UserDailyLogsDto updateUserDailyLog(Long logId, UserDailyLogsDto userDailyLogsDto) {
+        UserDailyLog userDailyLog = userDailyLogsRepository.findById(logId)
+                .orElseThrow(() -> new RuntimeException("User daily log not found with id: " + logId));
+        userDailyLog.setMood(userDailyLogsDto.getMood());
+        userDailyLog.setCravingLevel(userDailyLogsDto.getCravingLevel());
+        userDailyLog.setSmokedToday(Boolean.parseBoolean(userDailyLogsDto.getSmokedToday()));
+        userDailyLog.setCigarettesSmoked(userDailyLogsDto.getCigarettesSmoked());
+        userDailyLog.setSpentMoneyOnCigarettes(userDailyLogsDto.getSpentMoneyOnCigarettes());
+        userDailyLog.setStressLevel(userDailyLogsDto.getStressLevel());
+        userDailyLog.setNotes(userDailyLogsDto.getNotes());
+        userDailyLog = userDailyLogsRepository.save(userDailyLog);
+        return toDto(userDailyLog);
     }
 
 }

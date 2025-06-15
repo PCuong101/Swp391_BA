@@ -38,4 +38,10 @@ public class UserDailyLogsController {
         userDailyLogsService.deleteUserDailyLog(logId);
         return ResponseEntity.ok("User daily log deleted successfully.");
     }
+
+    @PutMapping("/update-daily-log/{logId}")
+    public ResponseEntity<UserDailyLogsDto> updateUserDailyLog(@PathVariable Long logId, @RequestBody UserDailyLogsDto userDailyLogsDto) {
+        UserDailyLogsDto updatedLog = userDailyLogsService.updateUserDailyLog(logId, userDailyLogsDto);
+        return ResponseEntity.ok(updatedLog);
+    }
 }
