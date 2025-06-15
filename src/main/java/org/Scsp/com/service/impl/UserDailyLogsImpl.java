@@ -3,7 +3,6 @@ package org.Scsp.com.service.impl;
 import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.UserDailyLogsDto;
 import org.Scsp.com.model.QuitPlan;
-import org.Scsp.com.model.User;
 import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UserDailyLogsRepository;
@@ -11,6 +10,7 @@ import org.Scsp.com.service.UserDailyLogsService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,11 +22,18 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
 
     @Override
     public UserDailyLogsDto createUserDailyLog(@RequestBody UserDailyLogsDto newLogDto) {
-
         QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(newLogDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with userId: " + newLogDto.getUserId()));
 
-        UserDailyLog userDailyLog = UserDailyLog.builder()
+        // Check if a log already exists for the given date
+        // Uncomment the following line if you want to check for existing logs
+        LocalDateTime startOfDay = newLogDto.getLogDate().toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
+        UserDailyLog userDailyLog = userDailyLogsRepository.findByLogDateBetween(startOfDay, endOfDay).orElse(null);
+        if (userDailyLog != null){
+            throw new RuntimeException("UserDailyLog already exists");
+        }
+         userDailyLog = UserDailyLog.builder()
                 .logDate(newLogDto.getLogDate())
                 .mood(newLogDto.getMood())
                 .cravingLevel(newLogDto.getCravingLevel())
