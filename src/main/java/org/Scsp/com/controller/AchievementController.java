@@ -19,8 +19,8 @@ public class AchievementController {
 
     private AchievementService achievementService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<AchievementDTO>> getAchievementById(@PathVariable Long id) {
-        return ResponseEntity.ok(achievementService.getUserAchievements(id));
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<AchievementDTO>> getAchievementById(@PathVariable Long userId) {
+        return ResponseEntity.ok(achievementService.getUserAchievements(userId));
     }
 }
