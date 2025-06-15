@@ -32,4 +32,10 @@ public class UserDailyLogsController {
         }
         return ResponseEntity.ok(userDailyLogs);
     }
+
+    @DeleteMapping("/delete-daily-log/{logId}")
+    public ResponseEntity<String> deleteUserDailyLog(@PathVariable Long logId) {
+        userDailyLogsService.deleteUserDailyLog(logId);
+        return ResponseEntity.ok("User daily log deleted successfully.");
+    }
 }

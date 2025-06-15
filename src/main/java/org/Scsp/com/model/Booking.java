@@ -41,7 +41,7 @@ public class Booking {
     @Column(name = "MeetingLink")
     private String meetingLink;
 
-    @Column(name = "Notes")
+    @Column(name = "Notes",columnDefinition = "NVARCHAR(200)")
     private String notes;
 
     @Column(name = "CreatedAt")

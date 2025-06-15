@@ -16,7 +16,9 @@ public class AchievementTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateID;
 
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String title;
+    @Column(columnDefinition = "NVARCHAR(200)")
     private String description;
     private String category;
     @Enumerated(EnumType.STRING)

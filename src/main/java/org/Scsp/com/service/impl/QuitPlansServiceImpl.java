@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
-import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.HealthMilestoneService;
@@ -74,9 +73,9 @@ public class QuitPlansServiceImpl implements QuitPlansService {
         BigDecimal averageCostPerCigarettes = quitPlan.getAverageCost();
         int cigarettesPerDay = quitPlan.getCigarettesPerDay();
         BigDecimal savings = averageCostPerCigarettes.multiply(BigDecimal.valueOf(cigarettesPerDay));
-        BigDecimal totalSpent = calculateTotalSpentOnCigarettes(quitPlan);
+        BigDecimal totalSpentOnCigarettes = calculateTotalSpentOnCigarettes(quitPlan);
 
-        return savings.subtract(totalSpent);
+        return savings.subtract(totalSpentOnCigarettes);
     }
 
     public BigDecimal calculateTotalSpentOnCigarettes(QuitPlan quitPlan) {

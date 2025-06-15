@@ -34,9 +34,25 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         List<MilestoneDTO> templates = templatesProvider.getTemplates();
 
         LocalDateTime startDate = plan.getStartDate();
-        List<HealthMilestone> milestoneList = new ArrayList<>();
 
-        for (MilestoneDTO template : templates) {
+        List<HealthMilestone> healthMilestone = buildMilestonesWithWeight(templates, startDate, plan);
+
+        List<HealthMilestone> saved = healthMilestoneRepository.saveAll(healthMilestone);
+        plan.setMilestones(saved);
+    }
+
+    private List<HealthMilestone> buildMilestonesWithWeight(List<MilestoneDTO> templates, LocalDateTime startDate, QuitPlan plan) {
+        List<Duration> offsets = templates.stream()
+                .map(MilestoneDTO::getOffset)
+                .toList();
+
+        List<Double> weights = calculateWeights(offsets);
+
+        List<HealthMilestone> result = new ArrayList<>();
+
+        for (int i = 0; i < templates.size(); i++) {
+            MilestoneDTO template = templates.get(i);
+            double weight = weights.get(i);
             LocalDateTime expected = startDate.plus(template.getOffset());
 
             HealthMilestone milestone = new HealthMilestone();
@@ -44,12 +60,27 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
             milestone.setDescription(template.getDescription());
             milestone.setExpectedDate(expected);
             milestone.setQuitPlan(plan);
-            milestone.setOriginalExpectedDate(expected);
-            milestoneList.add(milestone);
-        }
+            milestone.setWeight(weight);
 
-        List<HealthMilestone> healthMilestone = healthMilestoneRepository.saveAll(milestoneList);
-        plan.setMilestones(healthMilestone);
+            result.add(milestone);
+        }
+        return result;
+    }
+
+    private List<Double> calculateWeights(List<Duration> offsets) {
+        List<Long> durationsInMinutes = offsets.stream()
+                .map(Duration::toMinutes)
+                .toList();
+        List<Double> rawWeights = durationsInMinutes.stream()
+                .map(d -> 1.0 / d)
+                .toList();
+
+        double totalRawWeight = rawWeights.stream()
+                .mapToDouble(Double::doubleValue)
+                .sum();
+        return rawWeights.stream()
+                .map(raw -> raw / totalRawWeight)
+                .toList();
     }
 
     @Override
@@ -57,40 +88,54 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         QuitPlan quitPlan = quitPlanRepository.findById(planId)
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + planId));
 
+        LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
         LocalDateTime now = LocalDateTime.now();
+
         List<HealthMilestone> healthMilestones = healthMilestoneRepository.findByQuitPlan(quitPlan);
 
         // Lấy log ngày hôm nay nếu có
-        UserDailyLog todayLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDate(planId, now);
+        UserDailyLog todayLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDateBetween(planId, startOfDay, endOfDay);
         boolean smokedToday = todayLog != null && Boolean.TRUE.equals(todayLog.getSmokedToday());
+        int smoked = smokedToday ? todayLog.getCigarettesSmoked() : 0;
 
         List<MilestoneProgressDTO> result = new ArrayList<>();
 
         for (HealthMilestone milestone : healthMilestones) {
-            int percent = calculateMilestoneProgress(milestone);
-
             boolean achieved = milestone.isAchieved();
+            LocalDateTime expectedDate = milestone.getExpectedDate();
 
+            // Nếu milestone đã đến hạn, đánh dấu đạt
+            if (!achieved && !expectedDate.isAfter(now)) {
+                milestone.setAchieved(true);
+                achieved = true;
+            }
+
+            int percent = calculateMilestoneProgress(milestone);
             String timeLeft;
 
             if (achieved) {
-                if (smokedToday) {
-                    // Tính phần trăm bị trừ
-                    int smoked = todayLog.getCigarettesSmoked();
-                    int deduction = smoked * 1;
-                    percent = Math.max(0, percent - deduction);
+                if (smokedToday && smoked > 0) {
+                    // Tính trọng số ảnh hưởng của milestone
+                    double weight = milestone.getWeight();
+                    // Trọng số càng lớn thì milestone cần giảm mạnh để cảnh cáo
+                    double baseDeduction = 25.0; // giới hạn max bị trừ (ví dụ 25%)
+                    int deduction = (int) ( weight * baseDeduction);
 
-                    //Tính thời gian cần để phục hồi milestone:
+
+                    // Tính thời gian phục hồi dựa trên % bị trừ
                     long totalMinutes = Duration.between(quitPlan.getStartDate(), milestone.getExpectedDate()).toMinutes();
-                    long lostMinutes = totalMinutes * deduction / 100;
+                    long lostMinutes =(long) (totalMinutes * deduction / 100.0);
 
                     // Thời gian bắt đầu tính hồi phục
-                    LocalDateTime recoveryTime = todayLog.getLogDate();
+                    LocalDateTime recoveryStart = todayLog.getLogDate();
 
                     // Tính thời gian đã trôi qua kể từ khi bắt đầu hồi phục
-                    Duration elapsedRecovery = Duration.between(recoveryTime, now);
+                    Duration elapsedRecovery = Duration.between(recoveryStart, now);
                     long elapsedMinutes = elapsedRecovery.toMinutes();
                     long remainingMinutes = Math.max(0, lostMinutes - elapsedMinutes);
+                    int remainingPercent = (int) ((remainingMinutes * 100) / totalMinutes);
+                    percent = Math.max(0, percent - remainingPercent);
 
                     timeLeft = "Time remaining: " + formatDurationReadable(Duration.ofMinutes(remainingMinutes));
                 } else {
@@ -101,15 +146,14 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
                 timeLeft = formatDurationReadable(remaining);
             }
 
-
-            MilestoneProgressDTO progressDTO = MilestoneProgressDTO.builder()
+            result.add(MilestoneProgressDTO.builder()
                     .name(milestone.getName())
                     .progressPercent(percent)
                     .achieved(achieved)
                     .timeRemaining(timeLeft)
-                    .build();
-            result.add(progressDTO);
+                    .build());
         }
+        healthMilestoneRepository.saveAll(healthMilestones);
 
         return result;
     }
@@ -118,12 +162,13 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         long days = duration.toDays();
         long hours = duration.toHours() % 24;
         long minutes = duration.toMinutes() % 60;
+        long seconds = duration.getSeconds() % 60;
 
         StringBuilder sb = new StringBuilder();
         if (days > 0) sb.append(days).append("d ");
         if (hours > 0) sb.append(hours).append("h ");
-        if (minutes > 0 || sb.isEmpty()) sb.append(minutes).append("m");
-
+        if (minutes > 0 ) sb.append(minutes).append("m ");
+        if( seconds > 0 || sb.isEmpty()) sb.append(seconds).append("s");
         return sb.toString().trim();
     }
 
