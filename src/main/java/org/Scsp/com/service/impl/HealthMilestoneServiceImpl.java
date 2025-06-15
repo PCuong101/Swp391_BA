@@ -67,10 +67,15 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         List<MilestoneProgressDTO> result = new ArrayList<>();
 
         for (HealthMilestone milestone : healthMilestones) {
-            int percent = calculateMilestoneProgress(milestone);
-
             boolean achieved = milestone.isAchieved();
+            LocalDateTime expectedDate = milestone.getExpectedDate();
 
+            if (!achieved && (expectedDate.isBefore(now) || expectedDate.isEqual(now))) {
+                milestone.setAchieved(true);
+                achieved = true;
+            }
+
+            int percent = calculateMilestoneProgress(milestone);
             String timeLeft;
 
             if (achieved) {
@@ -110,6 +115,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
                     .build();
             result.add(progressDTO);
         }
+        healthMilestoneRepository.saveAll(healthMilestones); // Cập nhật trạng thái đã đạt
 
         return result;
     }
