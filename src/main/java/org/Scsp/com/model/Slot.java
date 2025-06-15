@@ -20,6 +20,7 @@ public class Slot {
 
     private LocalTime startTime;
     private LocalTime endTime;
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String label;
     @OneToMany(mappedBy = "slot") private List<Schedule> schedules;
 }
