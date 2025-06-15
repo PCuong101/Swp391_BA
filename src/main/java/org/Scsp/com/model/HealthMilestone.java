@@ -27,7 +27,8 @@ public class HealthMilestone {
 
     private LocalDateTime expectedDate;
 
-    private LocalDateTime originalExpectedDate;
+    @Column(nullable = false)
+    private double weight; // Weight of the milestone
 
     private boolean achieved = false;
 

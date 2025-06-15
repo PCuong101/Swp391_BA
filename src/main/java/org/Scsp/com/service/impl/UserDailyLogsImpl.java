@@ -66,4 +66,9 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
         return userDailyLogs;
     }
 
+    @Override
+    public void deleteUserDailyLog(Long logId) {
+        userDailyLogsRepository.deleteById(logId);
+    }
+
 }
