@@ -12,8 +12,7 @@ public class MilestoneScheduler {
 
     private final HealthMilestoneService healthMilestoneService;
 
-    // Chạy mỗi ngày lúc 00:00
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 * * * *")
     public void scheduledAutoMarkAchieved() {
         healthMilestoneService.autoMarkAchievedMilestones();
     }
