@@ -9,6 +9,6 @@ import java.util.List;
 
 
 public interface UserDailyLogsRepository extends JpaRepository<UserDailyLog, Long> {
-    UserDailyLog findByQuitPlan_PlanIDAndLogDate(Long planID, LocalDateTime logDate);
+    UserDailyLog findByQuitPlan_PlanIDAndLogDateBetween(Long quitPlanPlanID, LocalDateTime startOfDay, LocalDateTime endOfDay);
     List<UserDailyLog> findByQuitPlan_PlanID(Long planID);
 }
