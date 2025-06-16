@@ -9,4 +9,8 @@ import java.util.List;
 public interface TaskTemplateRepository extends JpaRepository<TaskTemplate, Long> {
     List<TaskTemplate> findByAddictionLevel(AddictionLevel level);
 
+    long countByAddictionLevel(AddictionLevel level);
+
+    // Remove or correct this method if it exists:
+
 }
