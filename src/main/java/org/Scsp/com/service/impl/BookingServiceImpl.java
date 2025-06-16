@@ -1,5 +1,6 @@
 package org.Scsp.com.service.impl;
 
+import org.Scsp.com.Enum.BookingStatus;
 import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
@@ -49,7 +50,17 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setSchedule(schedule);
-        booking.setStatus("CONFIRMED");
+        booking.setMeetingLink("https://meet.google.com/abc-defg-hij");
+        booking.setStatus(BookingStatus.BOOKED);
         return bookingRepo.save(booking);
     }
+    @Override
+    public Booking finishBooking(Long bookingId) {
+        Booking booking = bookingRepo.findById(bookingId).orElseThrow();
+        booking.setStatus(BookingStatus.FINISHED);
+        return bookingRepo.save(booking);
+    }
+
+
+
 }
