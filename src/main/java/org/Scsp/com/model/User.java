@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.Scsp.com.Enum.Role;
-
+import org.Scsp.com.Enum.AddictionLevel;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,7 +37,10 @@ public class User {
 
     private String profilePicture;
 
-    private String addictionLevel = "Medium";
+    @Enumerated(EnumType.STRING)
+    @Column(name = "addiction_level")
+    private AddictionLevel addictionLevel;
+
 
     // Tránh đệ quy khi serialize JSON
     @OneToMany(mappedBy = "coach", cascade = CascadeType.ALL)
