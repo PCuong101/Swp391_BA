@@ -13,6 +13,7 @@ import org.Scsp.com.repository.UserDailyLogsRepository;
 import org.Scsp.com.service.AchievementService;
 import org.Scsp.com.service.QuitPlansService;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -122,6 +123,17 @@ public class AchievementServiceImp implements AchievementService {
             }
             return false;
 
+        } else if (key == CustomLogicKey.NUMBER_OF_DIARY_1) {
+            Integer diaryCount = userDailyLogsRepository.countByQuitPlan_PlanID(plan.getPlanID());
+            return diaryCount >= 1;
+
+        } else if (key == CustomLogicKey.NUMBER_OF_DIARY_7) {
+            Integer diaryCount = userDailyLogsRepository.countByQuitPlan_PlanID(plan.getPlanID());
+            return diaryCount >= 7;
+
+        } else if (key == CustomLogicKey.NUMBER_OF_DIARY_30) {
+            Integer diaryCount = userDailyLogsRepository.countByQuitPlan_PlanID(plan.getPlanID());
+            return diaryCount >= 30;
         } else {
             return false;
         }
@@ -129,7 +141,7 @@ public class AchievementServiceImp implements AchievementService {
 
     private boolean checkStreakNoSmoke(Long planId, LocalDateTime startDays, LocalDateTime endDays) {
         List<Boolean> recent = userDailyLogsRepository
-                .findRecentLogs(planId, startDays,endDays)
+                .findRecentLogs(planId, startDays, endDays)
                 .stream()
                 .map(log -> Boolean.FALSE.equals(log.getSmokedToday()))
                 .toList();
