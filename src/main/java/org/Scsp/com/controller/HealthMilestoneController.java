@@ -17,8 +17,10 @@ import java.util.List;
 public class HealthMilestoneController {
     private HealthMilestoneService healthMilestoneService;
 
-    @GetMapping("/progress/{planId}")
-    public ResponseEntity<List<MilestoneProgressDTO>> getMilestoneProgress(@PathVariable Long planId) {
-        return ResponseEntity.ok(healthMilestoneService.getMilestoneProgress(planId));
+    @GetMapping("/progress/{userId}")
+    public ResponseEntity<List<MilestoneProgressDTO>> getMilestoneProgress(@PathVariable Long userId) {
+        return ResponseEntity.ok(healthMilestoneService.getMilestoneProgress(userId));
     }
+
+
 }
