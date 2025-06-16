@@ -84,10 +84,12 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
     }
 
     @Override
-    public List<MilestoneProgressDTO> getMilestoneProgress(Long planId) {
-        QuitPlan quitPlan = quitPlanRepository.findById(planId)
-                .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + planId));
-
+    public List<MilestoneProgressDTO> getMilestoneProgress(Long userId) {
+        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + userId));
+        if(quitPlan.getMilestones() == null || quitPlan.getMilestones().isEmpty()) {
+            return new ArrayList<>(); // Không có milestone nào
+        }
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
         LocalDateTime now = LocalDateTime.now();
@@ -95,7 +97,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         List<HealthMilestone> healthMilestones = healthMilestoneRepository.findByQuitPlan(quitPlan);
 
         // Lấy log ngày hôm nay nếu có
-        UserDailyLog todayLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDateBetween(planId, startOfDay, endOfDay);
+        UserDailyLog todayLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDateBetween(quitPlan.getPlanID(), startOfDay, endOfDay);
         boolean smokedToday = todayLog != null && Boolean.TRUE.equals(todayLog.getSmokedToday());
         int smoked = smokedToday ? todayLog.getCigarettesSmoked() : 0;
 
