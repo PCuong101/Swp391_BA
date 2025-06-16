@@ -10,4 +10,6 @@ import java.util.List;
 public interface BookingService {
     public List<ScheduleDTO> getAvailableSchedules(Long coachId, LocalDate date);
     Booking createBooking(Long userId, Long scheduleId);
+
+    Booking finishBooking(Long bookingId);
 }
