@@ -2,6 +2,7 @@ package org.Scsp.com.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.Scsp.com.Enum.AddictionLevel;
 import org.Scsp.com.Enum.Role;
 import org.Scsp.com.dto.QuitPlanDto;
 import org.Scsp.com.dto.SurveyRegisterDTO;
@@ -65,13 +66,13 @@ public class SurveyRegisterController {
             user.setName(surveyRegisterDTO.getUsername());
             user.setPassword(surveyRegisterDTO.getPassword());
             if (mark >= 6) {
-                user.setAddictionLevel("Heavy");
+                user.setAddictionLevel(AddictionLevel.HIGH);
             } else if (mark >= 4) {
-                user.setAddictionLevel("Medium");
+                user.setAddictionLevel(AddictionLevel.MEDIUM);
             } else if (mark >= 2) {
-                user.setAddictionLevel("Light");
+                user.setAddictionLevel(AddictionLevel.LOW);
             } else {
-                user.setAddictionLevel("None");
+                user.setAddictionLevel(AddictionLevel.EXTREME);
             }
 
             if(loginController.registerUser(user) != null) {
