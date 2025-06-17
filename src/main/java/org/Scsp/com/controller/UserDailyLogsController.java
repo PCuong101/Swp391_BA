@@ -17,10 +17,15 @@ public class UserDailyLogsController {
     private final UserDailyLogsService userDailyLogsService;
 
     @PostMapping("/create-daily-logs")
-    public ResponseEntity<UserDailyLogsDto> createUserDailyLog(@RequestBody UserDailyLogsDto userDailyLogsDto) {
-        UserDailyLogsDto savedLog = userDailyLogsService.createUserDailyLog(userDailyLogsDto);
-        System.out.println("Saved User Daily Log: " + savedLog);
-        return ResponseEntity.ok(savedLog);
+    public ResponseEntity<?> createUserDailyLog(@RequestBody UserDailyLogsDto userDailyLogsDto) {
+        try {
+            UserDailyLogsDto savedLog = userDailyLogsService.createUserDailyLog(userDailyLogsDto);
+            return ResponseEntity.ok(savedLog);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+
     }
 
     @GetMapping("/get-daily-logs/{userId}")
