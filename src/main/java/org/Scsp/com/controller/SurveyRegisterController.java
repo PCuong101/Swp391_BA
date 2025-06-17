@@ -72,7 +72,7 @@ public class SurveyRegisterController {
             } else if (mark >= 2) {
                 user.setAddictionLevel(AddictionLevel.LOW);
             } else {
-                user.setAddictionLevel(AddictionLevel.EXTREME);
+                user.setAddictionLevel(AddictionLevel.NONE);
             }
 
             if(loginController.registerUser(user) != null) {
@@ -81,10 +81,11 @@ public class SurveyRegisterController {
                 User registeredUser = usersRepository.findByEmail(user.getEmail()).orElse(null);
                 quitPlan.setAverageCost(BigDecimal.valueOf(surveyRegisterDTO.getPackPrice()));
                 quitPlan.setYearsSmoking(surveyRegisterDTO.getYearsSmoking());
-                quitPlan.setSmokingFrequency(surveyRegisterDTO.getCigarettesPerDay());
                 quitPlan.setStartDate(surveyRegisterDTO.getDateStart().atStartOfDay());
                 quitPlan.setStartedSmokingAt(surveyRegisterDTO.getFirstSmokeTime());
                 quitPlan.setUserId(registeredUser.getUserId());
+                quitPlan.setCigarettesPerDay(surveyRegisterDTO.getCigarettesPerDay());
+                System.out.println("Quit Plan User ID: " + quitPlan.getCigarettesPerDay());
                 quitPlansController.createQuitPlan(quitPlan);
                 User userLoggedIn = usersRepository.findByEmail(user.getEmail()).orElse(null);
                 HttpSession session = request.getSession();
