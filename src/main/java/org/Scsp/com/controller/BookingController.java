@@ -1,5 +1,7 @@
 package org.Scsp.com.controller;
 
+import org.Scsp.com.dto.BookingDTO;
+import org.Scsp.com.dto.BookingRequest;
 import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
@@ -48,13 +50,17 @@ public class BookingController {
 
     // 🔹 Đặt lịch mới
     @PostMapping("/create")
-    public Booking createBooking(
-            @RequestParam Long userId,
-            @RequestParam Long scheduleId) {
-        return bookingService.createBooking(userId, scheduleId);
+    public Booking createBooking(@RequestBody BookingRequest bookingRequest) {
+        return bookingService.createBooking(bookingRequest.userId, bookingRequest.scheduleId, bookingRequest.note);
     }
+
     @PutMapping("/{id}/finish")
     public Booking finishBooking(@PathVariable Long id) {
         return bookingService.finishBooking(id);
+    }
+
+    @GetMapping("/get-booking/{userId}")
+    public List<BookingDTO> getBookingsByUserId(@PathVariable Long userId) {
+        return bookingService.getBookingsByUserId(userId);
     }
 }

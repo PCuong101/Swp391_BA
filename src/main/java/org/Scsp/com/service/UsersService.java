@@ -1,6 +1,7 @@
 package org.Scsp.com.service;
 
 import org.Scsp.com.dto.LoginRequest;
+import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.dto.UsersRegisterDto;
 import org.Scsp.com.model.User;
 import org.springframework.stereotype.Service;
@@ -17,4 +18,5 @@ public interface UsersService {
     List<User> getAllUsers();
     User updateUser(User users);
     void deleteUser(Long id);
+    List<Long> getAllCoachIds();
 }
