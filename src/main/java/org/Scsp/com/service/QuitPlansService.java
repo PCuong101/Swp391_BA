@@ -2,6 +2,7 @@
 package org.Scsp.com.service;
 
 import org.Scsp.com.dto.QuitPlanDto;
+import org.Scsp.com.dto.SavingResponseDto;
 import org.Scsp.com.model.QuitPlan;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +15,5 @@ public interface QuitPlansService {
     QuitPlan findById(Long id);
     QuitPlan createPlan(QuitPlanDto quitPlanDto);
     void deleteById(Long id);
-    BigDecimal getSavingsByUserId(Long userId);
+    SavingResponseDto getSavingsByUserId(Long userId);
 }

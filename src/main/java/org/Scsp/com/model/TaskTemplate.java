@@ -12,19 +12,19 @@ import org.Scsp.com.Enum.AddictionLevel;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskTemplate {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long templateID;
 
-    @Column(length = 100, columnDefinition = "NVARCHAR(100)")
+    @Column(columnDefinition = "NVARCHAR(100)")
     private String title;
 
-    @Column(length = 255, columnDefinition = "NVARCHAR(255)")
+    @Column(columnDefinition = "NVARCHAR(255)")
     private String description;
 
     private Integer suggestedDay;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "addiction_level")
     private AddictionLevel addictionLevel;
 }

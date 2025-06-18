@@ -35,7 +35,6 @@ public class DailyScheduleGenerator {
                     boolean exists = scheduleRepo.existsByCoachUserIdAndSlotSlotIDAndDate(
                             coach.getUserId(), slot.getSlotID(), targetDate);
 
-
                     if (!exists) {
                         Schedule schedule = new Schedule();
                         schedule.setCoach(coach);
@@ -43,9 +42,7 @@ public class DailyScheduleGenerator {
                         schedule.setDate(targetDate);
                         schedule.setAvailable(true);
                         scheduleRepo.save(schedule);
-
                     }
-
                 }
             }
         }
