@@ -2,8 +2,10 @@ package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
+import org.Scsp.com.dto.SavingResponseDto;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
+import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.HealthMilestoneService;
@@ -11,7 +13,11 @@ import org.Scsp.com.service.QuitPlansService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -47,8 +53,9 @@ public class QuitPlansServiceImpl implements QuitPlansService {
         quitPlan.setExpectedQuitDate(quitPlanDto.getExpectedQuitDate());
         quitPlan.setPersonalizedNotes(quitPlanDto.getPersonalizedNotes());
         quitPlan.setCigarettesPerDay(quitPlanDto.getCigarettesPerDay());
+        quitPlan.setSmokingFrequency(quitPlanDto.getSmokingFrequency());
         quitPlan.setAverageCost(quitPlanDto.getAverageCost());
-        quitPlan.setYearsSmoking(quitPlanDto.getYearsSmoking());
+        quitPlan.setYearsSmoking(quitPlan.getYearsSmoking());
 
 
         QuitPlan savedPlan = quitPlanRepository.save(quitPlan);
@@ -66,25 +73,47 @@ public class QuitPlansServiceImpl implements QuitPlansService {
     }
 
     @Override
-    public BigDecimal getSavingsByUserId(Long userId) {
-        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId)
-                .orElseThrow(() -> new RuntimeException("No quit plan found for user with id: " + userId));
-        BigDecimal averageCostPerCigarettes = quitPlan.getAverageCost();
-        int cigarettesPerDay = quitPlan.getCigarettesPerDay();
-        BigDecimal savings = averageCostPerCigarettes.multiply(BigDecimal.valueOf(cigarettesPerDay));
-        BigDecimal totalSpentOnCigarettes = calculateTotalSpentOnCigarettes(quitPlan);
+    public SavingResponseDto getSavingsByUserId(Long userId) {
+        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId).orElseThrow(() ->  new RuntimeException("Quit plan not found with id: " + userId));
+        BigDecimal costPerPacket = quitPlan.getAverageCost(); // Giá 1 bao thuốc
+        int cigarettesPerDay = quitPlan.getCigarettesPerDay(); // Số điếu/ngày
 
-        return savings.subtract(totalSpentOnCigarettes);
+        BigDecimal pricePerCigarette = costPerPacket.divide(BigDecimal.valueOf(20), 2, RoundingMode.HALF_UP); // 20 điếu/bao
+
+        BigDecimal savingPerDay = pricePerCigarette.multiply(BigDecimal.valueOf(cigarettesPerDay)); // Tiền tiết kiệm/ngày
+        BigDecimal totalSpentOnCigarettes = calculateTotalSpentOnCigarettes(quitPlan,pricePerCigarette);
+
+        int daysSinceStart = (int) quitPlan.getStartDate().until(LocalDateTime.now(), ChronoUnit.DAYS) + 1;
+
+        BigDecimal savings = savingPerDay.multiply(BigDecimal.valueOf(daysSinceStart)).subtract(totalSpentOnCigarettes); // Tổng tiền tiết kiệm;
+        BigDecimal totalSpentOnNrt = calculateTotalSpentOnNrt(quitPlan);
+
+        return SavingResponseDto.builder()
+                .totalSavings(savings)
+                .totalSpentOnNrt(totalSpentOnNrt)
+                .totalSpentOnCigarettes(totalSpentOnCigarettes)
+                .moneyPerDay(savingPerDay)
+                .moneyPerWeek(savingPerDay.multiply(BigDecimal.valueOf(7)))
+                .moneyPerMonth(savingPerDay.multiply(BigDecimal.valueOf(30)))
+                .moneyPerYear(savingPerDay.multiply(BigDecimal.valueOf(365)))
+         .build();
     }
 
-    public BigDecimal calculateTotalSpentOnCigarettes(QuitPlan quitPlan) {
+    public BigDecimal calculateTotalSpentOnNrt(QuitPlan quitPlan) {
+        return quitPlan.getUserDailyLogs().stream()
+                .map(UserDailyLog::getSpentMoneyOnNtr)
+                .filter(Objects::nonNull)
+                .map(BigDecimal::valueOf)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal calculateTotalSpentOnCigarettes(QuitPlan quitPlan,BigDecimal pricePerCigarette) {
         return quitPlan.getUserDailyLogs().stream()
                 .filter(dailyLog -> Boolean.TRUE.equals(dailyLog.getSmokedToday()))
                 .map(dailyLog -> {
-                    Integer price = dailyLog.getSpentMoneyOnCigarettes();
                     Integer count = dailyLog.getCigarettesSmoked();
-                    return (price != null && count != null)
-                            ? BigDecimal.valueOf(price).multiply(BigDecimal.valueOf(count))
+                    return (pricePerCigarette != null && count != null)
+                            ? pricePerCigarette.multiply(BigDecimal.valueOf(count))
                             : BigDecimal.ZERO;
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

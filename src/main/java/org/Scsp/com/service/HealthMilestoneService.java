@@ -10,6 +10,6 @@ import java.util.List;
 @Service
 public interface HealthMilestoneService {
     void createHealthMilestones(QuitPlan plan);
-    List<MilestoneProgressDTO> getMilestoneProgress(Long userId);
+    List<MilestoneProgressDTO> getMilestoneProgress(Long planId);
     void autoMarkAchievedMilestones();
 }
