@@ -83,7 +83,7 @@ public class AchievementServiceImp implements AchievementService {
     private boolean shouldUnlock(CustomLogicKey key, QuitPlan plan) {
         LocalDate now = LocalDate.now();
         long daysSinceStart = ChronoUnit.DAYS.between(plan.getStartDate().toLocalDate(), now);
-        BigDecimal moneySaved = quitPlansService.getSavingsByUserId(plan.getUser().getUserId());
+        BigDecimal moneySaved = quitPlansService.getSavingsByUserId(plan.getUser().getUserId()).getTotalSavings();
         if (key == CustomLogicKey.FIRST_DAY) {
             return daysSinceStart >= 1;
 

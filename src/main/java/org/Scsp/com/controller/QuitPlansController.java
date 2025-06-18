@@ -2,6 +2,7 @@ package org.Scsp.com.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
+import org.Scsp.com.dto.SavingResponseDto;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.service.QuitPlansService;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,8 @@ public class QuitPlansController {
         return ResponseEntity.ok(quitPlan);
     }
     @GetMapping("{userId}/savings")
-    public ResponseEntity<BigDecimal> getSavingsByUserId(@PathVariable Long userId) {
-        BigDecimal savings = quitPlansService.getSavingsByUserId(userId);
+    public ResponseEntity<SavingResponseDto> getSavingsByUserId(@PathVariable Long userId) {
+        SavingResponseDto savings = quitPlansService.getSavingsByUserId(userId);
         if (savings == null) {
             return ResponseEntity.notFound().build();
         }

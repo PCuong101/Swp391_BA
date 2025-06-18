@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,6 +23,7 @@ public class UserDailyLog {
 
     @ManyToOne
     @JsonIgnore
+    @JoinColumn(name = "planID", nullable = false)
     private QuitPlan quitPlan;
 
     private LocalDateTime logDate = LocalDateTime.now();
@@ -31,5 +33,5 @@ public class UserDailyLog {
     private String mood;
     private Integer stressLevel;
     private String notes;
-    private Integer spentMoneyOnCigarettes;
+    private Integer spentMoneyOnNtr;
 }

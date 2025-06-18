@@ -24,6 +24,7 @@ public class UserDailyLogsDto {
     private String mood;
     private Integer stressLevel;
     private String notes;
+    // tiền cho liệu pháp thay thế
     private Integer spentMoneyOnCigarettes;
 
     // Add other fields as needed
