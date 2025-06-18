@@ -55,4 +55,14 @@ public class UsersController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/get-coach-userId")
+    public ResponseEntity<List<Long>> getCoachUserId() {
+        List<Long> coachUserId = usersService.getAllCoachIds();
+        if (coachUserId != null) {
+            return ResponseEntity.ok(coachUserId);
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+    }
+
 }

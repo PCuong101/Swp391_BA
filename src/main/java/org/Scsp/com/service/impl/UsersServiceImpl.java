@@ -3,6 +3,7 @@ package org.Scsp.com.service.impl;
 import lombok.AllArgsConstructor;
 import org.Scsp.com.Enum.Role;
 import org.Scsp.com.dto.LoginRequest;
+import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.dto.UsersRegisterDto;
 import org.Scsp.com.model.User;
 import org.Scsp.com.repository.UsersRepository;
@@ -37,11 +38,12 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public User loginUser(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        if (user.getPassword().equals(loginRequest.getPassword())) {
+                .orElse(null);
+        if (user == null) {
+            return null;
+        } else if (user.getPassword().equals(loginRequest.getPassword())) {
             return user;
-        }
-        return null;
+        } else return null;
     }
 
     @Override
@@ -68,5 +70,15 @@ public class UsersServiceImpl implements UsersService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public List<Long> getAllCoachIds() {
+        List<User> coaches = userRepository.findByRole(Role.COACH);
+        List<Long> coachIds = coaches.stream()
+                .map(User::getUserId)
+                .toList();
+        return coachIds;
+    }
+
 }
 

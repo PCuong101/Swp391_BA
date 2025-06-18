@@ -37,7 +37,6 @@ public class QuitPlan {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     private Integer cigarettesPerDay;
-    private Integer smokingFrequency;
     private Integer yearsSmoking;
 
     //Giá trị của của 1 gói thuốc

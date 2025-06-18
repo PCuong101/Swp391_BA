@@ -26,8 +26,6 @@ public class QuitPlanDto {
 
     private Integer cigarettesPerDay;
 
-    private Integer smokingFrequency;
-
     private BigDecimal averageCost;
 
     private Integer yearsSmoking;
