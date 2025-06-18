@@ -59,6 +59,8 @@ public class BookingServiceImpl implements BookingService {
         booking.setNotes(note);
         return bookingRepo.save(booking);
     }
+
+
     @Override
     public Booking finishBooking(Long bookingId) {
         Booking booking = bookingRepo.findById(bookingId).orElseThrow();
