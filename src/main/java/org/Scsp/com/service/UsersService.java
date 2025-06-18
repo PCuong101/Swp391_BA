@@ -17,4 +17,6 @@ public interface UsersService {
     List<User> getAllUsers();
     User updateUser(User users);
     void deleteUser(Long id);
+
+    List<Long> getAllCoachIds();
 }

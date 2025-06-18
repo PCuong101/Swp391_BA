@@ -1,10 +1,7 @@
 package org.Scsp.com.controller;
 
-
 import org.Scsp.com.Enum.BookingStatus;
 import org.Scsp.com.dto.BookingDTO;
-import org.Scsp.com.dto.BookingRequest;
-
 import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
