@@ -47,9 +47,8 @@ public class QuitPlansServiceImpl implements QuitPlansService {
         quitPlan.setExpectedQuitDate(quitPlanDto.getExpectedQuitDate());
         quitPlan.setPersonalizedNotes(quitPlanDto.getPersonalizedNotes());
         quitPlan.setCigarettesPerDay(quitPlanDto.getCigarettesPerDay());
-        quitPlan.setSmokingFrequency(quitPlanDto.getSmokingFrequency());
         quitPlan.setAverageCost(quitPlanDto.getAverageCost());
-        quitPlan.setYearsSmoking(quitPlan.getYearsSmoking());
+        quitPlan.setYearsSmoking(quitPlanDto.getYearsSmoking());
 
 
         QuitPlan savedPlan = quitPlanRepository.save(quitPlan);
