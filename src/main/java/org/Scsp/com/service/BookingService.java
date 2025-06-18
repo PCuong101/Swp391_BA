@@ -1,5 +1,6 @@
 package org.Scsp.com.service;
 
+import org.Scsp.com.dto.BookingDTO;
 import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
@@ -12,4 +13,5 @@ public interface BookingService {
     Booking createBooking(Long userId, Long scheduleId);
 
     Booking finishBooking(Long bookingId);
+    List<BookingDTO> getBookingsByUserId(Long userId);
 }
