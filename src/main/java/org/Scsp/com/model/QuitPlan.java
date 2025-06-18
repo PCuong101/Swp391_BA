@@ -40,6 +40,7 @@ public class QuitPlan {
     private Integer smokingFrequency;
     private Integer yearsSmoking;
 
+    //Giá trị của của 1 gói thuốc
     @Column(precision = 10, scale = 2)
     private BigDecimal averageCost;
 
