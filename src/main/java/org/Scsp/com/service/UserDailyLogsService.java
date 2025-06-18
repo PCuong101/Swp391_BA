@@ -12,4 +12,5 @@ public interface UserDailyLogsService {
     Long getPlanIdByUserId(Long userId);
     List<UserDailyLog> getUserDailyLogs(Long planId);
     void deleteUserDailyLog(Long logId);
+    UserDailyLogsDto updateUserDailyLog(Long logId, UserDailyLogsDto userDailyLogsDto);
 }

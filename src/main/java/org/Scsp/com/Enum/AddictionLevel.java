@@ -4,7 +4,7 @@ public enum AddictionLevel {
     LOW,
     MEDIUM,
     HIGH,
-    NONE;
+    EXTREME;
 
     public static AddictionLevel fromString(String level) {
         switch (level.toUpperCase()) {
@@ -14,8 +14,8 @@ public enum AddictionLevel {
                 return MEDIUM;
             case "HIGH":
                 return HIGH;
-            case "NONE":
-                return NONE;
+            case "EXTREME":
+                return EXTREME;
             default:
                 throw new IllegalArgumentException("Unknown addiction level: " + level);
         }
