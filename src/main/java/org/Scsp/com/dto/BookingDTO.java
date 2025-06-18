@@ -18,5 +18,5 @@ public class BookingDTO {
     private BookingStatus status;
     private LocalTime startTime;
     private LocalTime endTime;
-
+    private String coachName;
 }
