@@ -37,9 +37,7 @@ public class QuitPlan {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     private Integer cigarettesPerDay;
-    private Integer smokingFrequency;
     private Integer yearsSmoking;
-
 
     @Column(precision = 10, scale = 2)
     private BigDecimal averageCost;

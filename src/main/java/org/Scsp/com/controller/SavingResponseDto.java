@@ -1,4 +1,4 @@
-package org.Scsp.com.dto;
+package org.Scsp.com.controller;
 
 
 import lombok.Builder;

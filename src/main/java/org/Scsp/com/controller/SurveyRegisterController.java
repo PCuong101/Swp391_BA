@@ -15,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @RequestMapping("/api/survey-register")
 @RestController
@@ -74,7 +72,7 @@ public class SurveyRegisterController {
             } else if (mark >= 2) {
                 user.setAddictionLevel(AddictionLevel.LOW);
             } else {
-                user.setAddictionLevel(AddictionLevel.EXTREME);
+                user.setAddictionLevel(AddictionLevel.NONE);
             }
 
             if(loginController.registerUser(user) != null) {
@@ -83,12 +81,11 @@ public class SurveyRegisterController {
                 User registeredUser = usersRepository.findByEmail(user.getEmail()).orElse(null);
                 quitPlan.setAverageCost(BigDecimal.valueOf(surveyRegisterDTO.getPackPrice()));
                 quitPlan.setYearsSmoking(surveyRegisterDTO.getYearsSmoking());
-                quitPlan.setCigarettesPerDay(surveyRegisterDTO.getCigarettesPerDay());
-                LocalTime now = LocalTime.now();
-                LocalDateTime dateTime = LocalDateTime.of(surveyRegisterDTO.getDateStart(), now);
-                quitPlan.setStartDate(dateTime);
+                quitPlan.setStartDate(surveyRegisterDTO.getDateStart().atStartOfDay());
                 quitPlan.setStartedSmokingAt(surveyRegisterDTO.getFirstSmokeTime());
                 quitPlan.setUserId(registeredUser.getUserId());
+                quitPlan.setCigarettesPerDay(surveyRegisterDTO.getCigarettesPerDay());
+                System.out.println("Quit Plan User ID: " + quitPlan.getCigarettesPerDay());
                 quitPlansController.createQuitPlan(quitPlan);
                 User userLoggedIn = usersRepository.findByEmail(user.getEmail()).orElse(null);
                 HttpSession session = request.getSession();

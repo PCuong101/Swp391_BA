@@ -42,7 +42,7 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
         if (userDailyLog != null){
             throw new RuntimeException("UserDailyLog already exists");
         }
-         userDailyLog = UserDailyLog.builder()
+        userDailyLog = UserDailyLog.builder()
                 .logDate(newLogDto.getLogDate())
                 .mood(newLogDto.getMood())
                 .cravingLevel(newLogDto.getCravingLevel())
@@ -73,21 +73,6 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
     @Override
     public void deleteUserDailyLog(Long logId) {
         userDailyLogsRepository.deleteById(logId);
-    }
-
-    @Override
-    public UserDailyLogsDto updateUserDailyLog(Long logId, UserDailyLogsDto userDailyLogsDto) {
-        UserDailyLog userDailyLog = userDailyLogsRepository.findById(logId)
-                .orElseThrow(() -> new RuntimeException("User daily log not found with id: " + logId));
-        userDailyLog.setMood(userDailyLogsDto.getMood());
-        userDailyLog.setCravingLevel(userDailyLogsDto.getCravingLevel());
-        userDailyLog.setSmokedToday(Boolean.parseBoolean(userDailyLogsDto.getSmokedToday()));
-        userDailyLog.setCigarettesSmoked(userDailyLogsDto.getCigarettesSmoked());
-        userDailyLog.setSpentMoneyOnNtr(userDailyLogsDto.getSpentMoneyOnCigarettes());
-        userDailyLog.setStressLevel(userDailyLogsDto.getStressLevel());
-        userDailyLog.setNotes(userDailyLogsDto.getNotes());
-        userDailyLog = userDailyLogsRepository.save(userDailyLog);
-        return toDto(userDailyLog);
     }
 
 }

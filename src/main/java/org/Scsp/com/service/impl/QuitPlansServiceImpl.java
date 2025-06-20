@@ -1,8 +1,9 @@
 package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.Scsp.com.controller.SavingResponseDto;
 import org.Scsp.com.dto.QuitPlanDto;
-import org.Scsp.com.dto.SavingResponseDto;
+import org.Scsp.com.dto.*;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
 import org.Scsp.com.model.UserDailyLog;
@@ -53,7 +54,6 @@ public class QuitPlansServiceImpl implements QuitPlansService {
         quitPlan.setExpectedQuitDate(quitPlanDto.getExpectedQuitDate());
         quitPlan.setPersonalizedNotes(quitPlanDto.getPersonalizedNotes());
         quitPlan.setCigarettesPerDay(quitPlanDto.getCigarettesPerDay());
-        quitPlan.setSmokingFrequency(quitPlanDto.getSmokingFrequency());
         quitPlan.setAverageCost(quitPlanDto.getAverageCost());
         quitPlan.setYearsSmoking(quitPlan.getYearsSmoking());
 
@@ -96,7 +96,7 @@ public class QuitPlansServiceImpl implements QuitPlansService {
                 .moneyPerWeek(savingPerDay.multiply(BigDecimal.valueOf(7)))
                 .moneyPerMonth(savingPerDay.multiply(BigDecimal.valueOf(30)))
                 .moneyPerYear(savingPerDay.multiply(BigDecimal.valueOf(365)))
-         .build();
+                .build();
     }
 
     public BigDecimal calculateTotalSpentOnNrt(QuitPlan quitPlan) {

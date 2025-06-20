@@ -2,7 +2,6 @@ package org.Scsp.com.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.Scsp.com.dto.QuitPlanDto;
-import org.Scsp.com.dto.SavingResponseDto;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.service.QuitPlansService;
 import org.springframework.http.ResponseEntity;
