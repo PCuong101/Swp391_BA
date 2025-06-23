@@ -85,8 +85,8 @@ public class QuitPlansServiceImpl implements QuitPlansService {
 
         int daysSinceStart = (int) quitPlan.getStartDate().until(LocalDateTime.now(), ChronoUnit.DAYS) + 1;
 
-        BigDecimal savings = savingPerDay.multiply(BigDecimal.valueOf(daysSinceStart)).subtract(totalSpentOnCigarettes); // Tổng tiền tiết kiệm;
         BigDecimal totalSpentOnNrt = calculateTotalSpentOnNrt(quitPlan);
+        BigDecimal savings = savingPerDay.multiply(BigDecimal.valueOf(daysSinceStart)).subtract(totalSpentOnCigarettes).subtract(totalSpentOnNrt); // Tổng tiền tiết kiệm;
 
         return SavingResponseDto.builder()
                 .totalSavings(savings)

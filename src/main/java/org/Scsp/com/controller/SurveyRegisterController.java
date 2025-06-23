@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @RequestMapping("/api/survey-register")
 @RestController
@@ -81,7 +82,7 @@ public class SurveyRegisterController {
                 User registeredUser = usersRepository.findByEmail(user.getEmail()).orElse(null);
                 quitPlan.setAverageCost(BigDecimal.valueOf(surveyRegisterDTO.getPackPrice()));
                 quitPlan.setYearsSmoking(surveyRegisterDTO.getYearsSmoking());
-                quitPlan.setStartDate(surveyRegisterDTO.getDateStart().atStartOfDay());
+                quitPlan.setStartDate(surveyRegisterDTO.getDateStart().atTime(LocalTime.now()));
                 quitPlan.setStartedSmokingAt(surveyRegisterDTO.getFirstSmokeTime());
                 quitPlan.setUserId(registeredUser.getUserId());
                 quitPlan.setCigarettesPerDay(surveyRegisterDTO.getCigarettesPerDay());
