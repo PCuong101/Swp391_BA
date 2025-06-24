@@ -2,25 +2,44 @@ package org.Scsp.com.controller;
 
 import lombok.AllArgsConstructor;
 import org.Scsp.com.dto.MilestoneProgressDTO;
+import org.Scsp.com.model.User;
 import org.Scsp.com.service.HealthMilestoneService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.converter.MessageConverter;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/health-milestones")
+@Controller
 public class HealthMilestoneController {
     private HealthMilestoneService healthMilestoneService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/progress/{userId}")
     public ResponseEntity<List<MilestoneProgressDTO>> getMilestoneProgress(@PathVariable Long userId) {
         return ResponseEntity.ok(healthMilestoneService.getMilestoneProgress(userId));
     }
 
+    @Scheduled(fixedRate = 1000)
+    public void sendRealtimeData() {
+//        User user = (User) headerAccessor.getSessionAttributes().get("user");
+//        if (user == null) {
+//            System.out.println("Không tìm thấy userId trong session");
+//            return;
+//        }
+//        Long userId = Long.valueOf(user.getUserId());
+        List<MilestoneProgressDTO> progress = healthMilestoneService.getMilestoneProgress(Long.valueOf(2));
+        messagingTemplate.convertAndSend("/topic/health/progress", progress);
+    }
 
 }
