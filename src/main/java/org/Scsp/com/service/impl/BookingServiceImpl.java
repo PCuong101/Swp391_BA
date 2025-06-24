@@ -79,7 +79,9 @@ public class BookingServiceImpl implements BookingService {
                     b.getStatus(),
                     slot.getStartTime(),
                     slot.getEndTime(),
-                    b.getSchedule().getCoach().getName()
+                    b.getSchedule().getCoach().getName(),
+                    b.getSchedule().getCoach().getUserId(),
+                    b.getSchedule().getSchedulesID()
             );
         }).collect(Collectors.toList());
     }
