@@ -1,8 +1,8 @@
 package org.Scsp.com.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.Scsp.com.Enum.MemberPlanSubscriptionStatus;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 @Table(name = "MemberPlanSubscription")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberPlanSubscription {
     @EmbeddedId
     private MemberPlanSubscriptionId id;
@@ -22,11 +25,15 @@ public class MemberPlanSubscription {
     @MapsId("planID")
     private MemberPlan plan;
 
-    private String status = "Pending";
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 50)
+    private MemberPlanSubscriptionStatus status;
 
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String notes;
 
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
     // getters/setters

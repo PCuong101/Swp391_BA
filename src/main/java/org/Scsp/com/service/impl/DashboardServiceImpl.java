@@ -1,6 +1,7 @@
 package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import org.Scsp.com.Enum.Role;
 import org.Scsp.com.dto.CoachDTO;
 import org.Scsp.com.dto.DashboardSummaryDto;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Builder
 public class DashboardServiceImpl implements DashboardService {
 
     private final UsersRepository userRepository;
