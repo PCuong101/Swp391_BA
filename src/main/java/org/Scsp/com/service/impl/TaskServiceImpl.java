@@ -1,6 +1,7 @@
 package org.Scsp.com.service.impl;
 
 import org.Scsp.com.Enum.AddictionLevel;
+import org.Scsp.com.dto.CompletedTaskDTO;
 import org.Scsp.com.dto.TaskCompletionStatsDTO;
 import org.Scsp.com.dto.TaskDTO;
 import org.Scsp.com.model.*;
@@ -25,6 +26,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private UsersRepository userRepo;
+    @Autowired
+    private TaskCompletionRepository taskRepo;
 
     @Override
     public List<TaskDTO> getTasksForUser(Long userId) {
@@ -75,6 +78,17 @@ public class TaskServiceImpl implements TaskService {
         double percent = (total == 0) ? 0.0 : (double) completed / total * 100;
 
         return new TaskCompletionStatsDTO(userId, (int) total, (int) completed, percent);
+    }
+
+    @Override
+    public List<CompletedTaskDTO> getCompletedTasksByUserId(Long userId) {
+        return taskRepo.findByUser_UserId(userId).stream()
+                .map(task -> new CompletedTaskDTO(
+                        task.getTemplate().getTitle(),
+                        task.getTemplate().getDescription(),
+                        task.getCompletedAt()
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -14,4 +14,7 @@ public interface TaskCompletionRepository extends JpaRepository<TaskCompletion, 
     boolean existsByUserAndTemplate(User user, TaskTemplate template);
     long countByUserUserIdAndCompletedAtBetween(Long userId, LocalDateTime start, LocalDateTime end);
 
+    int countByUser_UserIdAndCompletedAtIsNotNull(Long userId);
+    List<TaskCompletion> findByUser_UserId(Long userId);
+
 }

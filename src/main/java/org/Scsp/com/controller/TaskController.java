@@ -1,5 +1,6 @@
 package org.Scsp.com.controller;
 
+import org.Scsp.com.dto.CompletedTaskDTO;
 import org.Scsp.com.dto.TaskDTO;
 import org.Scsp.com.dto.TaskCompletionStatsDTO;
 import org.Scsp.com.service.TaskService;
@@ -36,5 +37,10 @@ public class TaskController {
     public ResponseEntity<TaskCompletionStatsDTO> getDailyProgress(@PathVariable Long userId) {
         TaskCompletionStatsDTO stats = taskService.getCompletionStats(userId);
         return ResponseEntity.ok(stats);
+    }
+    @GetMapping("/completed/{userId}")
+    public ResponseEntity<List<CompletedTaskDTO>> getCompletedTasks(@PathVariable Long userId) {
+        List<CompletedTaskDTO> completedTasks = taskService.getCompletedTasksByUserId(userId);
+        return ResponseEntity.ok(completedTasks);
     }
 }

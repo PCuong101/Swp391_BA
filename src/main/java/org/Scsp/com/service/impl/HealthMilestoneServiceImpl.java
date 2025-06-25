@@ -91,7 +91,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
 
     @Override
     public List<MilestoneProgressDTO> getMilestoneProgress(Long userId) {
-        QuitPlan quitPlan = quitPlanRepository.findByUser_UserIdWithMilestones(userId)
+        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + userId));
         if(quitPlan.getMilestones() == null || quitPlan.getMilestones().isEmpty()) {
             return new ArrayList<>(); // Không có milestone nào

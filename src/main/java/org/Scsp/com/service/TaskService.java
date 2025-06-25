@@ -1,5 +1,6 @@
 package org.Scsp.com.service;
 
+import org.Scsp.com.dto.CompletedTaskDTO;
 import org.Scsp.com.dto.TaskCompletionStatsDTO;
 import org.Scsp.com.dto.TaskDTO;
 
@@ -16,4 +17,5 @@ public interface TaskService {
     void completeTask(Long userId, Long templateId);
 
     TaskCompletionStatsDTO getCompletionStats(Long userId);
+    List<CompletedTaskDTO> getCompletedTasksByUserId(Long userId);
 }
