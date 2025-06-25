@@ -19,8 +19,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -140,30 +139,38 @@ public class AchievementServiceImp implements AchievementService {
             return false;
         }
     }
-
     private boolean checkStreakNoSmoke(List<UserDailyLog> userDailyLogs, int requiredDays) {
+        if (userDailyLogs.isEmpty()) return false;
 
-        List<LocalDate> currentStreak = new ArrayList<>();
+        // B1: Map ngày -> smokedToday
+        Map<LocalDate, Boolean> logMap = new HashMap<>();
+        for (UserDailyLog log : userDailyLogs) {
+            logMap.put(log.getLogDate().toLocalDate(), log.getSmokedToday());
+        }
+
+        // B2: Duyệt từ ngày nhỏ nhất đến lớn nhất
+        LocalDate start = Collections.min(logMap.keySet());
+        LocalDate end = LocalDate.now(); // hoặc Collections.max(logMap.keySet())
+
+        int currentStreak = 0;
         int maxStreak = 0;
 
-        for (UserDailyLog userDailyLog : userDailyLogs) {
-            if (!userDailyLog.getSmokedToday()) {
-                if (currentStreak.isEmpty() ||
-                        userDailyLog.getLogDate().toLocalDate().isEqual(currentStreak.get(currentStreak.size() - 1).plusDays(1))) {
-                    currentStreak.add(userDailyLog.getLogDate().toLocalDate());
-                } else {
-                    maxStreak = Math.max(maxStreak, currentStreak.size());
-                    currentStreak.clear();
-                    currentStreak.add(userDailyLog.getLogDate().toLocalDate());
-                }
+        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+            Boolean smoked = logMap.get(date);
+
+            if (smoked != null && smoked) {
+                // Có log và hút thuốc → reset
+                currentStreak = 0;
             } else {
-                maxStreak = Math.max(maxStreak, currentStreak.size());
-                currentStreak.clear();
+                // Không hút hoặc không có log → tiếp tục chuỗi
+                currentStreak++;
+                maxStreak = Math.max(maxStreak, currentStreak);
             }
         }
-        maxStreak = Math.max(maxStreak, currentStreak.size());
+
         return maxStreak >= requiredDays;
     }
+
 
 }
 

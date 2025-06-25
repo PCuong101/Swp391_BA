@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,7 +158,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
             result.add(MilestoneProgressDTO.builder()
                     .name(milestone.getName())
                     .progressPercent(percent)
-                    .recoveryEndTime(recoveryEndTime)
+                    .recoveryEndTime(recoveryEndTime != null ? recoveryEndTime.truncatedTo(ChronoUnit.MINUTES) : null)
                     .achieved(achieved)
                     .build());
         }
