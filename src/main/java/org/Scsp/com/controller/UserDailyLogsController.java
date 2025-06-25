@@ -17,10 +17,15 @@ public class UserDailyLogsController {
     private final UserDailyLogsService userDailyLogsService;
 
     @PostMapping("/create-daily-logs")
-    public ResponseEntity<UserDailyLogsDto> createUserDailyLog(@RequestBody UserDailyLogsDto userDailyLogsDto) {
-        UserDailyLogsDto savedLog = userDailyLogsService.createUserDailyLog(userDailyLogsDto);
-        System.out.println("Saved User Daily Log: " + savedLog);
-        return ResponseEntity.ok(savedLog);
+    public ResponseEntity<?> createUserDailyLog(@RequestBody UserDailyLogsDto userDailyLogsDto) {
+        try {
+            UserDailyLogsDto savedLog = userDailyLogsService.createUserDailyLog(userDailyLogsDto);
+            return ResponseEntity.ok(savedLog);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+
     }
 
     @GetMapping("/get-daily-logs/{userId}")
@@ -37,11 +42,5 @@ public class UserDailyLogsController {
     public ResponseEntity<String> deleteUserDailyLog(@PathVariable Long logId) {
         userDailyLogsService.deleteUserDailyLog(logId);
         return ResponseEntity.ok("User daily log deleted successfully.");
-    }
-
-    @PutMapping("/update-daily-log/{logId}")
-    public ResponseEntity<UserDailyLogsDto> updateUserDailyLog(@PathVariable Long logId, @RequestBody UserDailyLogsDto userDailyLogsDto) {
-        UserDailyLogsDto updatedLog = userDailyLogsService.updateUserDailyLog(logId, userDailyLogsDto);
-        return ResponseEntity.ok(updatedLog);
     }
 }

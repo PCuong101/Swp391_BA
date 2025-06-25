@@ -2,6 +2,7 @@ package org.Scsp.com.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.Scsp.com.data.MilestoneTemplateProvider;
 import org.Scsp.com.dto.MilestoneProgressDTO;
 import org.Scsp.com.model.HealthMilestone;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class HealthMilestoneServiceImpl implements HealthMilestoneService {
@@ -71,23 +73,29 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         List<Long> durationsInMinutes = offsets.stream()
                 .map(Duration::toMinutes)
                 .toList();
+
+        // Trọng số ngược log(phút)
         List<Double> rawWeights = durationsInMinutes.stream()
-                .map(d -> 1.0 / d)
+                .map(d -> 1.0 / Math.sqrt(d)) // tránh log(0)
                 .toList();
 
         double totalRawWeight = rawWeights.stream()
                 .mapToDouble(Double::doubleValue)
                 .sum();
+
         return rawWeights.stream()
-                .map(raw -> raw / totalRawWeight)
+                .map(raw -> raw / totalRawWeight) // chuẩn hóa về tổng = 1
                 .toList();
     }
 
-    @Override
-    public List<MilestoneProgressDTO> getMilestoneProgress(Long planId) {
-        QuitPlan quitPlan = quitPlanRepository.findById(planId)
-                .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + planId));
 
+    @Override
+    public List<MilestoneProgressDTO> getMilestoneProgress(Long userId) {
+        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + userId));
+        if(quitPlan.getMilestones() == null || quitPlan.getMilestones().isEmpty()) {
+            return new ArrayList<>(); // Không có milestone nào
+        }
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
         LocalDateTime now = LocalDateTime.now();
@@ -95,9 +103,9 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
         List<HealthMilestone> healthMilestones = healthMilestoneRepository.findByQuitPlan(quitPlan);
 
         // Lấy log ngày hôm nay nếu có
-        UserDailyLog todayLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDateBetween(planId, startOfDay, endOfDay);
+        UserDailyLog todayLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDateBetween(quitPlan.getPlanID(), startOfDay, endOfDay);
         boolean smokedToday = todayLog != null && Boolean.TRUE.equals(todayLog.getSmokedToday());
-        int smoked = smokedToday ? todayLog.getCigarettesSmoked() : 0;
+
 
         List<MilestoneProgressDTO> result = new ArrayList<>();
 
@@ -115,12 +123,12 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
             String timeLeft;
 
             if (achieved) {
-                if (smokedToday && smoked > 0) {
+                if (smokedToday) {
                     // Tính trọng số ảnh hưởng của milestone
                     double weight = milestone.getWeight();
                     // Trọng số càng lớn thì milestone cần giảm mạnh để cảnh cáo
-                    double baseDeduction = 25.0; // giới hạn max bị trừ (ví dụ 25%)
-                    int deduction = (int) ( weight * baseDeduction);
+                    double baseDeduction = 100; // giới hạn max bị trừ (ví dụ 70%)
+                    int deduction = (int) Math.round( weight * baseDeduction);
 
 
                     // Tính thời gian phục hồi dựa trên % bị trừ
@@ -134,14 +142,10 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
                     Duration elapsedRecovery = Duration.between(recoveryStart, now);
                     long elapsedMinutes = elapsedRecovery.toMinutes();
                     long remainingMinutes = Math.max(0, lostMinutes - elapsedMinutes);
-                    int remainingPercent = (int) ((remainingMinutes * 100) / totalMinutes);
+                    int remainingPercent = Math.round((remainingMinutes * 100) / totalMinutes);
                     percent = Math.max(0, percent - remainingPercent);
-                    if(remainingMinutes > 0) {
-                        // Hiển thị thời gian còn lại
-                        timeLeft = "Time remaining: " + formatDurationReadable(Duration.ofMinutes(remainingMinutes));
-                    } else {
-                        timeLeft = "Done";
-                    }
+                    log.debug("Milestone {}: smoked today, reducing progress by {}%, remaining progress: {}", milestone.getName(), remainingPercent, percent);
+                    timeLeft = "Time remaining: " + formatDurationReadable(Duration.ofMinutes(remainingMinutes));
                 } else {
                     timeLeft = "Done";
                 }

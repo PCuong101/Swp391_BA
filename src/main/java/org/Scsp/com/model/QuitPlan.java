@@ -37,17 +37,17 @@ public class QuitPlan {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     private Integer cigarettesPerDay;
-    private Integer smokingFrequency;
     private Integer yearsSmoking;
-
 
     @Column(precision = 10, scale = 2)
     private BigDecimal averageCost;
 
+
+
     private String startedSmokingAt;
     private LocalDateTime lastUpdated = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<HealthMilestone> milestones = new ArrayList<>();
     // getters/setters

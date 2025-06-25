@@ -7,17 +7,18 @@ import org.Scsp.com.Enum.BookingStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDTO {
-        private LocalDate bookingDate;
-        private String meetingLink;
-        private String note;
-        private BookingStatus status;
-        private LocalTime startTime;
-        private LocalTime endTime;
-        private String coachName;
-
+    private LocalDate bookingDate;
+    private String meetingLink;
+    private String note;
+    private BookingStatus status;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private String coachName;
+    private Long coachId;
+    private Long scheduleId;
 }
