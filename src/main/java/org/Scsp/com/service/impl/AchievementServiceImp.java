@@ -107,19 +107,19 @@ public class AchievementServiceImp implements AchievementService {
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_1) {
             if (daysSinceStart >= 1) {
-                return checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(1), LocalDateTime.now());
+                return checkStreakNoSmoke(plan.getPlanID(), plan.getStartDate(), plan.getStartDate().plusDays(1));
             }
             return false;
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_7) {
             if (daysSinceStart >= 7) {
-                return checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(7), LocalDateTime.now());
+                return checkStreakNoSmoke(plan.getPlanID(),plan.getStartDate(), plan.getStartDate().plusDays(7));
             }
             return false;
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_30) {
             if (daysSinceStart >= 30) {
-                return checkStreakNoSmoke(plan.getPlanID(), LocalDateTime.now().minusDays(30), LocalDateTime.now());
+                return checkStreakNoSmoke(plan.getPlanID(), plan.getStartDate(), plan.getStartDate().plusDays(30));
             }
             return false;
 
@@ -145,7 +145,7 @@ public class AchievementServiceImp implements AchievementService {
                 .stream()
                 .map(log -> Boolean.FALSE.equals(log.getSmokedToday()))
                 .toList();
-        return !recent.isEmpty() && recent.stream().allMatch(Boolean::booleanValue);
+        return recent.isEmpty() || recent.stream().allMatch(Boolean::booleanValue);
     }
 
 

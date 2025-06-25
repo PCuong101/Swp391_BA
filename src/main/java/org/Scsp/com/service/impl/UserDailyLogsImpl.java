@@ -30,7 +30,7 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
     }
 
     @Override
-    public UserDailyLogsDto createUserDailyLog(@RequestBody UserDailyLogsDto newLogDto) {
+    public UserDailyLogsDto createUserDailyLog(UserDailyLogsDto newLogDto) {
         QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(newLogDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with userId: " + newLogDto.getUserId()));
 
