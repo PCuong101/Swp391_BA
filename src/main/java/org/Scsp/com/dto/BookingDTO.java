@@ -19,4 +19,6 @@ public class BookingDTO {
     private LocalTime startTime;
     private LocalTime endTime;
     private String coachName;
+    private Long coachId;
+    private Long scheduleId;
 }

@@ -47,7 +47,7 @@ public class QuitPlan {
     private String startedSmokingAt;
     private LocalDateTime lastUpdated = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<HealthMilestone> milestones = new ArrayList<>();
     // getters/setters
