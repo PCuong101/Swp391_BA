@@ -36,3 +36,42 @@ VALUES
 
 
 
+
+INSERT INTO [smoking].[dbo].[task_templates]
+([title], [description], [suggested_day], [addiction_level])
+VALUES
+    (N'Nhiệm vụ 1 ngày 1 - LOW', N'Không hút thuốc trong buổi sáng. Ghi chú cảm xúc.', 1, 'LOW'),
+    (N'Nhiệm vụ 2 ngày 1 - LOW', N'Uống nhiều nước khi thèm thuốc. Đi bộ nhẹ.', 1, 'LOW'),
+    (N'Nhiệm vụ 3 ngày 1 - LOW', N'Thảo luận với bạn bè về lý do bạn bỏ thuốc.', 1, 'LOW'),
+    (N'Nhiệm vụ 4 ngày 1 - LOW', N'Viết nhật ký lý do bỏ thuốc lá hôm nay.', 1, 'LOW'),
+    (N'Nhiệm vụ 5 ngày 1 - LOW', N'Tập thở sâu 3 lần khi thấy muốn hút thuốc.', 1, 'LOW'),
+
+    (N'Nhiệm vụ 1 ngày 2 - LOW', N'Không hút thuốc sau bữa ăn sáng. Ghi nhận cảm giác.', 2, 'LOW'),
+    (N'Nhiệm vụ 2 ngày 2 - LOW', N'Tập thể dục 15 phút vào buổi sáng.', 2, 'LOW'),
+    (N'Nhiệm vụ 3 ngày 2 - LOW', N'Xem lại lợi ích của việc bỏ thuốc.', 2, 'LOW'),
+    (N'Nhiệm vụ 4 ngày 2 - LOW', N'Chuẩn bị đồ ăn nhẹ lành mạnh khi thèm thuốc.', 2, 'LOW'),
+    (N'Nhiệm vụ 5 ngày 2 - LOW', N'Tham gia nhóm hỗ trợ bỏ thuốc trực tuyến.', 2, 'LOW'),
+
+-- Tiếp tục cho LOW từ ngày 3 đến ngày 10
+-- Sau đó tiếp tục với MEDIUM, HIGH, NONE
+-- Ví dụ MEDIUM:
+
+    (N'Nhiệm vụ 1 ngày 1 - MEDIUM', N'Tránh xa người hút thuốc trong ngày. Ghi nhận khó khăn.', 1, 'MEDIUM'),
+    (N'Nhiệm vụ 2 ngày 1 - MEDIUM', N'Trò chuyện với người thân về mong muốn bỏ thuốc.', 1, 'MEDIUM'),
+    (N'Nhiệm vụ 3 ngày 1 - MEDIUM', N'Sử dụng kẹo cao su không đường thay cho thuốc.', 1, 'MEDIUM'),
+    (N'Nhiệm vụ 4 ngày 1 - MEDIUM', N'Tập thiền 5 phút khi cảm thấy thèm thuốc.', 1, 'MEDIUM'),
+    (N'Nhiệm vụ 5 ngày 1 - MEDIUM', N'Đặt báo thức nhắc nhở mục tiêu bỏ thuốc mỗi sáng.', 1, 'MEDIUM'),
+
+-- HIGH ví dụ:
+    (N'Nhiệm vụ 1 ngày 1 - HIGH', N'Lên danh sách 3 lý do mạnh mẽ để bỏ thuốc.', 1, 'HIGH'),
+    (N'Nhiệm vụ 2 ngày 1 - HIGH', N'Không hút thuốc trong 4 giờ đầu ngày.', 1, 'HIGH'),
+    (N'Nhiệm vụ 3 ngày 1 - HIGH', N'Liên hệ chuyên gia hỗ trợ cai thuốc.', 1, 'HIGH'),
+    (N'Nhiệm vụ 4 ngày 1 - HIGH', N'Viết thư cho chính mình trong tương lai không hút thuốc.', 1, 'HIGH'),
+    (N'Nhiệm vụ 5 ngày 1 - HIGH', N'Gạch bỏ từng giờ không hút thuốc trong sổ tay.', 1, 'HIGH'),
+
+-- NONE ví dụ:
+    (N'Nhiệm vụ 1 ngày 1 - NONE', N'Đọc lại cam kết bỏ thuốc để duy trì động lực.', 1, 'NONE'),
+    (N'Nhiệm vụ 2 ngày 1 - NONE', N'Chia sẻ cảm xúc trong hành trình bỏ thuốc với người khác.', 1, 'NONE'),
+    (N'Nhiệm vụ 3 ngày 1 - NONE', N'Lập kế hoạch tránh xa cám dỗ thuốc lá.', 1, 'NONE'),
+    (N'Nhiệm vụ 4 ngày 1 - NONE', N'Tặng bản thân một phần thưởng nhỏ vì đã giữ vững.', 1, 'NONE'),
+    (N'Nhiệm vụ 5 ngày 1 - NONE', N'Thực hiện một hoạt động lành mạnh thay vì hút thuốc.', 1, 'NONE');

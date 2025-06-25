@@ -154,7 +154,7 @@ public class AchievementServiceImp implements AchievementService {
             logMap.put(log.getLogDate().toLocalDate(), log.getSmokedToday());
         }
 
-        LocalDate end = LocalDate.now(); // hoặc Collections.max(logMap.keySet())
+        LocalDate end = LocalDate.now();
 
         int currentStreak = 0;
         int maxStreak = 0;
