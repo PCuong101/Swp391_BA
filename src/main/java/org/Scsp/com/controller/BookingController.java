@@ -1,10 +1,12 @@
 package org.Scsp.com.controller;
 
+import org.Scsp.com.Enum.BookingStatus;
 import org.Scsp.com.dto.BookingDTO;
 import org.Scsp.com.dto.BookingRequest;
 import org.Scsp.com.dto.ScheduleDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
+import org.Scsp.com.repository.BookingRepository;
 import org.Scsp.com.repository.ScheduleRepository;
 import org.Scsp.com.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
- // Cho phép frontend React truy cập nếu khác domain
+// Cho phép frontend React truy cập nếu khác domain
 public class BookingController {
 
     @Autowired
     private BookingService bookingService;
     @Autowired
     private ScheduleRepository scheduleRepo;
+
+    @Autowired
+    private BookingRepository bookingRepo;
 
     // 🔹 Lấy danh sách lịch còn trống theo coachId và ngày
     @GetMapping("/available")
@@ -45,6 +50,19 @@ public class BookingController {
 
         schedule.setAvailable(false); // Đánh dấu không còn khả dụng
         scheduleRepo.save(schedule);
+        return "✅ Lịch đã được hủy thành công.";
+    }
+    @PutMapping("/{id}/cancel")
+    public String cancelBooking(@RequestParam long bookingId) {
+        Booking booking = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        if (booking.getStatus() == BookingStatus.CANCELED) {
+            return "⛔ Lịch đã được hủy trước đó.";
+        }
+
+        booking.setStatus(BookingStatus.CANCELED);
+        bookingRepo.save(booking);
         return "✅ Lịch đã được hủy thành công.";
     }
 
