@@ -4,9 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.Scsp.com.data.MilestoneTemplateProvider;
+import org.Scsp.com.dto.MilestoneDTO;
 import org.Scsp.com.dto.MilestoneProgressDTO;
 import org.Scsp.com.model.HealthMilestone;
-import org.Scsp.com.dto.MilestoneDTO;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.HealthMilestoneRepository;
@@ -93,7 +93,7 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
     public List<MilestoneProgressDTO> getMilestoneProgress(Long userId) {
         QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new RuntimeException("Quit plan not found with id: " + userId));
-        if(quitPlan.getMilestones() == null || quitPlan.getMilestones().isEmpty()) {
+        if (quitPlan.getMilestones() == null || quitPlan.getMilestones().isEmpty()) {
             return new ArrayList<>(); // Không có milestone nào
         }
         LocalDateTime startOfDay = LocalDateTime.now().toLocalDate().atStartOfDay();
@@ -120,7 +120,8 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
             }
 
             int percent = calculateMilestoneProgress(milestone);
-            String timeLeft;
+            LocalDateTime recoveryEndTime = null;
+
 
             if (achieved) {
                 if (smokedToday) {
@@ -128,12 +129,12 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
                     double weight = milestone.getWeight();
                     // Trọng số càng lớn thì milestone cần giảm mạnh để cảnh cáo
                     double baseDeduction = 100; // giới hạn max bị trừ (ví dụ 70%)
-                    int deduction = (int) Math.round( weight * baseDeduction);
+                    int deduction = (int) Math.round(weight * baseDeduction);
 
 
                     // Tính thời gian phục hồi dựa trên % bị trừ
                     long totalMinutes = Duration.between(quitPlan.getStartDate(), milestone.getExpectedDate()).toMinutes();
-                    long lostMinutes =(long) (totalMinutes * deduction / 100.0);
+                    long lostMinutes = (long) (totalMinutes * deduction / 100.0);
 
                     // Thời gian bắt đầu tính hồi phục
                     LocalDateTime recoveryStart = todayLog.getLogDate();
@@ -142,42 +143,27 @@ public class HealthMilestoneServiceImpl implements HealthMilestoneService {
                     Duration elapsedRecovery = Duration.between(recoveryStart, now);
                     long elapsedMinutes = elapsedRecovery.toMinutes();
                     long remainingMinutes = Math.max(0, lostMinutes - elapsedMinutes);
-                    int remainingPercent = Math.round((remainingMinutes * 100) / totalMinutes);
+                    int remainingPercent = Math.round((float) (remainingMinutes * 100) / totalMinutes);
                     percent = Math.max(0, percent - remainingPercent);
                     log.debug("Milestone {}: smoked today, reducing progress by {}%, remaining progress: {}", milestone.getName(), remainingPercent, percent);
-                    timeLeft = "Time remaining: " + formatDurationReadable(Duration.ofMinutes(remainingMinutes));
-                } else {
-                    timeLeft = "Done";
+                    if (remainingMinutes > 0) {
+                        recoveryEndTime = now.plusMinutes(remainingMinutes); // ✅ quan trọng
+                    }
                 }
             } else {
-                Duration remaining = Duration.between(now, milestone.getExpectedDate());
-                timeLeft = formatDurationReadable(remaining);
+                recoveryEndTime = milestone.getExpectedDate();
             }
 
             result.add(MilestoneProgressDTO.builder()
                     .name(milestone.getName())
                     .progressPercent(percent)
+                    .recoveryEndTime(recoveryEndTime)
                     .achieved(achieved)
-                    .timeRemaining(timeLeft)
                     .build());
         }
         healthMilestoneRepository.saveAll(healthMilestones);
 
         return result;
-    }
-
-    private String formatDurationReadable(Duration duration) {
-        long days = duration.toDays();
-        long hours = duration.toHours() % 24;
-        long minutes = duration.toMinutes() % 60;
-        long seconds = duration.getSeconds() % 60;
-
-        StringBuilder sb = new StringBuilder();
-        if (days > 0) sb.append(days).append("d ");
-        if (hours > 0) sb.append(hours).append("h ");
-        if (minutes > 0 ) sb.append(minutes).append("m ");
-        if( seconds > 0 || sb.isEmpty()) sb.append(seconds).append("s");
-        return sb.toString().trim();
     }
 
 

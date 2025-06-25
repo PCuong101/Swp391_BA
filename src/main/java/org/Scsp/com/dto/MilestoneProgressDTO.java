@@ -15,4 +15,5 @@ public class MilestoneProgressDTO {
     String timeRemaining;
     int progressPercent;
     boolean achieved;
+    LocalDateTime recoveryEndTime;
 }
