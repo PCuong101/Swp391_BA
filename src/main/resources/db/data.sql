@@ -20,10 +20,15 @@ INSERT INTO achievement_templates (title, description, category, custom_logic_ke
 -- 5. NUMBER OF DIARY ---------------------------------------------------------
 (N'Nhật ký đầu tiên',     N'Bạn đã ghi lại cảm xúc đầu tiên trong nhật ký bỏ thuốc.',       N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_1',  1),
 (N'7 lượt nhập nhật ký',  N'Bạn đã viết 7 lần nhật ký – tiếp tục sẻ chia trải nghiệm!',     N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_7',  1),
-(N'30 lượt nhập nhật ký', N'Bạn đã duy trì 30 lần ghi nhật ký – nỗ lực tuyệt vời!',         N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_30', 1);
+(N'30 lượt nhập nhật ký', N'Bạn đã duy trì 30 lần ghi nhật ký – nỗ lực tuyệt vời!',         N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_30', 1),
 
-
-
+-- 6. NUMBER OF TASK_COMPLETE ---------------------------------------------------------
+(N'Hoàn thành 5 nhiệm vụ',     N'Bạn đã hoàn thành 5 nhiệm vụ – khởi đầu tốt đẹp!',                 N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_5',   1),
+(N'Hoàn thành 10 nhiệm vụ',    N'Bạn đã hoàn thành 10 nhiệm vụ – tiếp tục phát huy!',               N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_10',  1),
+(N'Hoàn thành 20 nhiệm vụ',    N'Bạn đã hoàn thành 20 nhiệm vụ – bạn đang đi đúng hướng!',         N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_20',  1),
+(N'Hoàn thành 30 nhiệm vụ',    N'Bạn đã hoàn thành 30 nhiệm vụ – sự kiên trì đang mang lại kết quả!', N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_30',  1),
+(N'Hoàn thành 50 nhiệm vụ',    N'Bạn đã hoàn thành 50 nhiệm vụ – một thành tích đáng tự hào!',      N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_50',  1),
+(N'Hoàn thành 100 nhiệm vụ',   N'Bạn đã hoàn thành 100 nhiệm vụ – bạn là người cực kỳ kiên định!', N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_100', 1);
 
 INSERT INTO member_plans(plan_name, description, price, features, created_at, updated_at)
 VALUES
