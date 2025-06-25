@@ -6,6 +6,7 @@ import org.Scsp.com.dto.AchievementDTO;
 import org.Scsp.com.model.Achievement;
 import org.Scsp.com.model.AchievementTemplate;
 import org.Scsp.com.model.QuitPlan;
+import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.AchievementRepository;
 import org.Scsp.com.repository.AchievementTempRepository;
 import org.Scsp.com.repository.QuitPlanRepository;
@@ -84,6 +85,7 @@ public class AchievementServiceImp implements AchievementService {
         LocalDate now = LocalDate.now();
         long daysSinceStart = ChronoUnit.DAYS.between(plan.getStartDate().toLocalDate(), now);
         BigDecimal moneySaved = quitPlansService.getSavingsByUserId(plan.getUser().getUserId()).getTotalSavings();
+        List<UserDailyLog> userDailyLogs = userDailyLogsRepository.findByQuitPlan_PlanIDOrderByLogDateAsc(plan.getPlanID());
         if (key == CustomLogicKey.FIRST_DAY) {
             return daysSinceStart >= 1;
 
@@ -107,19 +109,19 @@ public class AchievementServiceImp implements AchievementService {
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_1) {
             if (daysSinceStart >= 1) {
-                return checkStreakNoSmoke(plan.getPlanID(), plan.getStartDate(), plan.getStartDate().plusDays(1));
+                return checkStreakNoSmoke(userDailyLogs, 1);
             }
             return false;
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_7) {
             if (daysSinceStart >= 7) {
-                return checkStreakNoSmoke(plan.getPlanID(),plan.getStartDate(), plan.getStartDate().plusDays(7));
+                return checkStreakNoSmoke(userDailyLogs, 7);
             }
             return false;
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_30) {
             if (daysSinceStart >= 30) {
-                return checkStreakNoSmoke(plan.getPlanID(), plan.getStartDate(), plan.getStartDate().plusDays(30));
+                return checkStreakNoSmoke(userDailyLogs, 30);
             }
             return false;
 
@@ -139,15 +141,29 @@ public class AchievementServiceImp implements AchievementService {
         }
     }
 
-    private boolean checkStreakNoSmoke(Long planId, LocalDateTime startDays, LocalDateTime endDays) {
-        List<Boolean> recent = userDailyLogsRepository
-                .findRecentLogs(planId, startDays, endDays)
-                .stream()
-                .map(log -> Boolean.FALSE.equals(log.getSmokedToday()))
-                .toList();
-        return recent.isEmpty() || recent.stream().allMatch(Boolean::booleanValue);
-    }
+    private boolean checkStreakNoSmoke(List<UserDailyLog> userDailyLogs, int requiredDays) {
 
+        List<LocalDate> currentStreak = new ArrayList<>();
+        int maxStreak = 0;
+
+        for (UserDailyLog userDailyLog : userDailyLogs) {
+            if (!userDailyLog.getSmokedToday()) {
+                if (currentStreak.isEmpty() ||
+                        userDailyLog.getLogDate().toLocalDate().isEqual(currentStreak.get(currentStreak.size() - 1).plusDays(1))) {
+                    currentStreak.add(userDailyLog.getLogDate().toLocalDate());
+                } else {
+                    maxStreak = Math.max(maxStreak, currentStreak.size());
+                    currentStreak.clear();
+                    currentStreak.add(userDailyLog.getLogDate().toLocalDate());
+                }
+            } else {
+                maxStreak = Math.max(maxStreak, currentStreak.size());
+                currentStreak.clear();
+            }
+        }
+        maxStreak = Math.max(maxStreak, currentStreak.size());
+        return maxStreak >= requiredDays;
+    }
 
 }
 
