@@ -2,6 +2,7 @@ package org.Scsp.com.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.Scsp.com.Enum.MemberPlanSubscriptionStatus;
+import org.Scsp.com.Enum.Role;
 import org.Scsp.com.model.MemberPlan;
 import org.Scsp.com.model.MemberPlanSubscription;
 import org.Scsp.com.model.MemberPlanSubscriptionId;
@@ -27,10 +28,10 @@ public class MemberPlanSubscriptionServiceImpl implements MemberPlanSubscription
         MemberPlan memberPlan = memberPlanRepository.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("Plan not found with id: " + planId));
         MemberPlanSubscriptionId memberPlanSubscriptionId = new MemberPlanSubscriptionId(user.getUserId(),memberPlan.getPlanID());
-
+        user.setRole(Role.MEMBER_VIP1);
 
         MemberPlanSubscription subscription = MemberPlanSubscription.builder()
-                .id( memberPlanSubscriptionId)
+                .id(memberPlanSubscriptionId)
                 .user(user)
                 .status(MemberPlanSubscriptionStatus.ACTIVE)
                 .plan(memberPlan)

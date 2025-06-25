@@ -3,10 +3,7 @@ package org.Scsp.com.service.impl;
 import lombok.AllArgsConstructor;
 import org.Scsp.com.Enum.CustomLogicKey;
 import org.Scsp.com.dto.AchievementDTO;
-import org.Scsp.com.model.Achievement;
-import org.Scsp.com.model.AchievementTemplate;
-import org.Scsp.com.model.QuitPlan;
-import org.Scsp.com.model.UserDailyLog;
+import org.Scsp.com.model.*;
 import org.Scsp.com.repository.AchievementRepository;
 import org.Scsp.com.repository.AchievementTempRepository;
 import org.Scsp.com.repository.QuitPlanRepository;
@@ -86,7 +83,7 @@ public class AchievementServiceImp implements AchievementService {
         BigDecimal moneySaved = quitPlansService.getSavingsByUserId(plan.getUser().getUserId()).getTotalSavings();
         List<UserDailyLog> userDailyLogs = userDailyLogsRepository.findByQuitPlan_PlanIDOrderByLogDateAsc(plan.getPlanID());
         if (key == CustomLogicKey.FIRST_DAY) {
-            return daysSinceStart >= 1;
+            return true;
 
         } else if (key == CustomLogicKey.DAYS_QUIT_SMOKING_14) {
             return daysSinceStart >= 14;
@@ -108,19 +105,19 @@ public class AchievementServiceImp implements AchievementService {
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_1) {
             if (daysSinceStart >= 1) {
-                return checkStreakNoSmoke(userDailyLogs, 1);
+                return checkStreakNoSmoke(userDailyLogs, plan.getStartDate().toLocalDate(),1);
             }
             return false;
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_7) {
             if (daysSinceStart >= 7) {
-                return checkStreakNoSmoke(userDailyLogs, 7);
+                return checkStreakNoSmoke(userDailyLogs, plan.getStartDate().toLocalDate(),7);
             }
             return false;
 
         } else if (key == CustomLogicKey.STREAK_NO_SMOKE_30) {
             if (daysSinceStart >= 30) {
-                return checkStreakNoSmoke(userDailyLogs, 30);
+                return checkStreakNoSmoke(userDailyLogs, plan.getStartDate().toLocalDate(),30);
             }
             return false;
 
@@ -139,7 +136,7 @@ public class AchievementServiceImp implements AchievementService {
             return false;
         }
     }
-    private boolean checkStreakNoSmoke(List<UserDailyLog> userDailyLogs, int requiredDays) {
+    private boolean checkStreakNoSmoke(List<UserDailyLog> userDailyLogs,LocalDate startDay ,int requiredDays) {
         if (userDailyLogs.isEmpty()) return false;
 
         // B1: Map ngày -> smokedToday
@@ -148,14 +145,12 @@ public class AchievementServiceImp implements AchievementService {
             logMap.put(log.getLogDate().toLocalDate(), log.getSmokedToday());
         }
 
-        // B2: Duyệt từ ngày nhỏ nhất đến lớn nhất
-        LocalDate start = Collections.min(logMap.keySet());
         LocalDate end = LocalDate.now(); // hoặc Collections.max(logMap.keySet())
 
         int currentStreak = 0;
         int maxStreak = 0;
 
-        for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
+        for (LocalDate date = startDay; !date.isAfter(end); date = date.plusDays(1)) {
             Boolean smoked = logMap.get(date);
 
             if (smoked != null && smoked) {

@@ -4,5 +4,5 @@ public enum Role {
     ADMIN,
     MEMBER,
     COACH,
-
+    MEMBER_VIP1
 }
