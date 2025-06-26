@@ -3,6 +3,7 @@ package org.Scsp.com.service.impl;
 import org.Scsp.com.Enum.BookingStatus;
 import org.Scsp.com.dto.BookingDTO;
 import org.Scsp.com.dto.ScheduleDTO;
+import org.Scsp.com.dto.ScheduleOverviewDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
 import org.Scsp.com.model.Slot;
@@ -83,6 +84,31 @@ public class BookingServiceImpl implements BookingService {
                     b.getSchedule().getCoach().getUserId(),
                     b.getSchedule().getSchedulesID()
             );
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ScheduleOverviewDTO> getCoachScheduleWithBookings(Long coachId) {
+        List<Schedule> schedules = scheduleRepo.findByCoachUserId(coachId);
+
+        return schedules.stream().map(s -> {
+            ScheduleOverviewDTO dto = new ScheduleOverviewDTO();
+            dto.setScheduleId(s.getSchedulesID());
+            dto.setDate(s.getDate());
+            dto.setSlotLabel(s.getSlot().getLabel());
+            dto.setAvailableLabel(s.isAvailable() ? "Còn trống" : "Đã đặt");
+
+
+            // Nếu đã có người đặt thì lấy thông tin người đặt
+            if (!s.isAvailable()) {
+                Booking booking = bookingRepo.findBySchedule(s).orElse(null);
+                if (booking != null) {
+                    dto.setBookedByName(booking.getUser().getName());
+                    dto.setBookedByEmail(booking.getUser().getEmail());
+                }
+            }
+
+            return dto;
         }).collect(Collectors.toList());
     }
 

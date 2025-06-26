@@ -8,10 +8,13 @@ import org.Scsp.com.model.*;
 import org.Scsp.com.repository.*;
 import org.Scsp.com.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,29 +28,44 @@ public class TaskServiceImpl implements TaskService {
     private TaskCompletionRepository completionRepo;
 
     @Autowired
+    private QuitPlanRepository quitPlanRepository;
+
+    @Autowired
     private UsersRepository userRepo;
     @Autowired
     private TaskCompletionRepository taskRepo;
 
     @Override
-    public List<TaskDTO> getTasksForUser(Long userId) {
+    public List<TaskDTO> getTasksForUserToday(Long userId) {
         User user = userRepo.findById(userId).orElseThrow();
         AddictionLevel level = user.getAddictionLevel();
 
+        QuitPlan quitPlan = quitPlanRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Chưa tạo kế hoạch cai thuốc"));
+
+        LocalDate startDate = quitPlan.getStartDate().toLocalDate(); // <-- thêm dòng này
+        LocalDate today = LocalDate.now();
+        long daysSinceStart = ChronoUnit.DAYS.between(startDate, today) + 1;
+
         List<TaskTemplate> templates = templateRepo.findByAddictionLevel(level);
 
-        return templates.stream().map(template -> {
-            TaskDTO dto = new TaskDTO();
-            dto.setTemplateID(template.getTemplateID());
-            dto.setTitle(template.getTitle());
-            dto.setDescription(template.getDescription());
-            dto.setSuggestedDay(template.getSuggestedDay());
-            dto.setAddictionLevel(template.getAddictionLevel());
-            boolean done = completionRepo.existsByUserAndTemplate(user, template);
-            dto.setCompleted(done);
-            return dto;
-        }).collect(Collectors.toList());
+        return templates.stream()
+                .filter(t -> t.getSuggestedDay() == daysSinceStart)
+                .map(template -> {
+                    TaskDTO dto = new TaskDTO();
+                    dto.setTemplateID(template.getTemplateID());
+                    dto.setTitle(template.getTitle());
+                    dto.setDescription(template.getDescription());
+                    dto.setSuggestedDay(template.getSuggestedDay());
+                    dto.setAddictionLevel(template.getAddictionLevel());
+                    boolean done = completionRepo.existsByUserAndTemplate(user, template);
+                    dto.setCompleted(done);
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
     }
+
 
     @Override
     public double getCompletionPercentage(Long userId) {
