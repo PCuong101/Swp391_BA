@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,41 +72,44 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDTO> getBookingsByUserId(Long userId) {
         List<Booking> bookings = bookingRepo.findBookingByUser_UserId(userId);
 
-        return bookings.stream().map(b -> {
-            Slot slot = b.getSchedule().getSlot();
-            return new BookingDTO(
-                    b.getSchedule().getDate(),
-                    b.getMeetingLink(),
-                    b.getNotes(),
-                    b.getStatus(),
-                    slot.getStartTime(),
-                    slot.getEndTime(),
-                    b.getSchedule().getCoach().getName(),
-                    b.getSchedule().getCoach().getUserId(),
-                    b.getSchedule().getSchedulesID()
-            );
-        }).collect(Collectors.toList());
+        return bookings.stream()
+                .sorted(Comparator.comparing((Booking b) -> b.getSchedule().getDate()).reversed()) // Sắp xếp ngày giảm dần
+                .map(b -> {
+                    Slot slot = b.getSchedule().getSlot();
+                    return new BookingDTO(
+                            b.getSchedule().getDate(),
+                            b.getMeetingLink(),
+                            b.getNotes(),
+                            b.getStatus(),
+                            slot.getStartTime(),
+                            slot.getEndTime(),
+                            b.getSchedule().getCoach().getName(),
+                            b.getSchedule().getCoach().getUserId(),
+                            b.getSchedule().getSchedulesID()
+                    );
+                })
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public List<ScheduleOverviewDTO> getCoachScheduleWithBookings(Long coachId) {
         List<Schedule> schedules = scheduleRepo.findByCoachUserId(coachId);
-
         return schedules.stream().map(s -> {
             ScheduleOverviewDTO dto = new ScheduleOverviewDTO();
             dto.setScheduleId(s.getSchedulesID());
             dto.setDate(s.getDate());
             dto.setSlotLabel(s.getSlot().getLabel());
             dto.setAvailableLabel(s.isAvailable() ? "Còn trống" : "Đã đặt");
-
-
-            // Nếu đã có người đặt thì lấy thông tin người đặt
             if (!s.isAvailable()) {
                 Booking booking = bookingRepo.findBySchedule(s).orElse(null);
                 if (booking != null) {
                     dto.setBookedByName(booking.getUser().getName());
                     dto.setBookedByEmail(booking.getUser().getEmail());
+                    dto.setNotes(booking.getNotes()); // <-- Lấy ghi chú ở đây
                 }
+            } else {
+                dto.setNotes(""); // Nếu chưa ai đặt thì để rỗng hoặc ghi chú mặc định
             }
 
             return dto;

@@ -15,6 +15,15 @@ public class ScheduleOverviewDTO {
     private LocalDate date;
     private String slotLabel;
     private String availableLabel;
+    private String notes;
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     public String getAvailableLabel() {
         return availableLabel;
