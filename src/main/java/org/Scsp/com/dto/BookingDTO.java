@@ -21,4 +21,5 @@ public class BookingDTO {
     private String coachName;
     private Long coachId;
     private Long scheduleId;
+    private Long bookingId;
 }

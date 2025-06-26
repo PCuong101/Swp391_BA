@@ -68,12 +68,25 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepo.save(booking);
     }
 
+    private int getStatusPriority(BookingStatus status) {
+        return switch (status) {
+            case BOOKED -> 0;
+            case FINISHED -> 1;
+            case CANCELED -> 2;
+            case EMPTY -> 3;
+            default -> 99;
+        };
+    }
+
     @Override
     public List<BookingDTO> getBookingsByUserId(Long userId) {
         List<Booking> bookings = bookingRepo.findBookingByUser_UserId(userId);
 
         return bookings.stream()
-                .sorted(Comparator.comparing((Booking b) -> b.getSchedule().getDate()).reversed()) // Sắp xếp ngày giảm dần
+                .sorted(Comparator.comparing((Booking b) -> b.getSchedule().getDate()).reversed()
+                        .thenComparing(b -> b.getSchedule().getSlot().getStartTime())
+                        .thenComparing(b -> getStatusPriority(b.getStatus())
+                        ))
                 .map(b -> {
                     Slot slot = b.getSchedule().getSlot();
                     return new BookingDTO(
@@ -85,7 +98,8 @@ public class BookingServiceImpl implements BookingService {
                             slot.getEndTime(),
                             b.getSchedule().getCoach().getName(),
                             b.getSchedule().getCoach().getUserId(),
-                            b.getSchedule().getSchedulesID()
+                            b.getSchedule().getSchedulesID(),
+                            b.getBookingID()
                     );
                 })
                 .collect(Collectors.toList());
@@ -95,21 +109,24 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<ScheduleOverviewDTO> getCoachScheduleWithBookings(Long coachId) {
         List<Schedule> schedules = scheduleRepo.findByCoachUserId(coachId);
+
         return schedules.stream().map(s -> {
             ScheduleOverviewDTO dto = new ScheduleOverviewDTO();
             dto.setScheduleId(s.getSchedulesID());
             dto.setDate(s.getDate());
             dto.setSlotLabel(s.getSlot().getLabel());
             dto.setAvailableLabel(s.isAvailable() ? "Còn trống" : "Đã đặt");
+
+
             if (!s.isAvailable()) {
                 Booking booking = bookingRepo.findBySchedule(s).orElse(null);
                 if (booking != null) {
                     dto.setBookedByName(booking.getUser().getName());
                     dto.setBookedByEmail(booking.getUser().getEmail());
-                    dto.setNotes(booking.getNotes()); // <-- Lấy ghi chú ở đây
+                    dto.setNotes(booking.getNotes());
                 }
             } else {
-                dto.setNotes(""); // Nếu chưa ai đặt thì để rỗng hoặc ghi chú mặc định
+                dto.setNotes(""); 
             }
 
             return dto;

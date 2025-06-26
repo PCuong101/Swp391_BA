@@ -39,7 +39,7 @@ public class BookingController {
         return bookingService.getAvailableSchedules(coachId, date);
     }
 
-    @PutMapping("/cancel")
+    @PutMapping("/coach/cancel")
     public String cancelSchedule(
             @RequestParam Long coachId,
             @RequestParam Long scheduleId) {
@@ -54,7 +54,7 @@ public class BookingController {
         scheduleRepo.save(schedule);
         return "✅ Lịch đã được hủy thành công.";
     }
-    @PutMapping("/{id}/cancel")
+    @PutMapping("/cancel")
     public String cancelBooking(@RequestParam long bookingId) {
         Booking booking = bookingRepo.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
