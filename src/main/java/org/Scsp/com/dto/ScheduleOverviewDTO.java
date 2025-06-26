@@ -16,6 +16,24 @@ public class ScheduleOverviewDTO {
     private String slotLabel;
     private String availableLabel;
     private String notes;
+    private Long bookingId;
+    private String bookingStatus;
+
+    public Long getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public String getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(String bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
 
     public String getNotes() {
         return notes;

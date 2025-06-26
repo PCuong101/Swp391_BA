@@ -117,16 +117,19 @@ public class BookingServiceImpl implements BookingService {
             dto.setSlotLabel(s.getSlot().getLabel());
             dto.setAvailableLabel(s.isAvailable() ? "Còn trống" : "Đã đặt");
 
-
             if (!s.isAvailable()) {
                 Booking booking = bookingRepo.findBySchedule(s).orElse(null);
                 if (booking != null) {
                     dto.setBookedByName(booking.getUser().getName());
                     dto.setBookedByEmail(booking.getUser().getEmail());
                     dto.setNotes(booking.getNotes());
+
+                    dto.setBookingId(booking.getBookingID());
+                    dto.setBookingStatus(booking.getStatus().name());
                 }
             } else {
-                dto.setNotes(""); 
+                dto.setNotes("");
+                dto.setBookingStatus("EMPTY");  // trạng thái trống
             }
 
             return dto;
