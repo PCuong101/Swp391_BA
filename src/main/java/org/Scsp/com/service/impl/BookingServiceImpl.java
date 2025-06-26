@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,25 +68,43 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepo.save(booking);
     }
 
+    private int getStatusPriority(BookingStatus status) {
+        return switch (status) {
+            case BOOKED -> 0;
+            case FINISHED -> 1;
+            case CANCELED -> 2;
+            case EMPTY -> 3;
+            default -> 99;
+        };
+    }
+
     @Override
     public List<BookingDTO> getBookingsByUserId(Long userId) {
         List<Booking> bookings = bookingRepo.findBookingByUser_UserId(userId);
 
-        return bookings.stream().map(b -> {
-            Slot slot = b.getSchedule().getSlot();
-            return new BookingDTO(
-                    b.getSchedule().getDate(),
-                    b.getMeetingLink(),
-                    b.getNotes(),
-                    b.getStatus(),
-                    slot.getStartTime(),
-                    slot.getEndTime(),
-                    b.getSchedule().getCoach().getName(),
-                    b.getSchedule().getCoach().getUserId(),
-                    b.getSchedule().getSchedulesID()
-            );
-        }).collect(Collectors.toList());
+        return bookings.stream()
+                .sorted(Comparator.comparing((Booking b) -> b.getSchedule().getDate()).reversed()
+                .thenComparing(b -> b.getSchedule().getSlot().getStartTime())
+                        .thenComparing(b -> getStatusPriority(b.getStatus())
+                ))
+                .map(b -> {
+                    Slot slot = b.getSchedule().getSlot();
+                    return new BookingDTO(
+                            b.getSchedule().getDate(),
+                            b.getMeetingLink(),
+                            b.getNotes(),
+                            b.getStatus(),
+                            slot.getStartTime(),
+                            slot.getEndTime(),
+                            b.getSchedule().getCoach().getName(),
+                            b.getSchedule().getCoach().getUserId(),
+                            b.getSchedule().getSchedulesID(),
+                            b.getBookingID()
+                    );
+                })
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public List<ScheduleOverviewDTO> getCoachScheduleWithBookings(Long coachId) {
