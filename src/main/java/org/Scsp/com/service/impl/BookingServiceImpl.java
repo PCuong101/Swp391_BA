@@ -117,6 +117,7 @@ public class BookingServiceImpl implements BookingService {
             dto.setSlotLabel(s.getSlot().getLabel());
             dto.setAvailableLabel(s.isAvailable() ? "Còn trống" : "Đã đặt");
 
+            // Nếu đã có người đặt thì lấy thêm thông tin booking
             if (!s.isAvailable()) {
                 Booking booking = bookingRepo.findBySchedule(s).orElse(null);
                 if (booking != null) {
@@ -129,12 +130,13 @@ public class BookingServiceImpl implements BookingService {
                 }
             } else {
                 dto.setNotes("");
-                dto.setBookingStatus("EMPTY");  // trạng thái trống
+                dto.setBookingStatus("EMPTY");
             }
 
             return dto;
         }).collect(Collectors.toList());
     }
+
 
 
 
