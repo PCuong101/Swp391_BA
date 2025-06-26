@@ -15,6 +15,7 @@ import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -29,6 +30,7 @@ public class BookingServiceImpl implements BookingService {
     @Autowired private UsersRepository userRepo;
     @Autowired private SlotRepository slotRepository;
 
+    // ... các hàm khác giữ nguyên ...
     @Override
     public List<ScheduleDTO> getAvailableSchedules(Long coachId, LocalDate date) {
         List<Schedule> schedules = scheduleRepo.findByCoachUserIdAndDateAndIsAvailableTrue(coachId, date);
@@ -105,8 +107,8 @@ public class BookingServiceImpl implements BookingService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
+    @Transactional(readOnly = true)
     public List<ScheduleOverviewDTO> getCoachScheduleWithBookings(Long coachId) {
         List<Schedule> schedules = scheduleRepo.findByCoachUserId(coachId);
 
@@ -117,16 +119,24 @@ public class BookingServiceImpl implements BookingService {
             dto.setSlotLabel(s.getSlot().getLabel());
             dto.setAvailableLabel(s.isAvailable() ? "Còn trống" : "Đã đặt");
 
-            // Nếu đã có người đặt thì lấy thêm thông tin booking
             if (!s.isAvailable()) {
-                Booking booking = bookingRepo.findBySchedule(s).orElse(null);
+
+                // ================== SỬA LỖI 2: LOGIC TÌM BOOKING ==================
+                // Ưu tiên tìm booking đang hoạt động (BOOKED).
+                Booking booking = bookingRepo.findByScheduleAndStatus(s, BookingStatus.BOOKED)
+                        // Nếu không tìm thấy, thử tìm booking đã hoàn thành (FINISHED).
+                        .orElse(bookingRepo.findByScheduleAndStatus(s, BookingStatus.FINISHED).orElse(null));
+
                 if (booking != null) {
                     dto.setBookedByName(booking.getUser().getName());
                     dto.setBookedByEmail(booking.getUser().getEmail());
                     dto.setNotes(booking.getNotes());
-
                     dto.setBookingId(booking.getBookingID());
                     dto.setBookingStatus(booking.getStatus().name());
+                } else {
+                    // Xử lý trường hợp hiếm: slot đã đặt nhưng không có booking BOOKED hoặc FINISHED
+                    // (có thể là CANCELED đã bị xóa logic)
+                    dto.setBookingStatus("UNKNOWN");
                 }
             } else {
                 dto.setNotes("");
@@ -136,8 +146,4 @@ public class BookingServiceImpl implements BookingService {
             return dto;
         }).collect(Collectors.toList());
     }
-
-
-
-
 }
