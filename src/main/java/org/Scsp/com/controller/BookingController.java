@@ -4,6 +4,7 @@ import org.Scsp.com.Enum.BookingStatus;
 import org.Scsp.com.dto.BookingDTO;
 import org.Scsp.com.dto.BookingRequest;
 import org.Scsp.com.dto.ScheduleDTO;
+import org.Scsp.com.dto.ScheduleOverviewDTO;
 import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
 import org.Scsp.com.repository.BookingRepository;
@@ -11,6 +12,7 @@ import org.Scsp.com.repository.ScheduleRepository;
 import org.Scsp.com.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -60,10 +62,15 @@ public class BookingController {
         if (booking.getStatus() == BookingStatus.CANCELED) {
             return "⛔ Lịch đã được hủy trước đó.";
         }
-
         booking.setStatus(BookingStatus.CANCELED);
         bookingRepo.save(booking);
-        return "✅ Lịch đã được hủy thành công.";
+        Schedule schedule = booking.getSchedule();
+        schedule.setAvailable(true);
+        scheduleRepo.save(schedule);
+
+        return ("✅ Lịch đã được hủy và slot được mở lại.");
+
+
     }
 
     // 🔹 Đặt lịch mới
@@ -71,6 +78,12 @@ public class BookingController {
     public Booking createBooking(@RequestBody BookingRequest bookingRequest) {
         return bookingService.createBooking(bookingRequest.userId, bookingRequest.scheduleId, bookingRequest.note);
     }
+    @GetMapping("/coach/{coachId}/schedule")
+    public ResponseEntity<List<ScheduleOverviewDTO>> getCoachSchedule(@PathVariable Long coachId) {
+        List<ScheduleOverviewDTO> result = bookingService.getCoachScheduleWithBookings(coachId);
+        return ResponseEntity.ok(result);
+    }
+
 
     @PutMapping("/{id}/finish")
     public Booking finishBooking(@PathVariable Long id) {

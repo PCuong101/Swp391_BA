@@ -1,6 +1,8 @@
 package org.Scsp.com.service.impl;
 
 import org.Scsp.com.dto.ScheduleDTO;
+import org.Scsp.com.dto.ScheduleOverviewDTO;
+import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
 import org.Scsp.com.repository.ScheduleRepository;
 import org.Scsp.com.repository.UsersRepository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -27,4 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .map(schedule -> new ScheduleDTO(schedule.getSchedulesID(), coachName , schedule.getSlot().getSlotID().toString(), schedule.getDate(), schedule.isAvailable()))
                 .toList();
     }
+
+
+
 }

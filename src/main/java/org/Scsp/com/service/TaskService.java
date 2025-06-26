@@ -9,7 +9,7 @@ import java.util.List;
 public interface TaskService {
 
 
-    List<TaskDTO> getTasksForUser(Long userId);
+    List<TaskDTO> getTasksForUserToday(Long userId);
 
 
     double getCompletionPercentage(Long userId);

@@ -20,7 +20,7 @@ public class TaskController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<TaskDTO>> getTasks(@PathVariable Long userId) {
-        List<TaskDTO> tasks = taskService.getTasksForUser(userId);
+        List<TaskDTO> tasks = taskService.getTasksForUserToday(userId);
         return ResponseEntity.ok(tasks);
     }
 
