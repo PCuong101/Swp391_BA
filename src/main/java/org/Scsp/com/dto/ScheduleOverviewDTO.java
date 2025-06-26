@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.Scsp.com.Enum.BookingStatus;
 
 
 import java.time.LocalDate;
@@ -16,6 +17,10 @@ public class ScheduleOverviewDTO {
     private String slotLabel;
     private String availableLabel;
     private String notes;
+    private Long bookingId; // <-- THÊM DÒNG NÀY
+    private BookingStatus status; // <-- THÊM DÒNG NÀY
+
+
 
     public String getNotes() {
         return notes;
@@ -77,6 +82,22 @@ public class ScheduleOverviewDTO {
 
     public void setBookedByEmail(String bookedByEmail) {
         this.bookedByEmail = bookedByEmail;
+    }
+    // vừa thêm bookingId và status
+    public BookingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookingStatus status) {
+        this.status = status;
+    }
+
+    public Long getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Long bookingId) {
+        this.bookingId = bookingId;
     }
 
 // Constructor, getters, setters...

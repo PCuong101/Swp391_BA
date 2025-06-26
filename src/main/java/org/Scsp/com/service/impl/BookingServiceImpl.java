@@ -124,7 +124,9 @@ public class BookingServiceImpl implements BookingService {
                     dto.setBookedByName(booking.getUser().getName());
                     dto.setBookedByEmail(booking.getUser().getEmail());
                     dto.setNotes(booking.getNotes());
-                }
+                    dto.setBookingId(booking.getBookingID()); // <-- THÊM DÒNG NÀY
+                    dto.setStatus(booking.getStatus());     // <-- THÊM DÒNG NÀY
+                      }
             } else {
                 dto.setNotes(""); 
             }
