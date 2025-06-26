@@ -146,7 +146,6 @@ public class AchievementServiceImp implements AchievementService {
 
 
     private boolean checkStreakNoSmoke(List<UserDailyLog> userDailyLogs,LocalDate startDay ,int requiredDays) {
-        if (userDailyLogs.isEmpty()) return false;
 
         // B1: Map ngày -> smokedToday
         Map<LocalDate, Boolean> logMap = new HashMap<>();

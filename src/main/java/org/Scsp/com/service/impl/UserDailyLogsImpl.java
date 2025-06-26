@@ -38,7 +38,7 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
         // Uncomment the following line if you want to check for existing logs
         LocalDateTime startOfDay = newLogDto.getLogDate().toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
-        UserDailyLog userDailyLog = userDailyLogsRepository.findByLogDateBetween(startOfDay, endOfDay).orElse(null);
+        UserDailyLog userDailyLog = userDailyLogsRepository.findByQuitPlan_PlanIDAndLogDateBetween(quitPlan.getPlanID(),startOfDay, endOfDay);
         if (userDailyLog != null){
             throw new RuntimeException("UserDailyLog already exists");
         }

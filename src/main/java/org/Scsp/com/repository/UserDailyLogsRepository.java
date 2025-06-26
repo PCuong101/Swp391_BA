@@ -13,7 +13,6 @@ public interface UserDailyLogsRepository extends JpaRepository<UserDailyLog, Lon
     UserDailyLog findByQuitPlan_PlanIDAndLogDateBetween(Long quitPlanPlanID, LocalDateTime startOfDay, LocalDateTime endOfDay);
     List<UserDailyLog> findByQuitPlan_PlanIDOrderByLogDateAsc(Long planID);
     List<UserDailyLog> findByQuitPlan_PlanID(Long planID);
-    Optional<UserDailyLog> findByLogDateBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
 
     @Query("SELECT u FROM UserDailyLog u WHERE u.quitPlan.planID = :quitPlanId AND u.logDate BETWEEN :startOfDay AND :endOfDay")
     List<UserDailyLog> findRecentLogs( Long quitPlanId, LocalDateTime startOfDay, LocalDateTime endOfDay);

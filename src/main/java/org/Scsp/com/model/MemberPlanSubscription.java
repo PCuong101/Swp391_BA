@@ -36,5 +36,5 @@ public class MemberPlanSubscription {
     @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // getters/setters
+
 }
