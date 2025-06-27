@@ -58,7 +58,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setSchedule(schedule);
-        booking.setMeetingLink("https://meet.google.com/abc-defg-hij");
+        booking.setMeetingLink("https://meet.google.com/zaq-euie-aar");
         booking.setStatus(BookingStatus.BOOKED);
         booking.setNotes(note);
         return bookingRepo.save(booking);
@@ -133,6 +133,7 @@ public class BookingServiceImpl implements BookingService {
                     dto.setNotes(booking.getNotes());
                     dto.setBookingId(booking.getBookingID());
                     dto.setBookingStatus(booking.getStatus().name());
+                    dto.setMeetingLink(booking.getMeetingLink()); // <- thêm dòng này
                 } else {
                     // Xử lý trường hợp hiếm: slot đã đặt nhưng không có booking BOOKED hoặc FINISHED
                     // (có thể là CANCELED đã bị xóa logic)

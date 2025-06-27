@@ -17,6 +17,7 @@ public class ScheduleOverviewDTO {
     private String slotLabel;
     private String availableLabel;
     private String notes;
+    private String meetingLink;
 
     private Long bookingId;
     private String bookingStatus;
@@ -100,5 +101,11 @@ public class ScheduleOverviewDTO {
         this.bookingId = bookingId;
     }
 
+    public String getMeetingLink() {
+        return meetingLink;
+    }
 
+    public void setMeetingLink(String meetingLink) {
+        this.meetingLink = meetingLink;
+    }
 }
