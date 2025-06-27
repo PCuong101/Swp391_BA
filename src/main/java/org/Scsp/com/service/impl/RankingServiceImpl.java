@@ -5,11 +5,13 @@ import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
 import org.Scsp.com.repository.TaskCompletionRepository;
 import org.Scsp.com.repository.UsersRepository;
+import org.Scsp.com.service.QuitPlansService;
 import org.Scsp.com.service.RankingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -19,6 +21,9 @@ import java.util.stream.Collectors;
 public class RankingServiceImpl implements RankingService {
     @Autowired
     private UsersRepository userRepository;
+
+    @Autowired
+    private QuitPlansService quitPlansService;
 
     @Autowired
     private TaskCompletionRepository taskRepo;
@@ -43,9 +48,13 @@ public class RankingServiceImpl implements RankingService {
                             LocalDate.now()
                     );
 
-                    double moneySaved = quitPlan.getAverageCost()
-                            .multiply(BigDecimal.valueOf(quitDays))
-                            .doubleValue();
+                    double moneySaved = quitPlansService.getSavingsByUserId(user.getUserId()).getTotalSavings().doubleValue();
+
+//                    double moneySaved = quitPlan.getAverageCost().divide(BigDecimal.valueOf(20), 2, RoundingMode.HALF_UP)
+//                            .multiply(BigDecimal.valueOf(quitPlan.getCigarettesPerDay()))
+//                            .setScale(2, RoundingMode.HALF_UP)
+//                            .doubleValue();
+
 
                     int tasksCompleted = taskRepo.countByUser_UserIdAndCompletedAtIsNotNull(user.getUserId());
 
