@@ -9,6 +9,7 @@ import org.Scsp.com.repository.AchievementTempRepository;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UserDailyLogsRepository;
 import org.Scsp.com.service.AchievementService;
+import org.Scsp.com.service.NotificationService;
 import org.Scsp.com.service.QuitPlansService;
 import org.Scsp.com.service.TaskService;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class AchievementServiceImp implements AchievementService {
     private final AchievementTempRepository achievementTempRepository;
     private final UserDailyLogsRepository userDailyLogsRepository;
     private  final TaskService taskService;
+    private final NotificationService notificationService;
     private AchievementDTO toDto(Achievement a) {
         return AchievementDTO.builder()
                 .id(a.getAchievementID())
@@ -77,6 +79,13 @@ public class AchievementServiceImp implements AchievementService {
         }
         if (!newAchievements.isEmpty()) {
             achievementRepository.saveAll(newAchievements);
+        }
+        for (Achievement a : newAchievements) {
+            notificationService.createNotification(
+                    a.getUser(),
+                    "Bạn đã đạt thành tích mới!",
+                    "Chúc mừng! Bạn đã đạt thành tích: " + a.getAchievementTemplate().getTitle()
+            );
         }
     }
 
