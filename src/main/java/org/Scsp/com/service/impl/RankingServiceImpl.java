@@ -95,9 +95,7 @@ public class RankingServiceImpl implements RankingService {
                             LocalDate.now()
                     );
 
-                    double moneySaved = quitPlan.getAverageCost()
-                            .multiply(BigDecimal.valueOf(quitDays))
-                            .doubleValue();
+                    double moneySaved = quitPlansService.getSavingsByUserId(user.getUserId()).getTotalSavings().doubleValue();
 
                     int tasksCompleted = taskRepo.countByUser_UserIdAndCompletedAtIsNotNull(user.getUserId());
 
@@ -137,9 +135,7 @@ public class RankingServiceImpl implements RankingService {
                             LocalDate.now()
                     );
 
-                    double moneySaved = quitPlan.getAverageCost()
-                            .multiply(BigDecimal.valueOf(quitDays))
-                            .doubleValue();
+                    double moneySaved = quitPlansService.getSavingsByUserId(user.getUserId()).getTotalSavings().doubleValue();
 
                     int tasksCompleted = taskRepo.countByUser_UserIdAndCompletedAtIsNotNull(user.getUserId());
                     return new UserRankingDTO(
