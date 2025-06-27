@@ -6,6 +6,7 @@ import org.Scsp.com.model.TaskTemplate;
 import org.Scsp.com.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface TaskCompletionRepository extends JpaRepository<TaskCompletion, 
     int countByUser_UserIdAndCompletedAtIsNotNull(Long userId);
     List<TaskCompletion> findByUser_UserId(Long userId);
 
+    boolean existsByUserAndCompletedAtBetween(User user, LocalDateTime start, LocalDateTime end);
 }
+

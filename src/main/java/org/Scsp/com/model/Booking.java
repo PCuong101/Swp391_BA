@@ -29,7 +29,6 @@ public class Booking {
     @JsonIgnore
     private Schedule schedule;
 
-
     @Column(name = "BookingDate")
     private LocalDate bookingDate = LocalDate.now();
 
@@ -37,22 +36,21 @@ public class Booking {
     @Column(name = "Status")
     private BookingStatus status;
 
-
     @Column(name = "MeetingLink")
     private String meetingLink;
 
-    @Column(name = "Notes",columnDefinition = "NVARCHAR(200)")
+    @Column(name = "Notes", columnDefinition = "NVARCHAR(200)")
     private String notes;
 
     @Column(name = "CreatedAt")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "scheduled_time")
+    private LocalDateTime scheduledTime; // 🟢 Chỉ giữ cột này, xóa cột "ScheduledTime" nếu có
+
     @PrePersist
     protected void onCreate() {
         if (bookingDate == null) bookingDate = LocalDate.now();
         if (createdAt == null) createdAt = LocalDateTime.now();
     }
-
-    // Nếu cần tránh vòng lặp JSON, bạn có thể:
-    // @JsonIgnore
-    // private Schedule schedule;
 }

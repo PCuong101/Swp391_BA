@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,8 +62,18 @@ public class BookingServiceImpl implements BookingService {
         booking.setMeetingLink("https://meet.google.com/zaq-euie-aar");
         booking.setStatus(BookingStatus.BOOKED);
         booking.setNotes(note);
+
+        // ✅ Lấy ngày + giờ bắt đầu của Slot
+        LocalDate date = schedule.getDate();
+        LocalDateTime scheduledTime = LocalDateTime.of(
+                date,
+                schedule.getSlot().getStartTime()
+        );
+        booking.setScheduledTime(scheduledTime);
+
         return bookingRepo.save(booking);
     }
+
     @Override
     public Booking finishBooking(Long bookingId) {
         Booking booking = bookingRepo.findById(bookingId).orElseThrow();

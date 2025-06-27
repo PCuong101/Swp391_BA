@@ -5,6 +5,7 @@ import org.Scsp.com.model.Booking;
 import org.Scsp.com.model.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +16,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     // Phương thức cũ gây lỗi khi có nhiều booking cho 1 schedule
     Optional<Booking> findBySchedule(Schedule schedule);
 
-    // ================== PHƯƠNG THỨC MỚI ĐÃ SỬA LỖI ==================
-    // Tìm một booking cho một schedule cụ thể VÀ có một trạng thái (status) cụ thể.
-    // Điều này sẽ giúp chúng ta chỉ lấy booking đang 'BOOKED'.
+    List<Booking> findByScheduledTimeBetween(LocalDateTime start, LocalDateTime end);
     Optional<Booking> findByScheduleAndStatus(Schedule schedule, BookingStatus status);
 }
