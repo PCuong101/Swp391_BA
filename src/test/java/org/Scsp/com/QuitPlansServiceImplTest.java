@@ -1,6 +1,6 @@
 package org.Scsp.com;
 
-import org.Scsp.com.controller.SavingResponseDto;
+import org.Scsp.com.dto.SavingResponseDto;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.QuitPlanRepository;

@@ -1,9 +1,8 @@
 package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
-import org.Scsp.com.controller.SavingResponseDto;
+import org.Scsp.com.dto.SavingResponseDto;
 import org.Scsp.com.dto.QuitPlanDto;
-import org.Scsp.com.dto.*;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
 import org.Scsp.com.model.UserDailyLog;
