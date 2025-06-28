@@ -17,7 +17,7 @@ public class SurveyRegisterDTO {
     private Integer yearsSmoking;
     private Integer packPrice;
     private String firstSmokeTime;
-    private LocalDate dateStart;
+    private String dateStart;
     private String username;
     private String email;
     private String password;

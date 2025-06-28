@@ -11,11 +11,14 @@ import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
 import org.Scsp.com.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RequestMapping("/api/survey-register")
 @RestController
@@ -77,15 +80,14 @@ public class SurveyRegisterController {
 
             if(loginController.registerUser(user) != null) {
                 QuitPlanDto quitPlan = new QuitPlanDto();
-
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
                 User registeredUser = usersRepository.findByEmail(user.getEmail()).orElse(null);
                 quitPlan.setAverageCost(BigDecimal.valueOf(surveyRegisterDTO.getPackPrice()));
                 quitPlan.setYearsSmoking(surveyRegisterDTO.getYearsSmoking());
-                quitPlan.setStartDate(surveyRegisterDTO.getDateStart().atStartOfDay());
+                quitPlan.setStartDate(LocalDateTime.parse(surveyRegisterDTO.getDateStart(), formatter));
                 quitPlan.setStartedSmokingAt(surveyRegisterDTO.getFirstSmokeTime());
                 quitPlan.setUserId(registeredUser.getUserId());
                 quitPlan.setCigarettesPerDay(surveyRegisterDTO.getCigarettesPerDay());
-                System.out.println("Quit Plan User ID: " + quitPlan.getCigarettesPerDay());
                 quitPlansController.createQuitPlan(quitPlan);
                 User userLoggedIn = usersRepository.findByEmail(user.getEmail()).orElse(null);
                 HttpSession session = request.getSession();
