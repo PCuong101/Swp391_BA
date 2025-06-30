@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface BlogRepository extends JpaRepository<Blog,Long> {
     List<Blog> findBlogByStatus(BlogStatus status);
+    List<Blog> findByAuthor_UserId(Long userId);
 }

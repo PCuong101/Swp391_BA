@@ -44,6 +44,13 @@ public class BlogServiceImpl implements BlogService {
                 .map(this::toDto)
                 .toList();
     }
+    @Override
+    public List<BlogDto> findByAuthor(Long userId) {
+        List<Blog> blogs = blogRepository.findByAuthor_UserId(userId);
+        return blogs.stream()
+                .map(this::toDto)
+                .toList();
+    }
 
     @Override
     public void updateStatus(Long id, BlogStatus status) {

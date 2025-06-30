@@ -11,5 +11,5 @@ public interface BlogService {
     void updateStatus(Long id, BlogStatus status);
     List<BlogDto> findByStatus(BlogStatus status);
     BlogDto findById(Long id);
-
+    List<BlogDto> findByAuthor(Long userId);
 }
