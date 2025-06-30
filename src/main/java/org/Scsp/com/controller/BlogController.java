@@ -46,4 +46,9 @@ public class BlogController {
         blogService.updateStatus(id, BlogStatus.REJECTED);
         return ResponseEntity.ok("Blog đã bị từ chối");
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BlogDto> getBlogById(@PathVariable Long id) {
+        return ResponseEntity.ok(blogService.findById(id));
+    }
 }

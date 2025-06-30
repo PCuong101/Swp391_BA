@@ -10,4 +10,6 @@ public interface BlogService {
     List<BlogDto> findAll();
     void updateStatus(Long id, BlogStatus status);
     List<BlogDto> findByStatus(BlogStatus status);
+    BlogDto findById(Long id);
+
 }

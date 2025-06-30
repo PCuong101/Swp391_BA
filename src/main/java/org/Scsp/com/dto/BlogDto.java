@@ -4,6 +4,7 @@ package org.Scsp.com.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.Scsp.com.Enum.BlogStatus;
 
 import java.time.LocalDateTime;
 
@@ -18,4 +19,5 @@ public class BlogDto {
     private String authorName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private BlogStatus status;
 }

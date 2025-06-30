@@ -61,12 +61,19 @@ public class BlogServiceImpl implements BlogService {
                 .toList();
     }
 
+    @Override
+    public BlogDto findById(Long id) {
+        Blog blog = blogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Blog not found"));
+        return toDto(blog);
+    }
+
 
     private BlogDto toDto(Blog blog) {
         return BlogDto.builder()
                 .id(blog.getId())
                 .title(blog.getTitle())
                 .content(blog.getContent())
+                .status(blog.getStatus())
                 .authorName(blog.getAuthor().getName())
                 .createdAt(blog.getCreatedAt())
                 .updatedAt(blog.getUpdatedAt())
