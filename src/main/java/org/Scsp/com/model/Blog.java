@@ -2,6 +2,7 @@ package org.Scsp.com.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.Scsp.com.Enum.BlogStatus;
 
 import java.time.LocalDateTime;
 
@@ -23,10 +24,12 @@ public class Blog {
     @Column(columnDefinition = "NVARCHAR(MAX)")
     private String content;
 
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    private BlogStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

@@ -1,11 +1,13 @@
 package org.Scsp.com.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.Scsp.com.Enum.BlogStatus;
 import org.Scsp.com.dto.BlogDto;
 import org.Scsp.com.model.Blog;
 import org.Scsp.com.model.User;
 import org.Scsp.com.repository.BlogRepository;
 import org.Scsp.com.repository.UsersRepository;
+import org.Scsp.com.service.BlogService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,6 +30,7 @@ public class BlogServiceImpl implements BlogService {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .author(user)
+                .status(BlogStatus.APPROVED)
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .build();
@@ -41,6 +44,23 @@ public class BlogServiceImpl implements BlogService {
                 .map(this::toDto)
                 .toList();
     }
+
+    @Override
+    public void updateStatus(Long id, BlogStatus status) {
+        Blog blog = blogRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Blog not found"));
+        blog.setStatus(status);
+        blogRepository.save(blog);
+    }
+
+    @Override
+    public List<BlogDto> findByStatus(BlogStatus status) {
+        List<Blog> blogs = blogRepository.findBlogByStatus(status);
+        return blogs.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
 
     private BlogDto toDto(Blog blog) {
         return BlogDto.builder()
