@@ -30,7 +30,7 @@ public class BlogServiceImpl implements BlogService {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .author(user)
-                .status(BlogStatus.APPROVED)
+                .status(BlogStatus.PENDING)
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .build();
