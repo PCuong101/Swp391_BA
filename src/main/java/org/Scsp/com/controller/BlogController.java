@@ -51,4 +51,8 @@ public class BlogController {
     public ResponseEntity<BlogDto> getBlogById(@PathVariable Long id) {
         return ResponseEntity.ok(blogService.findById(id));
     }
+    @GetMapping("/author/{userId}")
+    public ResponseEntity<List<BlogDto>> getBlogsByAuthor(@PathVariable Long userId) {
+        return ResponseEntity.ok(blogService.findByAuthor(userId));
+    }
 }
