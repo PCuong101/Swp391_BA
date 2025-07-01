@@ -75,3 +75,8 @@ VALUES
     (N'Nhiệm vụ 3 ngày 1 - NONE', N'Lập kế hoạch tránh xa cám dỗ thuốc lá.', 1, 'NONE'),
     (N'Nhiệm vụ 4 ngày 1 - NONE', N'Tặng bản thân một phần thưởng nhỏ vì đã giữ vững.', 1, 'NONE'),
     (N'Nhiệm vụ 5 ngày 1 - NONE', N'Thực hiện một hoạt động lành mạnh thay vì hút thuốc.', 1, 'NONE');
+
+INSERT INTO Slot (start_time, end_time, label)
+VALUES ('08:00:00', '10:00:00', N'Buổi sáng');
+INSERT INTO Slot (start_time, end_time, label)
+VALUES ('14:00:00', '16:00:00', N'Buổi chiều');
