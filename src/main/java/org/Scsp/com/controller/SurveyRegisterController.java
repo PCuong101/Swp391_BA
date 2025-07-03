@@ -3,12 +3,15 @@ package org.Scsp.com.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.Scsp.com.Enum.AddictionLevel;
+import org.Scsp.com.Enum.MemberPlanSubscriptionStatus;
 import org.Scsp.com.Enum.Role;
 import org.Scsp.com.dto.QuitPlanDto;
 import org.Scsp.com.dto.SurveyRegisterDTO;
 import org.Scsp.com.dto.UsersRegisterDto;
+import org.Scsp.com.model.MemberPlanSubscription;
 import org.Scsp.com.model.QuitPlan;
 import org.Scsp.com.model.User;
+import org.Scsp.com.repository.MemberPlanSubscriptionRepository;
 import org.Scsp.com.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -35,6 +38,9 @@ public class SurveyRegisterController {
 
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    private MemberPlanSubscriptionRepository memberPlanSubscriptionRepository;
 
     @PostMapping("/register")
     public ResponseEntity<?> getSurveyAndRegister(@RequestBody SurveyRegisterDTO surveyRegisterDTO, HttpServletRequest request) {
@@ -90,6 +96,14 @@ public class SurveyRegisterController {
                 quitPlan.setCigarettesPerDay(surveyRegisterDTO.getCigarettesPerDay());
                 quitPlansController.createQuitPlan(quitPlan);
                 User userLoggedIn = usersRepository.findByEmail(user.getEmail()).orElse(null);
+
+                MemberPlanSubscription memberPlanSubscription = new MemberPlanSubscription();
+                memberPlanSubscription.setUser(userLoggedIn);
+                memberPlanSubscription.setStatus(MemberPlanSubscriptionStatus.INACTIVE);
+
+                memberPlanSubscriptionRepository.save(memberPlanSubscription);
+
+
                 HttpSession session = request.getSession();
                 session.setAttribute("user", userLoggedIn);
                 return ResponseEntity.ok(userLoggedIn);
@@ -98,7 +112,6 @@ public class SurveyRegisterController {
                 return ResponseEntity.status(400).body("User registration failed");
             }
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
