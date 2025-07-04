@@ -20,6 +20,11 @@ public class SubscriptionController {
         return ResponseEntity.ok(memberPlanSubscriptionService.subscribe(memberId, planId));
     }
 
+//    @PostMapping
+//    public ResponseEntity<?> createSubscription(@RequestParam Long userId) {
+//
+//    }
+
     @GetMapping("/member/{memberId}")
     public List<MemberPlanSubscription> getSubscriptions(@PathVariable Long memberId) {
         return memberPlanSubscriptionService.getSubscriptions(memberId);
