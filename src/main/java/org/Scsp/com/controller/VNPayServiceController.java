@@ -26,8 +26,13 @@ public class VNPayServiceController {
             ipAddr = "127.0.0.1";
         }
 
+        long userId = Long.parseLong(payload.get("memberId").toString());
+        long planId = Long.parseLong(payload.get("planId").toString());
 
-        String paymentUrl = vnPayService.createPaymentUrl(amount, email, ipAddr);
+        System.out.println(userId);
+        System.out.println(planId);
+
+        String paymentUrl = vnPayService.createPaymentUrl(amount, email, userId, planId, ipAddr);
 
         return Map.of("paymentUrl", paymentUrl);
     }

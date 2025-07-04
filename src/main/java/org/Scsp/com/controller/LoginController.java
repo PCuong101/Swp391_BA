@@ -7,10 +7,12 @@ import org.Scsp.com.dto.UsersRegisterDto;
 import org.Scsp.com.dto.LoginRequest;
 import org.Scsp.com.model.User;
 import org.Scsp.com.service.UsersService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RequestMapping("/api/auth")
 @AllArgsConstructor
@@ -45,19 +47,23 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/check-session")
-    public ResponseEntity<?> checkSession(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return ResponseEntity.status(401).build();
+    @PostMapping("/refresh-session")
+    public ResponseEntity<?> refreshSessionUser(HttpSession session) {
+        // Lấy userId từ session hiện tại
+        User loggedInUser = (User) session.getAttribute("user");
+
+        if (loggedInUser.getUserId() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        User user = (User) session.getAttribute("user");
-        if (user != null) {
-            System.out.println("User found in session: " + user);
-            return ResponseEntity.ok(Map.of("authenticated", true));
-        } else {
-            return ResponseEntity.status(401).build();
-        }
+
+        // Gọi service để lấy lại thông tin mới nhất
+        User user = usersService.getUserById(loggedInUser.getUserId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy user"));
+
+        // Ghi đè lại session user
+        session.setAttribute("user", user);
+
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")

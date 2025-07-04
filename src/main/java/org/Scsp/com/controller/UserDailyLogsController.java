@@ -32,9 +32,6 @@ public class UserDailyLogsController {
     public ResponseEntity<List<UserDailyLog>> getUserDailyLog(@PathVariable Long userId) {
         Long planId = userDailyLogsService.getPlanIdByUserId(userId);
         List<UserDailyLog> userDailyLogs = userDailyLogsService.getUserDailyLogs(planId);
-        if (userDailyLogs.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(userDailyLogs);
     }
 
