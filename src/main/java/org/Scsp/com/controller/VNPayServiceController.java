@@ -22,6 +22,10 @@ public class VNPayServiceController {
         long amount = Long.parseLong(payload.get("amount").toString());
         String email = payload.get("email").toString();
         String ipAddr = request.getRemoteAddr();
+        if ("0:0:0:0:0:0:0:1".equals(ipAddr) || "::1".equals(ipAddr)) {
+            ipAddr = "127.0.0.1";
+        }
+
 
         String paymentUrl = vnPayService.createPaymentUrl(amount, email, ipAddr);
 

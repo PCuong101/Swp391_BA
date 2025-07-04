@@ -31,24 +31,36 @@ public class VNPayServiceImpl implements VNPayService {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_OrderInfo = "Thanh toan goi premium";
-        String orderType = "other";
+        String orderType = "270001";
 
         String vnp_TxnRef = String.valueOf(System.currentTimeMillis());
-        String vnp_CreateDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        // Tạo múi giờ Việt Nam
+        TimeZone timeZoneVN = TimeZone.getTimeZone("Asia/Ho_Chi_Minh");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        sdf.setTimeZone(timeZoneVN);
+
+        Calendar calendar = Calendar.getInstance(timeZoneVN);
+
+        String vnp_CreateDate = sdf.format(calendar.getTime());
+
+        calendar.add(Calendar.MINUTE, 15);
+        String vnp_ExpireDate = sdf.format(calendar.getTime());
 
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
         vnp_Params.put("vnp_Amount", String.valueOf(amount * 100));
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
         vnp_Params.put("vnp_CurrCode", "VND");
-        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+        vnp_Params.put("vnp_IpAddr", ipAddr);
+        vnp_Params.put("vnp_Locale", "vn");
         vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
         vnp_Params.put("vnp_ReturnUrl", vnp_ReturnUrl);
-        vnp_Params.put("vnp_IpAddr", ipAddr);
-        vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
 
         List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
         Collections.sort(fieldNames);
@@ -58,15 +70,23 @@ public class VNPayServiceImpl implements VNPayService {
 
         for (String name : fieldNames) {
             String value = vnp_Params.get(name);
-            if (hashData.length() > 0) {
-                hashData.append('&');
-                query.append('&');
+            if (value != null && !value.isEmpty()) {
+                if (hashData.length() > 0) {
+                    hashData.append('&');
+                    query.append('&');
+                }
+                // ENCODE hashData như code mẫu
+                hashData.append(name)
+                        .append('=')
+                        .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
+
+                // query vẫn encode như cũ
+                query.append(URLEncoder.encode(name, StandardCharsets.UTF_8))
+                        .append('=')
+                        .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
             }
-            hashData.append(name).append('=').append(value);
-            query.append(URLEncoder.encode(name, StandardCharsets.US_ASCII))
-                    .append('=')
-                    .append(URLEncoder.encode(value, StandardCharsets.US_ASCII));
         }
+
         String secureHash = hmacSHA512(vnp_HashSecret, hashData.toString());
         query.append("&vnp_SecureHash=").append(secureHash);
         return vnp_Url + "?" + query;
