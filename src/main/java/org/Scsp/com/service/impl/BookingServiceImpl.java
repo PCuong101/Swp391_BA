@@ -31,18 +31,21 @@ public class BookingServiceImpl implements BookingService {
     @Autowired private UsersRepository userRepo;
     @Autowired private SlotRepository slotRepository;
 
-    // ... các hàm khác giữ nguyên ...
+
     @Override
     public List<ScheduleDTO> getAvailableSchedules(Long coachId, LocalDate date) {
-        List<Schedule> schedules = scheduleRepo.findByCoachUserIdAndDateAndIsAvailableTrue(coachId, date);
-        return schedules.stream().map(s -> new ScheduleDTO(
-                s.getSchedulesID(),
-                s.getCoach().getName(),
-                s.getSlot().getLabel(),
-                s.getDate(),
-                s.isAvailable()
-        )).collect(Collectors.toList());
+        List<Schedule> schedules = scheduleRepo.findByCoachUserIdAndDateAndIsAvailableTrueAndIsPublishedTrue(coachId, date);
+        return schedules.stream()
+                .map(s -> new ScheduleDTO(
+                        s.getSchedulesID(),
+                        s.getCoach().getName(),
+                        s.getSlot().getLabel(),
+                        s.getDate(),
+                        s.isAvailable()
+                ))
+                .collect(Collectors.toList());
     }
+
 
 
     @Override

@@ -25,11 +25,43 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<ScheduleDTO> getCoachSchedules(Long coachId) {
         String coachName = usersRepository.findUserByUserId(coachId).getName();
-        List<Schedule> schedules = scheduleRepository.findByCoach_UserIdAndDateAfterAndDateBefore(coachId, LocalDate.now(), LocalDate.now().plusDays(7));
+        List<Schedule> schedules = scheduleRepository
+                .findByCoach_UserIdAndDateAfterAndDateBeforeAndIsPublishedTrue(
+                        coachId,
+                        LocalDate.now(),
+                        LocalDate.now().plusDays(7)
+                );
+
         return schedules.stream()
-                .map(schedule -> new ScheduleDTO(schedule.getSchedulesID(), coachName , schedule.getSlot().getSlotID().toString(), schedule.getDate(), schedule.isAvailable()))
+                .map(schedule -> new ScheduleDTO(
+                        schedule.getSchedulesID(),
+                        coachName,
+                        schedule.getSlot().getSlotID().toString(),
+                        schedule.getDate(),
+                        schedule.isAvailable()
+                ))
                 .toList();
     }
+    @Override
+    public List<ScheduleDTO> getPublishedSchedules(Long coachId) {
+        List<Schedule> schedules = scheduleRepository.findByCoachUserIdAndDateAfterAndDateBeforeAndIsPublishedTrue(
+                coachId,
+                LocalDate.now(),
+                LocalDate.now().plusDays(7)
+        );
+
+        return schedules.stream()
+                .map(s -> new ScheduleDTO(
+                        s.getSchedulesID(),
+                        s.getCoach().getName(),
+                        s.getSlot().getLabel(),
+                        s.getDate(),
+                        s.isAvailable()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
 
 
 
