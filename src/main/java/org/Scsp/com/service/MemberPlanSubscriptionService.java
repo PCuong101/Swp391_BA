@@ -10,4 +10,5 @@ public interface MemberPlanSubscriptionService {
     MemberPlanSubscription subscribe(Long memberId, Long planId);
     List<MemberPlanSubscription> getSubscriptions(Long memberId);
     void cancelSubscription(Long userId, Long memberId);
+
 }

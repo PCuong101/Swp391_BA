@@ -14,7 +14,7 @@ public class MemberPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long planID;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 100, columnDefinition = "NVARCHAR(100)")
     private String planName;
 
     @Column(columnDefinition = "NVARCHAR(MAX)")
