@@ -84,6 +84,11 @@ public class BookingController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/coach/{coachId}/published-schedule")
+    public ResponseEntity<List<ScheduleOverviewDTO>> getCoachPublishedSchedule(@PathVariable Long coachId) {
+        List<ScheduleOverviewDTO> result = bookingService.getCoachPublishedSchedule(coachId);
+        return ResponseEntity.ok(result);
+    }//
 
     @PutMapping("/{id}/finish")
     public Booking finishBooking(@PathVariable Long id) {

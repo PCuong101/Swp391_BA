@@ -21,8 +21,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
             LocalDate end
     );
     List<Schedule> findByCoachUserIdAndDateAndIsAvailableTrueAndIsPublishedTrue(Long coachId, LocalDate date);
-
-
-
-
+    List<Schedule> findByCoachUserIdAndIsPublishedTrue(Long coachId);
 }
+
+
+
+
+

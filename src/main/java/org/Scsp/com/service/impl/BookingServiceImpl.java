@@ -132,6 +132,7 @@ public class BookingServiceImpl implements BookingService {
             dto.setDate(s.getDate());
             dto.setSlotLabel(s.getSlot().getLabel());
             dto.setAvailableLabel(s.isAvailable() ? "Còn trống" : "Đã đặt");
+            dto.setPublished(s.isPublished());
 
             if (!s.isAvailable()) {
 
@@ -158,6 +159,46 @@ public class BookingServiceImpl implements BookingService {
                 dto.setBookingStatus("EMPTY");
             }
 
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    // =========================================================
+    // HÀM 2: TẠO HÀM MỚI CHO COACH
+    // =========================================================
+    @Override
+    @Transactional(readOnly = true)
+    public List<ScheduleOverviewDTO> getCoachPublishedSchedule(Long coachId) {
+        // Hàm này CHỈ LẤY các lịch đã được PUBLISHED
+        List<Schedule> schedules = scheduleRepo.findByCoachUserIdAndIsPublishedTrue(coachId);
+
+        // Logic bên dưới giống hệt hàm trên, chỉ khác nguồn dữ liệu đầu vào
+        return schedules.stream().map(s -> {
+            ScheduleOverviewDTO dto = new ScheduleOverviewDTO();
+            dto.setScheduleId(s.getSchedulesID());
+            dto.setDate(s.getDate());
+            dto.setSlotLabel(s.getSlot().getLabel());
+            dto.setAvailableLabel(s.isAvailable() ? "Còn trống" : "Đã đặt");
+            dto.setPublished(s.isPublished());
+
+            if (!s.isAvailable()) {
+                Booking booking = bookingRepo.findByScheduleAndStatus(s, BookingStatus.BOOKED)
+                        .orElse(bookingRepo.findByScheduleAndStatus(s, BookingStatus.FINISHED).orElse(null));
+
+                if (booking != null) {
+                    dto.setBookedByName(booking.getUser().getName());
+                    dto.setBookedByEmail(booking.getUser().getEmail());
+                    dto.setNotes(booking.getNotes());
+                    dto.setBookingId(booking.getBookingID());
+                    dto.setBookingStatus(booking.getStatus().name());
+                    dto.setMeetingLink(booking.getMeetingLink());
+                } else {
+                    dto.setBookingStatus("UNKNOWN");
+                }
+            } else {
+                dto.setNotes("");
+                dto.setBookingStatus("EMPTY");
+            }
             return dto;
         }).collect(Collectors.toList());
     }

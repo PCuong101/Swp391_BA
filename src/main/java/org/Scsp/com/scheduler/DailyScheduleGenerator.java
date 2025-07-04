@@ -28,7 +28,7 @@ public class DailyScheduleGenerator {
         List<Slot> slots = slotRepo.findAll();
 
         LocalDate today = LocalDate.now();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 14; i++) {
             LocalDate targetDate = today.plusDays(i);
             for (User coach : coaches) {
                 for (Slot slot : slots) {

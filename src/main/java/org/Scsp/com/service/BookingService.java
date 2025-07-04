@@ -15,4 +15,6 @@ public interface BookingService {
     Booking finishBooking(Long bookingId);
     public List<ScheduleOverviewDTO> getCoachScheduleWithBookings(Long coachId);
     List<BookingDTO> getBookingsByUserId(Long userId);
+    List<ScheduleOverviewDTO> getCoachPublishedSchedule(Long coachId);
 }
+
