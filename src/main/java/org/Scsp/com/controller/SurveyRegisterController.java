@@ -97,13 +97,6 @@ public class SurveyRegisterController {
                 quitPlansController.createQuitPlan(quitPlan);
                 User userLoggedIn = usersRepository.findByEmail(user.getEmail()).orElse(null);
 
-                MemberPlanSubscription memberPlanSubscription = new MemberPlanSubscription();
-                memberPlanSubscription.setUser(userLoggedIn);
-                memberPlanSubscription.setStatus(MemberPlanSubscriptionStatus.INACTIVE);
-
-                memberPlanSubscriptionRepository.save(memberPlanSubscription);
-
-
                 HttpSession session = request.getSession();
                 session.setAttribute("user", userLoggedIn);
                 return ResponseEntity.ok(userLoggedIn);
