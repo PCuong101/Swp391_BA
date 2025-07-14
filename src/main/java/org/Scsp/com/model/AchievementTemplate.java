@@ -1,14 +1,13 @@
 package org.Scsp.com.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.Scsp.com.Enum.CustomLogicKey;
 
 @Entity
 @Table(name = "AchievementTemplates")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AchievementTemplate {
@@ -23,5 +22,7 @@ public class AchievementTemplate {
     private String category;
     @Enumerated(EnumType.STRING)
     private CustomLogicKey customLogicKey;
+    private Integer threshold;
+    private String iconUrl;
     private Boolean visible = true;
 }

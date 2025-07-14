@@ -28,6 +28,7 @@ public class Achievement {
 
     private LocalDateTime dateAchieved = LocalDateTime.now();
     private Boolean shared = false;
+    private String iconUrl;
     private LocalDateTime createdAt = LocalDateTime.now();
 }
 
