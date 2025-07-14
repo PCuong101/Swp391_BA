@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MemberPlanRepository extends JpaRepository<MemberPlan, Long> {
+    MemberPlan findByPlanID(long planId);
 }

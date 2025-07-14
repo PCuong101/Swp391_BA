@@ -27,10 +27,10 @@ public class VNPayServiceImpl implements VNPayService {
     private String vnp_ReturnUrl;
 
     @Override
-    public String createPaymentUrl(long amount, String email, long userId, long planId, String ipAddr) {
+    public String createPaymentUrl(long amount, String email, long userId, long planId, String ipAddr, long durationMonths) {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
-        String vnp_OrderInfo = "GoiDichVu" + "-" + planId + "-" + email;
+        String vnp_OrderInfo = "GoiDichVu" + "-" + planId + "-" + email + "-" + durationMonths;
         String orderType = "270001";
 
         String vnp_TxnRef = String.valueOf(System.currentTimeMillis());
