@@ -13,5 +13,5 @@ public class AchievementDTO {
     private String description;
     private LocalDateTime achievedAt;
     private boolean shared;
-    private String icon;
+    private String iconUrl;
 }
