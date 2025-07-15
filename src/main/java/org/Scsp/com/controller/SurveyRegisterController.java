@@ -94,6 +94,7 @@ public class SurveyRegisterController {
                 quitPlan.setStartedSmokingAt(surveyRegisterDTO.getFirstSmokeTime());
                 quitPlan.setUserId(registeredUser.getUserId());
                 quitPlan.setCigarettesPerDay(surveyRegisterDTO.getCigarettesPerDay());
+                quitPlan.setReason(String.join(",", surveyRegisterDTO.getReason()));
                 quitPlansController.createQuitPlan(quitPlan);
                 User userLoggedIn = usersRepository.findByEmail(user.getEmail()).orElse(null);
 
