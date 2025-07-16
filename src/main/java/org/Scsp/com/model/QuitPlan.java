@@ -42,9 +42,6 @@ public class QuitPlan {
     @Column(precision = 10, scale = 2)
     private BigDecimal averageCost;
 
-
-
-    private String startedSmokingAt;
     private LocalDateTime lastUpdated = LocalDateTime.now();
 
     @OneToMany(mappedBy = "quitPlan", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)

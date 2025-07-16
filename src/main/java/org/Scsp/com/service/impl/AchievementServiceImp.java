@@ -64,10 +64,13 @@ public class AchievementServiceImp implements AchievementService {
         List<CustomLogicKey> existingKeys = existingAchievements.stream().map(
                 achievement -> achievement.getAchievementTemplate().getCustomLogicKey()
         ).toList();
+        List<Integer> existingThresholds = existingAchievements.stream().map(
+                achievement -> achievement.getAchievementTemplate().getThreshold()
+        ).toList();
         List<Achievement> newAchievements = new ArrayList<>();
         for (AchievementTemplate template : templates) {
             CustomLogicKey customLogicKey = template.getCustomLogicKey();
-            if (existingKeys.contains(customLogicKey)) {
+            if (existingKeys.contains(customLogicKey) && existingThresholds.contains(template.getThreshold())) {
                 continue; // Achievement already exists
             }
             if (shouldUnlock(customLogicKey, template.getThreshold(), plan)) {

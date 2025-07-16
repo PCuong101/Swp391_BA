@@ -30,6 +30,11 @@
 -- (N'Hoàn thành 50 nhiệm vụ',    N'Bạn đã hoàn thành 50 nhiệm vụ – một thành tích đáng tự hào!',      N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_50',  1),
 -- (N'Hoàn thành 100 nhiệm vụ',   N'Bạn đã hoàn thành 100 nhiệm vụ – bạn là người cực kỳ kiên định!', N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_100', 1);
 
+INSERT INTO smoking.dbo.member_plans (planid, created_at, description, features, plan_name, price, updated_at) VALUES (1, N'2025-07-14 20:03:10.790000', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', N'- Hỗ trợ đặt lịch chuyên gia', N'Gói Tháng', 59000.00, N'2025-07-14 20:03:10.790000');
+INSERT INTO smoking.dbo.member_plans (planid, created_at, description, features, plan_name, price, updated_at) VALUES (2, N'2025-07-14 20:06:58.653333', N'Tất cả đều miễn phí', N'Tất cả đều miễn phí', N'Gói Miễn phí', 0.00, N'2025-07-14 20:06:58.653333');
+INSERT INTO smoking.dbo.member_plans (planid, created_at, description, features, plan_name, price, updated_at) VALUES (3, null, N'Premium', N'Premium', N'Gói Năm', 299000.00, null);
+
+
 INSERT INTO member_plans(plan_name, description, price, features, created_at, updated_at)
 VALUES
     (N'Gói Cơ bản', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', 199000, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
