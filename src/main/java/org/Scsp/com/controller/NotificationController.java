@@ -29,6 +29,7 @@ public class NotificationController {
                 .toList();
     }
 
+
     @PostMapping("/{id}/read")
     public void markAsRead(@PathVariable Long id) {
         Notification noti = notificationRepository.findById(id).orElseThrow();

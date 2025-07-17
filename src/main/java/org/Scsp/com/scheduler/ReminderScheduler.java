@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Random;
 
 @Component
 public class ReminderScheduler {
@@ -31,7 +32,7 @@ public class ReminderScheduler {
     @Autowired
     private NotificationService notificationService;
 
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 0 8 * * *") // Mỗi ngày lúc 8h sáng
     public void sendDailyTaskReminders() {
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
         LocalDateTime endOfDay = LocalDate.now().atTime(LocalTime.MAX);
@@ -39,6 +40,7 @@ public class ReminderScheduler {
         List<User> users = userRepository.findAll();
 
         for (User user : users) {
+            // Kiểm tra xem có nhiệm vụ nào chưa hoàn thành trong ngày không
             boolean hasIncomplete = taskCompletionRepository.existsByUserAndCompletedAtBetween(user, startOfDay, endOfDay);
 
             if (hasIncomplete) {
@@ -52,8 +54,32 @@ public class ReminderScheduler {
     }
 
 
-    // Nhắc milestone
-    @Scheduled(cron = "0 5 8 * * *")
+    @Scheduled(cron = "0 0 7 * * *") // Mỗi ngày 7h sáng
+    public void sendRandomMotivation() {
+        List<String> messages = List.of(
+                "Mỗi ngày không hút thuốc là một chiến thắng.",
+                "Bạn đang làm rất tốt. Tiếp tục nhé!",
+                "Hãy nhớ lý do bạn bắt đầu hành trình này.",
+                "Bạn xứng đáng có một cuộc sống khỏe mạnh không khói thuốc."
+        );
+
+        Random random = new Random();
+
+        List<User> users = userRepository.findAll();
+
+        for (User user : users) {
+            String message = messages.get(random.nextInt(messages.size()));
+            notificationService.createNotification(
+                    user,
+                    "Thông điệp động viên hôm nay",
+                    message
+            );
+        }
+    }
+
+
+
+    @Scheduled(cron = "0 5 8 * * *") // Mỗi ngày lúc 8h05 sáng
     public void checkMilestones() {
         LocalDate today = LocalDate.now();
         List<User> users = userRepository.findAll();
@@ -71,9 +97,9 @@ public class ReminderScheduler {
                     );
                 }
             }
-
         }
     }
+
 
     @Scheduled(cron = "*/10 * * * * * ") // Mỗi giờ
     public void remindUpcomingBookings() {

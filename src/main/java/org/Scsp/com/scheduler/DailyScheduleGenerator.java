@@ -19,7 +19,7 @@ public class DailyScheduleGenerator {
     @Autowired private SlotRepository slotRepo;
     @Autowired private ScheduleRepository scheduleRepo;
 
-    // Hàm này sẽ chạy khi ứng dụng khởi động
+
     public void generateWeeklySchedules(Long coachId) {
         User coach = userRepo.findUserByUserId(coachId);
         List<Slot> slots = slotRepo.findAll();
