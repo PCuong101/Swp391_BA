@@ -37,8 +37,10 @@ INSERT INTO smoking.dbo.member_plans (planid, created_at, description, features,
 
 INSERT INTO member_plans(plan_name, description, price, features, created_at, updated_at)
 VALUES
-    (N'Gói Cơ bản', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', 199000, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
-
+    (N'Gói Tháng', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', 29000, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
+INSERT INTO member_plans(plan_name, description, price, features, created_at, updated_at)
+VALUES
+    (N'Gói Năm', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', 199000, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
 INSERT INTO member_plans(plan_name, description, price, features, created_at, updated_at)
 VALUES
     (N'Gói Miễn phí', N'Tất cả đều miễn phí', 0, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
