@@ -8,6 +8,7 @@ import org.Scsp.com.service.UsersService;
 import org.springframework.data.repository.Repository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.Scsp.com.dto.UserUpdateDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,12 +39,14 @@ public class UsersController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        if (!usersService.getUserById(id).isPresent()) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserUpdateDTO userUpdateDTO) {
+        try {
+            User updatedUser = usersService.updateUser(id, userUpdateDTO);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            // Bắt lỗi nếu user không tồn tại từ service
             return ResponseEntity.notFound().build();
         }
-        user.setUserId(id);
-        return ResponseEntity.ok(usersService.updateUser(user));
     }
 
     @DeleteMapping("/{id}")

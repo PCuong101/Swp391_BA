@@ -11,6 +11,7 @@ import org.Scsp.com.service.UsersService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import org.Scsp.com.dto.UserUpdateDTO;
 
 @Service
 @AllArgsConstructor
@@ -62,8 +63,18 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public User updateUser(Long userId, UserUpdateDTO userUpdateDTO) {
+        // Lấy user hiện tại từ DB
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        // Cập nhật các trường được phép
+        existingUser.setName(userUpdateDTO.getName());
+        existingUser.setEmail(userUpdateDTO.getEmail());
+        existingUser.setProfilePicture(userUpdateDTO.getProfilePicture()); // Cập nhật URL ảnh
+
+        // Lưu lại vào DB
+        return userRepository.save(existingUser);
     }
 
     @Override
