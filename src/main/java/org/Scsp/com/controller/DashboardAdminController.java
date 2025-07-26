@@ -4,12 +4,13 @@ package org.Scsp.com.controller;
 import lombok.RequiredArgsConstructor;
 import org.Scsp.com.dto.CoachDTO;
 import org.Scsp.com.dto.DashboardSummaryDto;
+import org.Scsp.com.model.User;
+import org.Scsp.com.scheduler.DailyScheduleGenerator;
 import org.Scsp.com.service.DashboardService;
+import org.Scsp.com.service.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +20,11 @@ import java.util.List;
 public class DashboardAdminController {
 
     private final DashboardService dashboardService;
+
+    private final UsersService usersService;
+
+    @Autowired
+    private DailyScheduleGenerator dailyScheduleGenerator;
 
     @GetMapping("/summary")
     public ResponseEntity<DashboardSummaryDto> getSummary() {
@@ -41,5 +47,14 @@ public class DashboardAdminController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(coach);
+    }
+
+    @PostMapping("/create-coach")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        usersService.saveUser(user);
+        User createdUser = usersService.getUserById(user.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found after creation"));
+        dailyScheduleGenerator.generateWeeklySchedules(createdUser.getUserId());
+        return ResponseEntity.ok(createdUser);
     }
 }

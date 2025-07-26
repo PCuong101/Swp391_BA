@@ -11,11 +11,20 @@ import java.util.Optional;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     boolean existsByCoachUserIdAndSlotSlotIDAndDate(Long coachId, Long slotId, LocalDate date);
-    List<Schedule> findByCoachUserIdAndDateAndIsAvailableTrue(Long coachId, LocalDate date);
-    List<Schedule> findByCoach_UserIdAndDateAfterAndDateBefore(Long coachId, LocalDate date, LocalDate date2);
+
+    List<Schedule> findByCoachUserIdAndDateAfterAndDateBeforeAndIsPublishedTrue(Long coachId, LocalDate after, LocalDate before);
 
     List<Schedule> findByCoachUserId(Long coachId);
-
-
-
+    List<Schedule> findByCoach_UserIdAndDateAfterAndDateBeforeAndIsPublishedTrue(
+            Long coachId,
+            LocalDate start,
+            LocalDate end
+    );
+    List<Schedule> findByCoachUserIdAndDateAndIsAvailableTrueAndIsPublishedTrue(Long coachId, LocalDate date);
+    List<Schedule> findByCoachUserIdAndIsPublishedTrue(Long coachId);
 }
+
+
+
+
+

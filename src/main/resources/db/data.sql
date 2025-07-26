@@ -1,82 +1,503 @@
-INSERT INTO achievement_templates (title, description, category, custom_logic_key, visible) VALUES
--- 1. MONEY SAVED -------------------------------------------------------------
-(N'Tiết kiệm 100 000 ₫',  N'Bạn đã tránh tiêu 100 000 đồng nhờ không mua thuốc lá.',        N'MONEY_SAVED', 'MONEY_SAVED_100K', 1),
-(N'Tiết kiệm 500 000 ₫',  N'Bạn đã tránh tiêu 500 000 đồng kể từ khi bỏ thuốc.',             N'MONEY_SAVED', 'MONEY_SAVED_500K', 1),
-(N'Tiết kiệm 1 000 000 ₫',N'Bạn đã tránh tiêu 1 000 000 đồng kể từ khi bỏ thuốc.',           N'MONEY_SAVED', 'MONEY_SAVED_1M',   1),
-(N'Tiết kiệm 5 000 000 ₫',N'Bạn đã tránh tiêu 5 000 000 đồng kể từ khi bỏ thuốc.',           N'MONEY_SAVED', 'MONEY_SAVED_5M',   1),
+-- INSERT INTO achievement_templates (title, description, category, custom_logic_key, visible) VALUES
+-- -- 1. MONEY SAVED -------------------------------------------------------------
+-- (N'Tiết kiệm 100 000 ₫',  N'Bạn đã tránh tiêu 100 000 đồng nhờ không mua thuốc lá.',        N'MONEY_SAVED', 'MONEY_SAVED_100K', 1),
+-- (N'Tiết kiệm 500 000 ₫',  N'Bạn đã tránh tiêu 500 000 đồng kể từ khi bỏ thuốc.',             N'MONEY_SAVED', 'MONEY_SAVED_500K', 1),
+-- (N'Tiết kiệm 1 000 000 ₫',N'Bạn đã tránh tiêu 1 000 000 đồng kể từ khi bỏ thuốc.',           N'MONEY_SAVED', 'MONEY_SAVED_1M',   1),
+-- (N'Tiết kiệm 5 000 000 ₫',N'Bạn đã tránh tiêu 5 000 000 đồng kể từ khi bỏ thuốc.',           N'MONEY_SAVED', 'MONEY_SAVED_5M',   1),
+--
+-- -- 2. DAYS QUIT SMOKING -------------------------------------------------------
+-- (N'14 ngày bỏ thuốc',     N'Bạn đã vượt mốc 14 ngày không hút thuốc – cố lên!',              N'DAYS_QUIT_SMOKING', 'DAYS_QUIT_SMOKING_14', 1),
+-- (N'30 ngày bỏ thuốc',     N'Bạn đã bỏ thuốc tròn 30 ngày – tiếp tục duy trì nhé!',           N'DAYS_QUIT_SMOKING', 'DAYS_QUIT_SMOKING_30', 1),
+--
+-- -- 3. STREAK NO SMOKE ---------------------------------------------------------
+-- (N'Chuỗi 1 ngày sạch khói',  N'Bạn vừa hoàn thành ngày đầu tiên không hút thuốc.',          N'STREAK_NO_SMOKE', 'STREAK_NO_SMOKE_1',  1),
+-- (N'Chuỗi 7 ngày sạch khói',  N'Bạn đã không hút thuốc 7 ngày liên tục – tuyệt vời!',        N'STREAK_NO_SMOKE', 'STREAK_NO_SMOKE_7',  1),
+-- (N'Chuỗi 30 ngày sạch khói', N'Bạn đã duy trì 30 ngày liên tục không hút thuốc!',           N'STREAK_NO_SMOKE', 'STREAK_NO_SMOKE_30', 1),
+--
+-- -- 4. FIRST DAY ---------------------------------------------------------------
+-- (N'Ngày đầu thay đổi',    N'Chúc mừng! Bạn đã khởi đầu hành trình bỏ thuốc.',               N'FIRST_DAY',   'FIRST_DAY', 1),
+--
+-- -- 5. NUMBER OF DIARY ---------------------------------------------------------
+-- (N'Nhật ký đầu tiên',     N'Bạn đã ghi lại cảm xúc đầu tiên trong nhật ký bỏ thuốc.',       N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_1',  1),
+-- (N'7 lượt nhập nhật ký',  N'Bạn đã viết 7 lần nhật ký – tiếp tục sẻ chia trải nghiệm!',     N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_7',  1),
+-- (N'30 lượt nhập nhật ký', N'Bạn đã duy trì 30 lần ghi nhật ký – nỗ lực tuyệt vời!',         N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_30', 1),
+--
+-- -- 6. NUMBER OF TASK_COMPLETE ---------------------------------------------------------
+-- (N'Hoàn thành 5 nhiệm vụ',     N'Bạn đã hoàn thành 5 nhiệm vụ – khởi đầu tốt đẹp!',                 N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_5',   1),
+-- (N'Hoàn thành 10 nhiệm vụ',    N'Bạn đã hoàn thành 10 nhiệm vụ – tiếp tục phát huy!',               N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_10',  1),
+-- (N'Hoàn thành 20 nhiệm vụ',    N'Bạn đã hoàn thành 20 nhiệm vụ – bạn đang đi đúng hướng!',         N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_20',  1),
+-- (N'Hoàn thành 30 nhiệm vụ',    N'Bạn đã hoàn thành 30 nhiệm vụ – sự kiên trì đang mang lại kết quả!', N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_30',  1),
+-- (N'Hoàn thành 50 nhiệm vụ',    N'Bạn đã hoàn thành 50 nhiệm vụ – một thành tích đáng tự hào!',      N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_50',  1),
+-- (N'Hoàn thành 100 nhiệm vụ',   N'Bạn đã hoàn thành 100 nhiệm vụ – bạn là người cực kỳ kiên định!', N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_100', 1);
 
--- 2. DAYS QUIT SMOKING -------------------------------------------------------
-(N'14 ngày bỏ thuốc',     N'Bạn đã vượt mốc 14 ngày không hút thuốc – cố lên!',              N'DAYS_QUIT_SMOKING', 'DAYS_QUIT_SMOKING_14', 1),
-(N'30 ngày bỏ thuốc',     N'Bạn đã bỏ thuốc tròn 30 ngày – tiếp tục duy trì nhé!',           N'DAYS_QUIT_SMOKING', 'DAYS_QUIT_SMOKING_30', 1),
+INSERT INTO smoking.dbo.member_plans (planid, created_at, description, features, plan_name, price, updated_at) VALUES (1, N'2025-07-14 20:03:10.790000', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', N'- Hỗ trợ đặt lịch chuyên gia', N'Gói Tháng', 59000.00, N'2025-07-14 20:03:10.790000');
+INSERT INTO smoking.dbo.member_plans (planid, created_at, description, features, plan_name, price, updated_at) VALUES (2, N'2025-07-14 20:06:58.653333', N'Tất cả đều miễn phí', N'Tất cả đều miễn phí', N'Gói Miễn phí', 0.00, N'2025-07-14 20:06:58.653333');
+INSERT INTO smoking.dbo.member_plans (planid, created_at, description, features, plan_name, price, updated_at) VALUES (3, null, N'Premium', N'Premium', N'Gói Năm', 299000.00, null);
 
--- 3. STREAK NO SMOKE ---------------------------------------------------------
-(N'Chuỗi 1 ngày sạch khói',  N'Bạn vừa hoàn thành ngày đầu tiên không hút thuốc.',          N'STREAK_NO_SMOKE', 'STREAK_NO_SMOKE_1',  1),
-(N'Chuỗi 7 ngày sạch khói',  N'Bạn đã không hút thuốc 7 ngày liên tục – tuyệt vời!',        N'STREAK_NO_SMOKE', 'STREAK_NO_SMOKE_7',  1),
-(N'Chuỗi 30 ngày sạch khói', N'Bạn đã duy trì 30 ngày liên tục không hút thuốc!',           N'STREAK_NO_SMOKE', 'STREAK_NO_SMOKE_30', 1),
-
--- 4. FIRST DAY ---------------------------------------------------------------
-(N'Ngày đầu thay đổi',    N'Chúc mừng! Bạn đã khởi đầu hành trình bỏ thuốc.',               N'FIRST_DAY',   'FIRST_DAY', 1),
-
--- 5. NUMBER OF DIARY ---------------------------------------------------------
-(N'Nhật ký đầu tiên',     N'Bạn đã ghi lại cảm xúc đầu tiên trong nhật ký bỏ thuốc.',       N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_1',  1),
-(N'7 lượt nhập nhật ký',  N'Bạn đã viết 7 lần nhật ký – tiếp tục sẻ chia trải nghiệm!',     N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_7',  1),
-(N'30 lượt nhập nhật ký', N'Bạn đã duy trì 30 lần ghi nhật ký – nỗ lực tuyệt vời!',         N'NUMBER_OF_DIARY', 'NUMBER_OF_DIARY_30', 1),
-
--- 6. NUMBER OF TASK_COMPLETE ---------------------------------------------------------
-(N'Hoàn thành 5 nhiệm vụ',     N'Bạn đã hoàn thành 5 nhiệm vụ – khởi đầu tốt đẹp!',                 N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_5',   1),
-(N'Hoàn thành 10 nhiệm vụ',    N'Bạn đã hoàn thành 10 nhiệm vụ – tiếp tục phát huy!',               N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_10',  1),
-(N'Hoàn thành 20 nhiệm vụ',    N'Bạn đã hoàn thành 20 nhiệm vụ – bạn đang đi đúng hướng!',         N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_20',  1),
-(N'Hoàn thành 30 nhiệm vụ',    N'Bạn đã hoàn thành 30 nhiệm vụ – sự kiên trì đang mang lại kết quả!', N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_30',  1),
-(N'Hoàn thành 50 nhiệm vụ',    N'Bạn đã hoàn thành 50 nhiệm vụ – một thành tích đáng tự hào!',      N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_50',  1),
-(N'Hoàn thành 100 nhiệm vụ',   N'Bạn đã hoàn thành 100 nhiệm vụ – bạn là người cực kỳ kiên định!', N'NUMBER_OF_TASK_COMPLETE', 'NUMBER_OF_TASK_COMPLETE_100', 1);
 
 INSERT INTO member_plans(plan_name, description, price, features, created_at, updated_at)
 VALUES
-    (N'Gói Cơ bản', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', 199000, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
-
-
-
-
-INSERT INTO [smoking].[dbo].[task_templates]
-([title], [description], [suggested_day], [addiction_level])
+    (N'Gói Tháng', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', 29000, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
+INSERT INTO member_plans(plan_name, description, price, features, created_at, updated_at)
 VALUES
-    (N'Nhiệm vụ 1 ngày 1 - LOW', N'Không hút thuốc trong buổi sáng. Ghi chú cảm xúc.', 1, 'LOW'),
-    (N'Nhiệm vụ 2 ngày 1 - LOW', N'Uống nhiều nước khi thèm thuốc. Đi bộ nhẹ.', 1, 'LOW'),
-    (N'Nhiệm vụ 3 ngày 1 - LOW', N'Thảo luận với bạn bè về lý do bạn bỏ thuốc.', 1, 'LOW'),
-    (N'Nhiệm vụ 4 ngày 1 - LOW', N'Viết nhật ký lý do bỏ thuốc lá hôm nay.', 1, 'LOW'),
-    (N'Nhiệm vụ 5 ngày 1 - LOW', N'Tập thở sâu 3 lần khi thấy muốn hút thuốc.', 1, 'LOW'),
+    (N'Gói Năm', N'Cho phép đặt lịch liên hệ trực tiếp với chuyên gia', 199000, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
+INSERT INTO member_plans(plan_name, description, price, features, created_at, updated_at)
+VALUES
+    (N'Gói Miễn phí', N'Tất cả đều miễn phí', 0, N'- Hỗ trợ đặt lịch chuyên gia', GETDATE(), GETDATE());
 
-    (N'Nhiệm vụ 1 ngày 2 - LOW', N'Không hút thuốc sau bữa ăn sáng. Ghi nhận cảm giác.', 2, 'LOW'),
-    (N'Nhiệm vụ 2 ngày 2 - LOW', N'Tập thể dục 15 phút vào buổi sáng.', 2, 'LOW'),
-    (N'Nhiệm vụ 3 ngày 2 - LOW', N'Xem lại lợi ích của việc bỏ thuốc.', 2, 'LOW'),
-    (N'Nhiệm vụ 4 ngày 2 - LOW', N'Chuẩn bị đồ ăn nhẹ lành mạnh khi thèm thuốc.', 2, 'LOW'),
-    (N'Nhiệm vụ 5 ngày 2 - LOW', N'Tham gia nhóm hỗ trợ bỏ thuốc trực tuyến.', 2, 'LOW'),
-
--- Tiếp tục cho LOW từ ngày 3 đến ngày 10
--- Sau đó tiếp tục với MEDIUM, HIGH, NONE
--- Ví dụ MEDIUM:
-
-    (N'Nhiệm vụ 1 ngày 1 - MEDIUM', N'Tránh xa người hút thuốc trong ngày. Ghi nhận khó khăn.', 1, 'MEDIUM'),
-    (N'Nhiệm vụ 2 ngày 1 - MEDIUM', N'Trò chuyện với người thân về mong muốn bỏ thuốc.', 1, 'MEDIUM'),
-    (N'Nhiệm vụ 3 ngày 1 - MEDIUM', N'Sử dụng kẹo cao su không đường thay cho thuốc.', 1, 'MEDIUM'),
-    (N'Nhiệm vụ 4 ngày 1 - MEDIUM', N'Tập thiền 5 phút khi cảm thấy thèm thuốc.', 1, 'MEDIUM'),
-    (N'Nhiệm vụ 5 ngày 1 - MEDIUM', N'Đặt báo thức nhắc nhở mục tiêu bỏ thuốc mỗi sáng.', 1, 'MEDIUM'),
-
--- HIGH ví dụ:
-    (N'Nhiệm vụ 1 ngày 1 - HIGH', N'Lên danh sách 3 lý do mạnh mẽ để bỏ thuốc.', 1, 'HIGH'),
-    (N'Nhiệm vụ 2 ngày 1 - HIGH', N'Không hút thuốc trong 4 giờ đầu ngày.', 1, 'HIGH'),
-    (N'Nhiệm vụ 3 ngày 1 - HIGH', N'Liên hệ chuyên gia hỗ trợ cai thuốc.', 1, 'HIGH'),
-    (N'Nhiệm vụ 4 ngày 1 - HIGH', N'Viết thư cho chính mình trong tương lai không hút thuốc.', 1, 'HIGH'),
-    (N'Nhiệm vụ 5 ngày 1 - HIGH', N'Gạch bỏ từng giờ không hút thuốc trong sổ tay.', 1, 'HIGH'),
-
--- NONE ví dụ:
-    (N'Nhiệm vụ 1 ngày 1 - NONE', N'Đọc lại cam kết bỏ thuốc để duy trì động lực.', 1, 'NONE'),
-    (N'Nhiệm vụ 2 ngày 1 - NONE', N'Chia sẻ cảm xúc trong hành trình bỏ thuốc với người khác.', 1, 'NONE'),
-    (N'Nhiệm vụ 3 ngày 1 - NONE', N'Lập kế hoạch tránh xa cám dỗ thuốc lá.', 1, 'NONE'),
-    (N'Nhiệm vụ 4 ngày 1 - NONE', N'Tặng bản thân một phần thưởng nhỏ vì đã giữ vững.', 1, 'NONE'),
-    (N'Nhiệm vụ 5 ngày 1 - NONE', N'Thực hiện một hoạt động lành mạnh thay vì hút thuốc.', 1, 'NONE');
 
 INSERT INTO Slot (start_time, end_time, label)
 VALUES ('08:00:00', '10:00:00', N'Buổi sáng');
 INSERT INTO Slot (start_time, end_time, label)
 VALUES ('14:00:00', '16:00:00', N'Buổi chiều');
+
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 1, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 1, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 1, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 1, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 1, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 1, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 1, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 1, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 1, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 1, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 1, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 1, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 1, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 1, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 1, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 2, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 2, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 2, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 2, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 2, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 2, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 2, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 2, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 2, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 2, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 2, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 2, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 2, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 2, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 2, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 3, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 3, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 3, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 3, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 3, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 3, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 3, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 3, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 3, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 3, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 3, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 3, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 3, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 3, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 3, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 4, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 4, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 4, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 4, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 4, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 4, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 4, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 4, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 4, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 4, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 4, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 4, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 4, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 4, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 4, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 5, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 5, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 5, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 5, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 5, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 5, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 5, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 5, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 5, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 5, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 5, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 5, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 5, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 5, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 5, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 6, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 6, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 6, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 6, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 6, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 6, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 6, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 6, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 6, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 6, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 6, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 6, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 6, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 6, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 6, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 7, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 7, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 7, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 7, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 7, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 7, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 7, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 7, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 7, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 7, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 7, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 7, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 7, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 7, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 7, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 8, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 8, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 8, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 8, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 8, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 8, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 8, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 8, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 8, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 8, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 8, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 8, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 8, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 8, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 8, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 9, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 9, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 9, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 9, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 9, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 9, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 9, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 9, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 9, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 9, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 9, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 9, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 9, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 9, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 9, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 10, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 10, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 10, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 10, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 10, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 10, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 10, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 10, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 10, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 10, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 10, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 10, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 10, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 10, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 10, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 11, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 11, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 11, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 11, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 11, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 11, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 11, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 11, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 11, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 11, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 11, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 11, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 11, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 11, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 11, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 12, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 12, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 12, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 12, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 12, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 12, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 12, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 12, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 12, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 12, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 12, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 12, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 12, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 12, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 12, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 13, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 13, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 13, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 13, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 13, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 13, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 13, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 13, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 13, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 13, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 13, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 13, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 13, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 13, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 13, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 14, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 14, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 14, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 14, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 14, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 14, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 14, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 14, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 14, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 14, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 14, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 14, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 14, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 14, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 14, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 15, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 15, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 15, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 15, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 15, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 15, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 15, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 15, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 15, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 15, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 15, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 15, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 15, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 15, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 15, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 16, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 16, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 16, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 16, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 16, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 16, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 16, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 16, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 16, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 16, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 16, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 16, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 16, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 16, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 16, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 17, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 17, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 17, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 17, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 17, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 17, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 17, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 17, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 17, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 17, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 17, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 17, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 17, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 17, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 17, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 18, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 18, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 18, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 18, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 18, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 18, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 18, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 18, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 18, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 18, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 18, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 18, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 18, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 18, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 18, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 19, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 19, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 19, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 19, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 19, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 19, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 19, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 19, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 19, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 19, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 19, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 19, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 19, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 19, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 19, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 20, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 20, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 20, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 20, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 20, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 20, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 20, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 20, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 20, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 20, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 20, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 20, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 20, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 20, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 20, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 21, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 21, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 21, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 21, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 21, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 21, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 21, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 21, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 21, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 21, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 21, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 21, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 21, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 21, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 21, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 22, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 22, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 22, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 22, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 22, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 22, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 22, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 22, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 22, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 22, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 22, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 22, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 22, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 22, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 22, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 23, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 23, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 23, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 23, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 23, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 23, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 23, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 23, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 23, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 23, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 23, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 23, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 23, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 23, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 23, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 24, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 24, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 24, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 24, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 24, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 24, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 24, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 24, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 24, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 24, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 24, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 24, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 24, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 24, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 24, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 25, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 25, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 25, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 25, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 25, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 25, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 25, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 25, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 25, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 25, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 25, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 25, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 25, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 25, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 25, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 26, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 26, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 26, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 26, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 26, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 26, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 26, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Hít thật sâu, đếm đến 4, thở ra chậm rãi đếm đến 6. Lặp lại 10 lần.', 26, N'Hít thở sâu');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 26, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 26, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 26, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Pha một tách trà hoa cúc hoặc bạc hà để thư giãn và thay thế thuốc lá.', 26, N'Uống trà thảo mộc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 26, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 26, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 26, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 27, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 27, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 27, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 27, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Đốt tinh dầu hoặc nến thơm để tạo không gian dễ chịu.', 27, N'Đốt tinh dầu thơm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 27, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 27, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 27, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 27, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 27, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Rời khỏi không gian hiện tại và đi bộ nhanh 5 phút để quên cơn thèm.', 27, N'Đi bộ nhanh 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 27, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 27, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 27, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 27, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 28, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 28, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 28, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 28, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ghi ra cảm xúc hiện tại và cách bạn vượt qua cơn thèm.', 28, N'Viết nhật ký cảm xúc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 28, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 28, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 28, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 28, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 28, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 28, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 28, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 28, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 28, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 28, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Lấy giấy bút vẽ một hình đơn giản để thư giãn đầu óc.', 29, N'Vẽ hình đơn giản');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Kể với người thân rằng bạn vừa vượt qua cơn thèm thuốc.', 29, N'Kể người thân nghe');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ngậm kẹo bạc hà để thay đổi vị giác và giảm cảm giác thèm thuốc.', 29, N'Ngậm kẹo bạc hà');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 29, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 29, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 29, N'Uống một cốc nước lọc lạnh');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 29, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 29, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 29, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Nói chuyện với người bạn tin cậy về cảm xúc của bạn.', 29, N'Gọi điện cho bạn bè');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 29, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Nhai kẹo cao su để giữ miệng và tay bận rộn thay vì cầm thuốc.', 29, N'Nhai kẹo cao su không đường');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 29, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 29, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 29, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Ăn một quả táo tươi để giảm cơn thèm và cung cấp năng lượng.', 30, N'Ăn một quả táo');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 30, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Nhắc nhở bản thân vì sao bạn quyết tâm bỏ thuốc lá.', 30, N'Viết 3 lý do bỏ thuốc');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Tìm và đọc một câu trích dẫn tích cực để duy trì ý chí.', 30, N'Đọc câu trích dẫn động lực');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('LOW', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 30, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Leo lên xuống cầu thang trong 3 phút để tăng nhịp tim và giảm căng thẳng.', 30, N'Leo cầu thang 3 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Chọn một cuốn sách và đọc ít nhất 1 trang để giữ tâm trí bận rộn.', 30, N'Đọc một trang sách');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Bật một bài hát bạn thích để thư giãn và xua tan cơn thèm thuốc.', 30, N'Nghe nhạc yêu thích');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Cho bản thân một phần thưởng nhỏ vì bạn đã vượt qua cơn thèm thuốc.', 30, N'Tự thưởng nhỏ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('MEDIUM', N'Thực hiện 5–10 lần hít đất để giải tỏa năng lượng tiêu cực.', 30, N'Tập hít đất');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tìm nơi yên tĩnh, nhắm mắt và chú ý vào hơi thở.', 30, N'Ngồi thiền 5 phút');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Dành vài phút kéo giãn cơ tay, cổ và lưng.', 30, N'Tập kéo giãn cơ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Tính số tiền bạn tiết kiệm nhờ không hút thuốc.', 30, N'Ghi số tiền tiết kiệm');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Đọc hoặc chia sẻ bài viết trong nhóm hỗ trợ cai thuốc.', 30, N'Tham gia nhóm hỗ trợ');
+INSERT INTO task_templates (addiction_level, description, suggested_day, title) VALUES ('HIGH', N'Khi cơn thèm thuốc đến, hãy uống một cốc nước lạnh để phân tán sự chú ý.', 30, N'Uống một cốc nước lọc lạnh');

@@ -23,10 +23,10 @@ public class Notification {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id") // Khớp với tên cột FK
     private User user;
-
+    @Column(columnDefinition = "nvarchar(255)")
     private String title;
 
-    @Column(length = 1000)
+    @Column(length = 1000, columnDefinition = "nvarchar(1000)")
     private String content;
 
     @Column(name = "is_read")

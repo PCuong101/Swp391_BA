@@ -39,6 +39,7 @@ public class AchievementServiceImp implements AchievementService {
                 .name(a.getAchievementTemplate().getTitle())
                 .description(a.getAchievementTemplate().getDescription())
                 .achievedAt(a.getDateAchieved())
+                .iconUrl(a.getAchievementTemplate().getIconUrl())
                 .shared(a.getShared())
                 .build();
     }
@@ -63,13 +64,16 @@ public class AchievementServiceImp implements AchievementService {
         List<CustomLogicKey> existingKeys = existingAchievements.stream().map(
                 achievement -> achievement.getAchievementTemplate().getCustomLogicKey()
         ).toList();
+        List<Integer> existingThresholds = existingAchievements.stream().map(
+                achievement -> achievement.getAchievementTemplate().getThreshold()
+        ).toList();
         List<Achievement> newAchievements = new ArrayList<>();
         for (AchievementTemplate template : templates) {
             CustomLogicKey customLogicKey = template.getCustomLogicKey();
-            if (existingKeys.contains(customLogicKey)) {
+            if (existingKeys.contains(customLogicKey) && existingThresholds.contains(template.getThreshold())) {
                 continue; // Achievement already exists
             }
-            if (shouldUnlock(customLogicKey, plan)) {
+            if (shouldUnlock(customLogicKey, template.getThreshold(), plan)) {
                 Achievement achievement = new Achievement();
                 achievement.setUser(plan.getUser());
                 achievement.setAchievementTemplate(template);
@@ -89,10 +93,10 @@ public class AchievementServiceImp implements AchievementService {
         }
     }
 
-    private boolean shouldUnlock(CustomLogicKey key, QuitPlan plan) {
+    private boolean shouldUnlock(CustomLogicKey key, int threshold, QuitPlan plan) {
         LocalDate now = LocalDate.now();
-        long daysSinceStart = ChronoUnit.DAYS.between(plan.getStartDate().toLocalDate(), now);
         LocalDate startDate = plan.getStartDate().toLocalDate();
+        long daysSinceStart = ChronoUnit.DAYS.between(startDate, now);
 
         BigDecimal moneySaved = quitPlansService.getSavingsByUserId(plan.getUser().getUserId()).getTotalSavings();
         int diaryCount = userDailyLogsRepository.countByQuitPlan_PlanID(plan.getPlanID());
@@ -102,56 +106,20 @@ public class AchievementServiceImp implements AchievementService {
         return switch (key) {
             case FIRST_DAY -> true;
 
-            case DAYS_QUIT_SMOKING_14, DAYS_QUIT_SMOKING_30 -> {
-                int requiredDays = extractSuffixNumber(key.name());
-                yield daysSinceStart >= requiredDays;
-            }
+            case DAYS_QUIT_SMOKING -> daysSinceStart >= threshold;
 
-            case MONEY_SAVED_100K, MONEY_SAVED_500K, MONEY_SAVED_1M, MONEY_SAVED_5M -> {
-                BigDecimal requiredAmount = extractMoneyAmount(key.name());
-                yield moneySaved.compareTo(requiredAmount) >= 0;
-            }
+            case MONEY_SAVED -> moneySaved.compareTo(BigDecimal.valueOf(threshold)) >= 0;
 
-            case STREAK_NO_SMOKE_1, STREAK_NO_SMOKE_7, STREAK_NO_SMOKE_30 -> {
-                int requiredDays = extractSuffixNumber(key.name());
-                yield daysSinceStart >= requiredDays &&
-                        checkStreakNoSmoke(userDailyLogs, startDate, requiredDays);
-            }
+            case STREAK_NO_SMOKE ->
+                    daysSinceStart >= threshold && checkStreakNoSmoke(userDailyLogs, startDate, threshold);
 
-            case NUMBER_OF_DIARY_1, NUMBER_OF_DIARY_7, NUMBER_OF_DIARY_30 -> {
-                int required = extractSuffixNumber(key.name());
-                yield diaryCount >= required;
-            }
+            case NUMBER_OF_DIARY -> diaryCount >= threshold;
 
-            case NUMBER_OF_TASK_COMPLETE_5, NUMBER_OF_TASK_COMPLETE_10,
-                 NUMBER_OF_TASK_COMPLETE_20, NUMBER_OF_TASK_COMPLETE_30,
-                 NUMBER_OF_TASK_COMPLETE_50, NUMBER_OF_TASK_COMPLETE_100 -> {
-                int required = extractSuffixNumber(key.name());
-                yield taskCompleted >= required;
-            }
+            case NUMBER_OF_TASK_COMPLETE -> taskCompleted >= threshold;
+
             default -> false;
         };
     }
-
-    private int extractSuffixNumber(String keyName) {
-        // Tách phần cuối là số, ví dụ: _14, _7, _30
-        Matcher matcher = Pattern.compile("_(\\d+)$").matcher(keyName);
-        if (matcher.find()) {
-            return Integer.parseInt(matcher.group(1));
-        }
-        throw new IllegalArgumentException("Không tìm thấy số trong key: " + keyName);
-    }
-
-    private BigDecimal extractMoneyAmount(String keyName) {
-        return switch (keyName) {
-            case "MONEY_SAVED_100K" -> new BigDecimal("100000");
-            case "MONEY_SAVED_500K" -> new BigDecimal("500000");
-            case "MONEY_SAVED_1M"   -> new BigDecimal("1000000");
-            case "MONEY_SAVED_5M"   -> new BigDecimal("5000000");
-            default -> throw new IllegalArgumentException("Không hỗ trợ key: " + keyName);
-        };
-    }
-
 
 
     private boolean checkStreakNoSmoke(List<UserDailyLog> userDailyLogs,LocalDate startDay ,int requiredDays) {

@@ -10,5 +10,5 @@ import java.util.List;
 @Service
 public interface ScheduleService {
     List<ScheduleDTO> getCoachSchedules(Long coachId);
-
+    public List<ScheduleDTO> getPublishedSchedules(Long coachId);
 }

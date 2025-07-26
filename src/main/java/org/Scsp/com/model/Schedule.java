@@ -35,4 +35,7 @@ public class Schedule {
 
     private LocalDate date;
     private boolean isAvailable;
+    @Column(nullable = false, columnDefinition = "BIT DEFAULT 0")
+    private boolean isPublished = false;
+
 }

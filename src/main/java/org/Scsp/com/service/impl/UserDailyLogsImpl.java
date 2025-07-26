@@ -7,6 +7,7 @@ import org.Scsp.com.model.UserDailyLog;
 import org.Scsp.com.repository.QuitPlanRepository;
 import org.Scsp.com.repository.UserDailyLogsRepository;
 import org.Scsp.com.service.UserDailyLogsService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -66,7 +67,7 @@ public class UserDailyLogsImpl implements UserDailyLogsService {
 
     @Override
     public List<UserDailyLog> getUserDailyLogs(Long planId) {
-        List<UserDailyLog> userDailyLogs = userDailyLogsRepository.findByQuitPlan_PlanID(planId);
+        List<UserDailyLog> userDailyLogs = userDailyLogsRepository.findByQuitPlan_PlanID(planId, Sort.by(Sort.Direction.DESC, "logDate"));
         return userDailyLogs;
     }
 

@@ -1,7 +1,5 @@
 package org.Scsp.com.scheduler;
 
-import jakarta.annotation.PostConstruct;
-import org.Scsp.com.Enum.Role;
 import org.Scsp.com.model.Schedule;
 import org.Scsp.com.model.Slot;
 import org.Scsp.com.model.User;
@@ -21,16 +19,14 @@ public class DailyScheduleGenerator {
     @Autowired private SlotRepository slotRepo;
     @Autowired private ScheduleRepository scheduleRepo;
 
-    // Hàm này sẽ chạy khi ứng dụng khởi động
-    @PostConstruct
-    public void generateWeeklySchedules() {
-        List<User> coaches = userRepo.findByRole(Role.COACH); // Đổi tuỳ cột phân quyền bạn dùng
+
+    public void generateWeeklySchedules(Long coachId) {
+        User coach = userRepo.findUserByUserId(coachId);
         List<Slot> slots = slotRepo.findAll();
 
         LocalDate today = LocalDate.now();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 14; i++) {
             LocalDate targetDate = today.plusDays(i);
-            for (User coach : coaches) {
                 for (Slot slot : slots) {
                     boolean exists = scheduleRepo.existsByCoachUserIdAndSlotSlotIDAndDate(
                             coach.getUserId(), slot.getSlotID(), targetDate);
@@ -45,8 +41,6 @@ public class DailyScheduleGenerator {
                         scheduleRepo.save(schedule);
 
                     }
-
-                }
             }
         }
 

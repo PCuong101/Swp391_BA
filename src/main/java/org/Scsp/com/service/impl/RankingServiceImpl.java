@@ -62,7 +62,8 @@ public class RankingServiceImpl implements RankingService {
                             user.getName(),
                             quitDays,
                             moneySaved,
-                            tasksCompleted
+                            tasksCompleted,
+                            user.getProfilePicture()
                     );
                 })
                 .filter(ranking -> ranking != null)
@@ -103,7 +104,8 @@ public class RankingServiceImpl implements RankingService {
                             user.getName(),
                             quitDays,
                             moneySaved,
-                            tasksCompleted
+                            tasksCompleted,
+                            user.getProfilePicture()
                     );
                 })
                 .filter(ranking -> ranking != null)
@@ -142,7 +144,8 @@ public class RankingServiceImpl implements RankingService {
                             user.getName(),
                             quitDays,
                             moneySaved,
-                            tasksCompleted
+                            tasksCompleted,
+                            user.getProfilePicture()
                     );
                 })
                 .filter(ranking -> ranking != null)

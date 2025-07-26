@@ -1,10 +1,7 @@
 package org.Scsp.com.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.Scsp.com.Enum.BookingStatus;
 
 
 import java.time.LocalDate;
@@ -21,6 +18,7 @@ public class ScheduleOverviewDTO {
 
     private Long bookingId;
     private String bookingStatus;
+    private boolean isPublished;
 
     public String getBookingStatus() {
         return bookingStatus;
@@ -107,5 +105,13 @@ public class ScheduleOverviewDTO {
 
     public void setMeetingLink(String meetingLink) {
         this.meetingLink = meetingLink;
+    }
+
+    public boolean getIsPublished() {
+        return isPublished;
+    }
+
+    public void setPublished(boolean published) {
+        isPublished = published;
     }
 }

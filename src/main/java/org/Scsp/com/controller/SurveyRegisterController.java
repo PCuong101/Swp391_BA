@@ -94,15 +94,9 @@ public class SurveyRegisterController {
                 quitPlan.setStartedSmokingAt(surveyRegisterDTO.getFirstSmokeTime());
                 quitPlan.setUserId(registeredUser.getUserId());
                 quitPlan.setCigarettesPerDay(surveyRegisterDTO.getCigarettesPerDay());
+                quitPlan.setReason(String.join(",", surveyRegisterDTO.getReason()));
                 quitPlansController.createQuitPlan(quitPlan);
                 User userLoggedIn = usersRepository.findByEmail(user.getEmail()).orElse(null);
-
-                MemberPlanSubscription memberPlanSubscription = new MemberPlanSubscription();
-                memberPlanSubscription.setUser(userLoggedIn);
-                memberPlanSubscription.setStatus(MemberPlanSubscriptionStatus.INACTIVE);
-
-                memberPlanSubscriptionRepository.save(memberPlanSubscription);
-
 
                 HttpSession session = request.getSession();
                 session.setAttribute("user", userLoggedIn);
