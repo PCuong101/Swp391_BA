@@ -29,11 +29,25 @@ public class NotificationController {
                 .toList();
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteNotification(@PathVariable Long id) {
+        Notification notification = notificationRepository.findById(id).orElseThrow();
+        notificationRepository.delete(notification);
+    }
 
-    @PostMapping("/{id}/read")
+    @PutMapping("/{id}/read")
     public void markAsRead(@PathVariable Long id) {
         Notification noti = notificationRepository.findById(id).orElseThrow();
         noti.setRead(true);
         notificationRepository.save(noti);
+    }
+
+    @PutMapping("/user/{userId}/read-all")
+    public void markAsReadAll(@PathVariable Long userId) {
+        List<Notification> notifications = notificationRepository.findByUser_UserIdOrderByCreatedAtDesc(userId);
+        for (Notification notification : notifications) {
+            notification.setRead(true);
+        }
+        notificationRepository.saveAll(notifications);
     }
 }

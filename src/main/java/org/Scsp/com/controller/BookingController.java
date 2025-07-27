@@ -10,6 +10,7 @@ import org.Scsp.com.model.Schedule;
 import org.Scsp.com.repository.BookingRepository;
 import org.Scsp.com.repository.ScheduleRepository;
 import org.Scsp.com.service.BookingService;
+import org.Scsp.com.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class BookingController {
 
     @Autowired
     private BookingRepository bookingRepo;
+    
+    @Autowired
+    private NotificationService notificationService;
 
     // 🔹 Lấy danh sách lịch còn trống theo coachId và ngày
     @GetMapping("/available")
@@ -62,15 +66,28 @@ public class BookingController {
         if (booking.getStatus() == BookingStatus.CANCELED) {
             return "⛔ Lịch đã được hủy trước đó.";
         }
+        
+        // Lưu thông tin trước khi hủy để gửi thông báo
+        String coachName = booking.getSchedule().getCoach().getName();
+        String timeSlot = booking.getSchedule().getSlot().getLabel();
+        String bookingDate = booking.getSchedule().getDate().toString();
+        
         booking.setStatus(BookingStatus.CANCELED);
         bookingRepo.save(booking);
         Schedule schedule = booking.getSchedule();
         schedule.setAvailable(true);
         scheduleRepo.save(schedule);
 
+        // 🔔 Gửi thông báo hủy lịch
+        notificationService.createNotification(
+                booking.getUser(),
+                "❌ Lịch hẹn đã được hủy",
+                String.format("Lịch hẹn với chuyên gia %s vào %s (%s) đã được hủy thành công. " +
+                        "Bạn có thể đặt lịch hẹn mới bất cứ lúc nào.",
+                        coachName, timeSlot, bookingDate)
+        );
+
         return ("✅ Lịch đã được hủy và slot được mở lại.");
-
-
     }
 
     // 🔹 Đặt lịch mới

@@ -10,9 +10,9 @@ import org.Scsp.com.model.Slot;
 import org.Scsp.com.model.User;
 import org.Scsp.com.repository.BookingRepository;
 import org.Scsp.com.repository.ScheduleRepository;
-import org.Scsp.com.repository.SlotRepository;
 import org.Scsp.com.repository.UsersRepository;
 import org.Scsp.com.service.BookingService;
+import org.Scsp.com.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ public class BookingServiceImpl implements BookingService {
     private ScheduleRepository scheduleRepo;
     @Autowired private BookingRepository bookingRepo;
     @Autowired private UsersRepository userRepo;
-    @Autowired private SlotRepository slotRepository;
+    @Autowired private NotificationService notificationService;
 
 
     @Override
@@ -74,14 +74,49 @@ public class BookingServiceImpl implements BookingService {
         );
         booking.setScheduledTime(scheduledTime);
 
-        return bookingRepo.save(booking);
+        Booking savedBooking = bookingRepo.save(booking);
+
+        // 🔔 Gửi thông báo xác nhận đặt lịch thành công
+        String coachName = schedule.getCoach().getName();
+        String timeSlot = schedule.getSlot().getLabel();
+        String bookingDate = date.toString();
+        
+        notificationService.createNotification(
+                user,
+                "✅ Đặt lịch hẹn thành công",
+                String.format("Bạn đã đặt lịch hẹn với chuyên gia %s thành công! " +
+                        "Thời gian: %s, ngày %s. " +
+                        "Chúng tôi sẽ gửi nhắc nhở trước buổi hẹn. " +
+                        "Link tham gia: %s",
+                        coachName, timeSlot, bookingDate, booking.getMeetingLink())
+        );
+
+        return savedBooking;
     }
 
     @Override
     public Booking finishBooking(Long bookingId) {
         Booking booking = bookingRepo.findById(bookingId).orElseThrow();
+        
+        // Lưu thông tin trước khi cập nhật để gửi thông báo
+        String coachName = booking.getSchedule().getCoach().getName();
+        String timeSlot = booking.getSchedule().getSlot().getLabel();
+        String bookingDate = booking.getSchedule().getDate().toString();
+        
         booking.setStatus(BookingStatus.FINISHED);
-        return bookingRepo.save(booking);
+        Booking finishedBooking = bookingRepo.save(booking);
+        
+        // 🔔 Gửi thông báo hoàn thành buổi tư vấn
+        notificationService.createNotification(
+                booking.getUser(),
+                "✅ Buổi tư vấn đã hoàn thành",
+                String.format("Buổi tư vấn với chuyên gia %s (%s, %s) đã hoàn thành thành công. " +
+                        "Cảm ơn bạn đã tham gia! Hãy tiếp tục hành trình cai thuốc lá của mình. " +
+                        "Bạn có thể đặt lịch hẹn tiếp theo để được hỗ trợ thêm.",
+                        coachName, timeSlot, bookingDate)
+        );
+        
+        return finishedBooking;
     }
 
     private int getStatusPriority(BookingStatus status) {

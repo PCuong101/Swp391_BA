@@ -10,7 +10,9 @@
     import org.Scsp.com.repository.MemberPlanRepository;
     import org.Scsp.com.repository.MemberPlanSubscriptionRepository;
     import org.Scsp.com.service.MemberPlanSubscriptionService;
-    import org.springframework.stereotype.Service;
+import org.Scsp.com.service.NotificationService;
+import org.aspectj.weaver.ast.Not;
+import org.springframework.stereotype.Service;
 
     import java.util.List;
 
@@ -21,6 +23,7 @@
         private final MemberPlanSubscriptionRepository memberPlanSubscriptionRepository;
         private final MemberPlanRepository memberPlanRepository;
         private final UsersServiceImpl usersService;
+        private final NotificationService notificationService;
         @Override
         public MemberPlanSubscription subscribe(Long memberId, Long planId) {
             User user = usersService.getUserById(memberId)
@@ -36,6 +39,12 @@
                     .status(MemberPlanSubscriptionStatus.ACTIVE)
                     .plan(memberPlan)
                     .build();
+
+            notificationService.createNotification(
+                    user,
+                    "🎉 Chúc mừng bạn đã đăng ký gói thành viên!",
+                    String.format("Bạn đã đăng ký gói thành viên: %s. Chúc bạn có những trải nghiệm tuyệt vời!", memberPlan.getPlanName())
+            );
 
             return memberPlanSubscriptionRepository.save(subscription);
         }
