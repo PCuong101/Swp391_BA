@@ -39,9 +39,6 @@ public class VNPayServiceController {
             durationMonths = 12;
         }
 
-        System.out.println(userId);
-        System.out.println(planId);
-
         String paymentUrl = vnPayService.createPaymentUrl(amount, email, userId, planId, ipAddr, durationMonths);
 
         return Map.of("paymentUrl", paymentUrl);

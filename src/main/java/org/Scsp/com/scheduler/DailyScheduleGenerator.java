@@ -43,7 +43,5 @@ public class DailyScheduleGenerator {
                     }
             }
         }
-
-        System.out.println("📅 Tạo lịch tuần cho các coach thành công!");
     }
 }

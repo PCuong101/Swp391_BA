@@ -40,7 +40,6 @@ public class LoginController {
         }
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            System.out.println("User found in session: " + user);
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.status(401).build();

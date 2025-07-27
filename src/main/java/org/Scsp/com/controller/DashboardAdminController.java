@@ -57,4 +57,12 @@ public class DashboardAdminController {
         dailyScheduleGenerator.generateWeeklySchedules(createdUser.getUserId());
         return ResponseEntity.ok(createdUser);
     }
+
+    @PostMapping("/coach/{coachId}/create-schedule")
+    public ResponseEntity<String> createSchedule(@PathVariable Long coachId) {
+        User user = usersService.getUserById(coachId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        dailyScheduleGenerator.generateWeeklySchedules(user.getUserId());
+        return ResponseEntity.ok("Weekly schedule created successfully for user ID: " + coachId);
+    }
 }

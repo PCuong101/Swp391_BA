@@ -71,7 +71,13 @@ public class UsersServiceImpl implements UsersService {
         // Cập nhật các trường được phép
         existingUser.setName(userUpdateDTO.getName());
         existingUser.setEmail(userUpdateDTO.getEmail());
-        existingUser.setProfilePicture(userUpdateDTO.getProfilePicture()); // Cập nhật URL ảnh
+        existingUser.setProfilePicture(userUpdateDTO.getProfilePicture());
+        // Cập nhật URL ảnh
+        if (userUpdateDTO.getPassword() != null && !userUpdateDTO.getPassword().isEmpty()) {
+            // Nếu có mật khẩu mới, hãy cập nhật nó.
+            // (Cảnh báo: Lưu plain text không an toàn, nhưng theo yêu cầu của bạn)
+            existingUser.setPassword(userUpdateDTO.getPassword());
+        }
 
         // Lưu lại vào DB
         return userRepository.save(existingUser);

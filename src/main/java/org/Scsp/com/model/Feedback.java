@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Table(name = "Feedback")
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Feedback {
@@ -24,4 +25,5 @@ public class Feedback {
     @Column(columnDefinition = "NVARCHAR(200)")
     private String comments;
     private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
 }

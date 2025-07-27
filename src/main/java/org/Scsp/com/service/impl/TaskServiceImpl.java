@@ -7,10 +7,12 @@ import org.Scsp.com.dto.TaskDTO;
 import org.Scsp.com.model.*;
 import org.Scsp.com.repository.*;
 import org.Scsp.com.service.TaskService;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.Scsp.com.service.NotificationService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,8 +34,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private UsersRepository userRepo;
+
     @Autowired
     private TaskCompletionRepository taskRepo;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public List<TaskDTO> getTasksForUserToday(Long userId) {
@@ -119,6 +125,12 @@ public class TaskServiceImpl implements TaskService {
             completion.setUser(user);
             completion.setTemplate(template);
             completionRepo.save(completion);
+            notificationService.createNotification(
+                    user,
+                    "🎉 Chúc mừng bạn đã hoàn thành nhiệm vụ!",
+                    String.format("Bạn đã hoàn thành nhiệm vụ: %s. Tiếp tục cố gắng nhé!", template.getTitle())
+            );
         }
+
     }
 }
