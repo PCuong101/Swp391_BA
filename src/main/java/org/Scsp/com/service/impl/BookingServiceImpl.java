@@ -66,7 +66,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(BookingStatus.BOOKED);
         booking.setNotes(note);
 
-        // ✅ Lấy ngày + giờ bắt đầu của Slot
+
         LocalDate date = schedule.getDate();
         LocalDateTime scheduledTime = LocalDateTime.of(
                 date,
