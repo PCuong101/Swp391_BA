@@ -50,10 +50,9 @@ public class AchievementTemplateController {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
-    // ✅ Delete a template by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        service.deleteAchievementTemplate(id);
         return ResponseEntity.noContent().build();
     }
 

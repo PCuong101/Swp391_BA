@@ -93,6 +93,14 @@ public class AchievementServiceImp implements AchievementService {
         }
     }
 
+    @Override
+    public void deleteAchivementById(Long id) {
+        List<Achievement> achievements = achievementRepository.findByAchievementTemplate_TemplateID(id);
+        achievements.forEach(achievement -> {
+            achievementRepository.delete(achievement);
+        });
+    }
+
     private boolean shouldUnlock(CustomLogicKey key, int threshold, QuitPlan plan) {
         LocalDate now = LocalDate.now();
         LocalDate startDate = plan.getStartDate().toLocalDate();

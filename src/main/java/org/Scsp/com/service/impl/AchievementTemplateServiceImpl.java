@@ -3,8 +3,11 @@ package org.Scsp.com.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.Scsp.com.dto.AchievementTemplateDto;
+import org.Scsp.com.model.Achievement;
 import org.Scsp.com.model.AchievementTemplate;
+import org.Scsp.com.repository.AchievementRepository;
 import org.Scsp.com.repository.AchievementTemplateRepository;
+import org.Scsp.com.service.AchievementService;
 import org.Scsp.com.service.AchievementTemplateService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,6 +28,8 @@ import java.util.stream.Collectors;
 public class AchievementTemplateServiceImpl implements AchievementTemplateService {
 
     private final AchievementTemplateRepository repository;
+
+    private final AchievementService achievementService;
 
     @Value("${app.upload.dir}")
     private String uploadDir;
@@ -77,6 +83,12 @@ public class AchievementTemplateServiceImpl implements AchievementTemplateServic
         if (!repository.existsById(id)) {
             throw new IllegalArgumentException("Template not found with id: " + id);
         }
+        repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAchievementTemplate(Long id) {
+        achievementService.deleteAchivementById(id);
         repository.deleteById(id);
     }
 

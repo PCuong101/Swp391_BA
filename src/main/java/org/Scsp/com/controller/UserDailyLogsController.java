@@ -22,7 +22,7 @@ public class UserDailyLogsController {
             UserDailyLogsDto savedLog = userDailyLogsService.createUserDailyLog(userDailyLogsDto);
             return ResponseEntity.ok(savedLog);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body("Mỗi ngày chỉ được phép ghi nhật ký 1 lần, vui lòng thử lại vào hôm sau.");
         }
 
 

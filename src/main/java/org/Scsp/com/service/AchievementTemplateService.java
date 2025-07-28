@@ -12,4 +12,6 @@ public interface AchievementTemplateService {
     AchievementTemplateDto findById(Long id);
     AchievementTemplateDto update(Long id, AchievementTemplateDto dto);
     void delete(Long id);
+
+    void deleteAchievementTemplate(Long id);
 }

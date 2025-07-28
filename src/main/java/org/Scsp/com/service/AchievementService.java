@@ -14,4 +14,5 @@ public interface AchievementService {
     void checkAndUpdateAchievements(Long userId);
 
 
+    void deleteAchivementById(Long id);
 }
